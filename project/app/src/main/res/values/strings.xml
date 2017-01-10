@@ -1,0 +1,70 @@
+<resources>
+    <string name="app_name" translatable="true">Scrolls of Adventure</string>
+    <string name="select_character" translatable="true">Select Character</string>
+    <string name="create_character" translatable="true">Create Character</string>
+
+    <string name="in_progress" translatable="true">In Progress</string>
+
+    <string name="action_settings" translatable="true">Settings</string>
+
+
+    <!-- Create Activity strings -->
+    <string name="name" translatable="true">Name: </string>
+    <string name="age" translatable="true">Age: </string>
+    <string name="weight" translatable="true">Weight: </string>
+    <string name="height" translatable="true">Height: </string>
+
+    <string name="gender" translatable="true">Gender: </string>
+    <string name="male" translatable="true">Male</string>
+    <string name="female" translatable="true">Female</string>
+
+    <string name="race" translatable="true">Race: </string>
+    <string name="human" translatable="true">Human</string>
+    <string name="dwarf" translatable="true">Elf</string>
+    <string name="elf" translatable="true">Dwarf</string>
+
+    <string name="religion" translatable="true">Religion: </string>
+    <string name="religion1" translatable="true">religion1</string>
+    <string name="religion2" translatable="true">religion2</string>
+    <string name="religion3" translatable="true">religion3</string>
+    <string name="religion4" translatable="true">religion4</string>
+
+    <string name="alignment" translatable="true">Alignment: </string>
+    <string name="lawful_good" translatable="true">Lawful Good</string>
+    <string name="lawful_neutral" translatable="true">Lawful Neutral</string>
+    <string name="lawful_evil" translatable="true">Lawful Evil</string>
+    <string name="neutral_good" translatable="true">Neutral Good</string>
+    <string name="neutral" translatable="true">Neutral</string>
+    <string name="neutral_evil" translatable="true">Neutral Evil</string>
+    <string name="chaotic_good" translatable="true">Chaotic Good</string>
+    <string name="chaotic_neutral" translatable="true">Chaotic Neutral</string>
+    <string name="chaotic_evil" translatable="true">Chaotic Evil</string>
+
+    <string name="class_prompt" translatable="true">Class: </string>
+    <string name="cleric" translatable="true">Cleric</string>
+    <string name="fighter" translatable="true">Fighter</string>
+    <string name="rogue" translatable="true">Rogue</string>
+    <string name="wizard" translatable="true">Wizard</string>
+
+    <string name="strength" translatable="true">Strength: </string>
+    <string name="dexterity" translatable="true">Dexterity: </string>
+    <string name="constitution" translatable="true">Constitution: </string>
+    <string name="intelligence" translatable="true">Intelligence: </string>
+    <string name="wisdom" translatable="true">Wisdom: </string>
+    <string name="charisma" translatable="true">Charisma: </string>
+
+    <string name="base_attack" translatable="true">Base Attack Bonus: </string>
+    <string name="fort_save" translatable="true">Fortitude: </string>
+    <string name="ref_save" translatable="true">Reflex: </string>
+    <string name="will_save" translatable="true">Will: </string>
+
+    <string name="money" translatable="true">Money: </string>
+    <string name="light_load" translatable="true">Light Load: </string>
+    <string name="medium_load" translatable="true">Medium Load: </string>
+    <string name="heavy_load" translatable="true">Heavy Load: </string>
+
+    <string name="ac" translatable="true">AC: </string>
+    <string name="hp_max" translatable="true">HP Max: </string>
+    <string name="hp_current" translatable="true">HP Current: </string>
+
+</resources>
