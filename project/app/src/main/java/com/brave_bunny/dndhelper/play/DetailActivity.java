@@ -170,19 +170,15 @@ public class DetailActivity extends AppCompatActivity {
             }
         }
 
-        private void setInformation() {
-            mViewHolder.mNameView.setText(name);
-            mViewHolder.mAgeView.setText(age);
-            mViewHolder.mWeightView.setText(weight);
-            mViewHolder.mHeightView.setText(height);
-            mViewHolder.mReligionView.setText(religion);
-
+        private void setGender() {
             if (gender == CharacterContract.GENDER_MALE) {
                 mViewHolder.mGenderView.setText(R.string.male);
             } else {
                 mViewHolder.mGenderView.setText(R.string.female);
             }
+        }
 
+        private void setRace() {
             switch (race) {
                 case 0:
                     mViewHolder.mRaceView.setText(R.string.human);
@@ -194,37 +190,50 @@ public class DetailActivity extends AppCompatActivity {
                     mViewHolder.mRaceView.setText(R.string.dwarf);
                     break;
             }
+        }
 
+        private void setAlignment() {
             switch (alignment) {
-                case 0:
+                case CharacterContract.ALIGN_LG:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_good);
                     break;
-                case 1:
+                case CharacterContract.ALIGN_LN:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_neutral);
                     break;
-                case 2:
+                case CharacterContract.ALIGN_LE:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_evil);
                     break;
-                case 3:
+                case CharacterContract.ALIGN_NG:
                     mViewHolder.mAlignmentView.setText(R.string.neutral_good);
                     break;
-                case 4:
+                case CharacterContract.ALIGN_N:
                     mViewHolder.mAlignmentView.setText(R.string.neutral);
                     break;
-                case 5:
+                case CharacterContract.ALIGN_NE:
                     mViewHolder.mAlignmentView.setText(R.string.neutral_evil);
                     break;
-                case 6:
+                case CharacterContract.ALIGN_CG:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_good);
                     break;
-                case 7:
+                case CharacterContract.ALIGN_CN:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_neutral);
                     break;
                 default:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_evil);
                     break;
-
             }
+        }
+
+        private void setInformation() {
+            mViewHolder.mNameView.setText(name);
+            mViewHolder.mAgeView.setText(age);
+            mViewHolder.mWeightView.setText(weight);
+            mViewHolder.mHeightView.setText(height);
+            mViewHolder.mReligionView.setText(religion);
+
+            setGender();
+            setRace();
+            setAlignment();
 
             mViewHolder.mStrengthView.setText(strength);
             mViewHolder.mDexterityView.setText(dexterity);

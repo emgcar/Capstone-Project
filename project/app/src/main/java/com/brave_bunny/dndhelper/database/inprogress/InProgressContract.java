@@ -1,4 +1,8 @@
-package com.brave_bunny.dndhelper.database;
+package com.brave_bunny.dndhelper.database.inprogress;
+
+/**
+ * Created by Jemma on 1/11/2017.
+ */
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -8,7 +12,7 @@ import android.provider.BaseColumns;
 /**
  * Created by Jemma on 8/7/2016.
  */
-public class CharacterContract {
+public class InProgressContract {
 
     public static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);

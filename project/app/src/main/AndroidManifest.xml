@@ -36,7 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.select.SelectActivity" />
         </activity>
-        <activity android:name=".create.AbilityActivity"></activity>
+        <activity android:name=".create.AbilityActivity" />
+        <activity
+            android:name=".create.SkillsActivity"
+            android:label="Skiills">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesContract;
+import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 import java.util.Random;
 
@@ -41,6 +43,15 @@ public class Utility {
     private static final String[] INPROGRESS_COLUMNS = {
             CharacterContract.InProgressEntry.TABLE_NAME + "." + CharacterContract.InProgressEntry._ID,
             CharacterContract.InProgressEntry.COLUMN_NAME,
+            CharacterContract.InProgressEntry.COLUMN_GENDER,
+            CharacterContract.InProgressEntry.COLUMN_RACE_ID,
+            CharacterContract.InProgressEntry.COLUMN_CLASS_ID,
+            CharacterContract.InProgressEntry.COLUMN_AGE,
+            CharacterContract.InProgressEntry.COLUMN_WEIGHT,
+            CharacterContract.InProgressEntry.COLUMN_HEIGHT,
+            CharacterContract.InProgressEntry.COLUMN_RELIGION_ID,
+            CharacterContract.InProgressEntry.COLUMN_ALIGN,
+
             CharacterContract.InProgressEntry.COLUMN_STR,
             CharacterContract.InProgressEntry.COLUMN_DEX,
             CharacterContract.InProgressEntry.COLUMN_CON,
@@ -52,23 +63,48 @@ public class Utility {
             CharacterContract.InProgressEntry.COLUMN_ABILITY_3,
             CharacterContract.InProgressEntry.COLUMN_ABILITY_4,
             CharacterContract.InProgressEntry.COLUMN_ABILITY_5,
-            CharacterContract.InProgressEntry.COLUMN_ABILITY_6
+            CharacterContract.InProgressEntry.COLUMN_ABILITY_6,
+
+            CharacterContract.InProgressEntry.COLUMN_MONEY,
+            CharacterContract.InProgressEntry.COLUMN_LIGHT_LOAD,
+            CharacterContract.InProgressEntry.COLUMN_MED_LOAD,
+            CharacterContract.InProgressEntry.COLUMN_HEAVY_LOAD,
+
+            CharacterContract.InProgressEntry.COLUMN_AC,
+            CharacterContract.InProgressEntry.COLUMN_HP
     };
 
     public static final int COL_INPROGRESS_ID = 0;
     public static final int COL_INPROGRESS_NAME = 1;
-    public static final int COL_INPROGRESS_STRENGTH = 2;
-    public static final int COL_INPROGRESS_DEXTERITY = 3;
-    public static final int COL_INPROGRESS_CONSTITUTION = 4;
-    public static final int COL_INPROGRESS_INTELLIGENCE = 5;
-    public static final int COL_INPROGRESS_WISDOM = 6;
-    public static final int COL_INPROGRESS_CHARISMA = 7;
-    public static final int COL_INPROGRESS_ABILITY_1 = 8;
-    public static final int COL_INPROGRESS_ABILITY_2 = 9;
-    public static final int COL_INPROGRESS_ABILITY_3 = 10;
-    public static final int COL_INPROGRESS_ABILITY_4 = 11;
-    public static final int COL_INPROGRESS_ABILITY_5 = 12;
-    public static final int COL_INPROGRESS_ABILITY_6 = 13;
+    public static final int COL_INPROGRESS_GENDER = 2;
+    public static final int COL_INPROGRESS_RACE_ID = 3;
+    public static final int COL_INPROGRESS_CLASS_ID = 4;
+    public static final int COL_INPROGRESS_AGE = 5;
+    public static final int COL_INPROGRESS_WEIGHT = 6;
+    public static final int COL_INPROGRESS_HEIGHT = 7;
+    public static final int COL_INPROGRESS_RELIGION_ID = 8;
+    public static final int COL_INPROGRESS_ALIGN = 9;
+
+    public static final int COL_INPROGRESS_STRENGTH = 10;
+    public static final int COL_INPROGRESS_DEXTERITY = 11;
+    public static final int COL_INPROGRESS_CONSTITUTION = 12;
+    public static final int COL_INPROGRESS_INTELLIGENCE = 13;
+    public static final int COL_INPROGRESS_WISDOM = 14;
+    public static final int COL_INPROGRESS_CHARISMA = 15;
+    public static final int COL_INPROGRESS_ABILITY_1 = 16;
+    public static final int COL_INPROGRESS_ABILITY_2 = 17;
+    public static final int COL_INPROGRESS_ABILITY_3 = 18;
+    public static final int COL_INPROGRESS_ABILITY_4 = 19;
+    public static final int COL_INPROGRESS_ABILITY_5 = 20;
+    public static final int COL_INPROGRESS_ABILITY_6 = 21;
+
+    public static final int COL_INPROGRESS_MONEY = 22;
+    public static final int COL_INPROGRESS_LIGHT_LOAD = 23;
+    public static final int COL_INPROGRESS_MED_LOAD = 24;
+    public static final int COL_INPROGRESS_HEAVY_LOAD = 25;
+
+    public static final int COL_INPROGRESS_AC = 26;
+    public static final int COL_INPROGRESS_HP = 27;
 
     public static TextView findTextView(View view, int id) {
         return (TextView) view.findViewById(id);
@@ -396,5 +432,23 @@ public class Utility {
         }
 
         return sum - minimum;
+    }
+
+    public static Cursor getAllSkills(Context context) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.SkillsEntry.TABLE_NAME;
+            cursor = db.rawQuery(query, null);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
     }
 }

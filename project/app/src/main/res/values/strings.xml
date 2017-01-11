@@ -18,6 +18,7 @@
     <string name="male" translatable="true">Male</string>
     <string name="female" translatable="true">Female</string>
 
+    <!-- types of species the player can play as -->
     <string name="race" translatable="true">Race: </string>
     <string name="human" translatable="true">Human</string>
     <string name="dwarf" translatable="true">Elf</string>
@@ -29,6 +30,7 @@
     <string name="religion3" translatable="true">religion3</string>
     <string name="religion4" translatable="true">religion4</string>
 
+    <!-- character personality alignments -->
     <string name="alignment" translatable="true">Alignment: </string>
     <string name="lawful_good" translatable="true">Lawful Good</string>
     <string name="lawful_neutral" translatable="true">Lawful Neutral</string>
@@ -40,12 +42,14 @@
     <string name="chaotic_neutral" translatable="true">Chaotic Neutral</string>
     <string name="chaotic_evil" translatable="true">Chaotic Evil</string>
 
+    <!-- career choice for character -->
     <string name="class_prompt" translatable="true">Class: </string>
     <string name="cleric" translatable="true">Cleric</string>
     <string name="fighter" translatable="true">Fighter</string>
     <string name="rogue" translatable="true">Rogue</string>
     <string name="wizard" translatable="true">Wizard</string>
 
+    <!-- base ability scores -->
     <string name="strength" translatable="true">Strength: </string>
     <string name="dexterity" translatable="true">Dexterity: </string>
     <string name="constitution" translatable="true">Constitution: </string>
@@ -53,18 +57,92 @@
     <string name="wisdom" translatable="true">Wisdom: </string>
     <string name="charisma" translatable="true">Charisma: </string>
 
+    <!-- saving throws -->
     <string name="base_attack" translatable="true">Base Attack Bonus: </string>
     <string name="fort_save" translatable="true">Fortitude: </string>
     <string name="ref_save" translatable="true">Reflex: </string>
     <string name="will_save" translatable="true">Will: </string>
 
     <string name="money" translatable="true">Money: </string>
+    <!-- carrying capacity -->
     <string name="light_load" translatable="true">Light Load: </string>
     <string name="medium_load" translatable="true">Medium Load: </string>
     <string name="heavy_load" translatable="true">Heavy Load: </string>
 
+    <!-- armor class, how hard it is to hit the character -->
     <string name="ac" translatable="true">AC: </string>
+    <!-- hit points, their health, how much damage they can take -->
     <string name="hp_max" translatable="true">HP Max: </string>
     <string name="hp_current" translatable="true">HP Current: </string>
+
+    <!-- skills activity strings -->
+    <string name="title_activity_skills">SkillsActivity</string>
+    <string name="skills" translatable="true">Skills: </string>
+    <string name="appraise" translatable="true">Appraise</string>
+    <string name="balance" translatable="true">Balance</string>
+    <string name="bluff" translatable="true">Bluff</string>
+    <string name="climb" translatable="true">Climb</string>
+    <string name="concentrate" translatable="true">Concentrate</string>
+    <string name="decipher_script" translatable="true">Decipher Script</string>
+    <string name="diplomacy" translatable="true">Diplomacy</string>
+    <string name="disable_device" translatable="true">Disable Device</string>
+    <string name="disguise" translatable="true">Disguise</string>
+    <string name="escape_artist" translatable="true">Escape Artist</string>
+    <string name="forgery" translatable="true">Forgery</string>
+    <string name="gather_information" translatable="true">Gather Information</string>
+    <string name="heal" translatable="true">Heal</string>
+    <string name="hide" translatable="true">Hide</string>
+    <string name="intimidate" translatable="true">Intimidate</string>
+    <string name="jump" translatable="true">Jump</string>
+    <string name="knowledge_arcana" translatable="true">Knowledge (arcana)</string>
+    <string name="knowledge_architecture" translatable="true">Knowledge (architecture and engineering)</string>
+    <string name="knowledge_dungeoneering" translatable="true">Knowledge (dungeoneering)</string>
+    <string name="knowledge_geography" translatable="true">Knowledge (geography)</string>
+    <string name="knowledge_history" translatable="true">Knowledge (history)</string>
+    <string name="knowledge_local" translatable="true">Knowledge (local)</string>
+    <string name="knowledge_nature" translatable="true">Knowledge (nature)</string>
+    <string name="knowledge_nobility" translatable="true">Knowledge (nobility and royalty)</string>
+    <string name="knowledge_religion" translatable="true">Knowledge (religion)</string>
+    <string name="knowledge_planes" translatable="true">Knowledge (the planes)</string>
+    <string name="listen" translatable="true">Listen</string>
+    <string name="move_silently" translatable="true">Move Silently</string>
+    <string name="open_lock" translatable="true">Open Lock</string>
+    <string name="ride" translatable="true">Ride</string>
+    <string name="search" translatable="true">Search</string>
+    <string name="sense_motive" translatable="true">Sense Motive</string>
+    <string name="slight_of_hand" translatable="true">Slight of Hand</string>
+    <string name="speak_language" translatable="true">Speak Language</string>
+    <string name="spellcraft" translatable="true">Spellcraft</string>
+    <string name="spot" translatable="true">Spot</string>
+    <string name="survival" translatable="true">Survival</string>
+    <string name="swim" translatable="true">Swim</string>
+    <string name="tumble" translatable="true">Tumble</string>
+    <string name="use_magic_device" translatable="true">Use Magic Device</string>
+    <string name="use_rope" translatable="true">Use Rope</string>
+
+    <!-- cleric domains -->
+    <string name="domain_air" translatable="true">Air</string>
+    <string name="domain_animal" translatable="true">Animal</string>
+    <string name="domain_chaos" translatable="true">Chaos</string>
+    <string name="domain_death" translatable="true">Death</string>
+    <string name="domain_destruction" translatable="true">Destruction</string>
+    <string name="domain_earth" translatable="true">Earth</string>
+    <string name="domain_evil" translatable="true">Evil</string>
+    <string name="domain_fire" translatable="true">Fire</string>
+    <string name="domain_good" translatable="true">Good</string>
+    <string name="domain_healing" translatable="true">Healing</string>
+    <string name="domain_knowledge" translatable="true">Knowledge</string>
+    <string name="domain_law" translatable="true">Law</string>
+    <string name="domain_luck" translatable="true">Luck</string>
+    <string name="domain_magic" translatable="true">Magic</string>
+    <string name="domain_plant" translatable="true">Plant</string>
+    <string name="domain_protection" translatable="true">Protection</string>
+    <string name="domain_strength" translatable="true">Strength</string>
+    <string name="domain_sun" translatable="true">Sun</string>
+    <string name="domain_travel" translatable="true">Travel</string>
+    <string name="domain_trickery" translatable="true">Trickery</string>
+    <string name="domain_war" translatable="true">War</string>
+    <string name="domain_water" translatable="true">Water</string>
+
 
 </resources>

@@ -23,10 +23,11 @@ public class CharacterProvider extends ContentProvider {
     public static final int INPROGRESS = 101;
     public static final int CHARACTER_CLASSES = 102;
     public static final int CHARACTER_SPELLS = 103;
-    public static final int CHARACTER_FEATS = 104;
-    public static final int CHARACTER_ITEMS = 105;
-    public static final int CHARACTER_ARMOR = 106;
-    public static final int CHARACTER_WEAPONS = 107;
+    public static final int CHARACTER_SKILLS = 104;
+    public static final int CHARACTER_FEATS = 105;
+    public static final int CHARACTER_ITEMS = 106;
+    public static final int CHARACTER_ARMOR = 107;
+    public static final int CHARACTER_WEAPONS = 108;
 
 
     @Override
@@ -53,6 +54,9 @@ public class CharacterProvider extends ContentProvider {
                 break;
             case CHARACTER_SPELLS:
                 tableName = CharacterContract.CharacterSpells.TABLE_NAME;
+                break;
+            case CHARACTER_SKILLS:
+                tableName = CharacterContract.CharacterSkills.TABLE_NAME;
                 break;
             case CHARACTER_FEATS:
                 tableName = CharacterContract.CharacterFeats.TABLE_NAME;
@@ -96,6 +100,8 @@ public class CharacterProvider extends ContentProvider {
                 return CharacterContract.CharacterClasses.CONTENT_TYPE;
             case CHARACTER_SPELLS:
                 return CharacterContract.CharacterSpells.CONTENT_TYPE;
+            case CHARACTER_SKILLS:
+                return CharacterContract.CharacterSkills.CONTENT_TYPE;
             case CHARACTER_FEATS:
                 return CharacterContract.CharacterFeats.CONTENT_TYPE;
             case CHARACTER_ITEMS:
@@ -144,6 +150,14 @@ public class CharacterProvider extends ContentProvider {
                 long _id = db.insert(CharacterContract.CharacterSpells.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = CharacterContract.CharacterSpells.buildCharacterUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case CHARACTER_SKILLS: {
+                long _id = db.insert(CharacterContract.CharacterSkills.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = CharacterContract.CharacterSkills.buildCharacterUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -208,6 +222,9 @@ public class CharacterProvider extends ContentProvider {
             case CHARACTER_SPELLS:
                 tableName = CharacterContract.CharacterSpells.TABLE_NAME;
                 break;
+            case CHARACTER_SKILLS:
+                tableName = CharacterContract.CharacterSkills.TABLE_NAME;
+                break;
             case CHARACTER_FEATS:
                 tableName = CharacterContract.CharacterFeats.TABLE_NAME;
                 break;
@@ -253,6 +270,9 @@ public class CharacterProvider extends ContentProvider {
             case CHARACTER_SPELLS:
                 tableName = CharacterContract.CharacterSpells.TABLE_NAME;
                 break;
+            case CHARACTER_SKILLS:
+                tableName = CharacterContract.CharacterSkills.TABLE_NAME;
+                break;
             case CHARACTER_FEATS:
                 tableName = CharacterContract.CharacterFeats.TABLE_NAME;
                 break;
@@ -292,6 +312,7 @@ public class CharacterProvider extends ContentProvider {
         matcher.addURI(authority, CharacterContract.PATH_CHARACTER_CLASS, CHARACTER_CLASSES);
         matcher.addURI(authority, CharacterContract.PATH_CHARACTER_SPELLS, CHARACTER_SPELLS);
         matcher.addURI(authority, CharacterContract.PATH_CHARACTER_FEATS, CHARACTER_FEATS);
+        matcher.addURI(authority, CharacterContract.PATH_CHARACTER_SKILLS, CHARACTER_SKILLS);
         matcher.addURI(authority, CharacterContract.PATH_CHARACTER_ITEMS, CHARACTER_ITEMS);
         matcher.addURI(authority, CharacterContract.PATH_CHARACTER_ARMOR, CHARACTER_ARMOR);
         matcher.addURI(authority, CharacterContract.PATH_CHARACTER_WEAPONS, CHARACTER_WEAPONS);
