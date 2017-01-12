@@ -32,10 +32,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(createActivity);
     }
 
-    public void launchSkills(View view) {
-        Intent createActivity = new Intent(this, SkillsActivity.class);
-        startActivity(createActivity);
-    }
+//    public void launchSkills(View view) {
+//        Intent createActivity = new Intent(this, SkillsActivity.class);
+//        startActivity(createActivity);
+//    }
 
     private void setupCharacterDb() {
         new CharacterDbHelper(this);

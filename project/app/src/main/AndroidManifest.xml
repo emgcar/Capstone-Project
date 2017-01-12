@@ -30,6 +30,9 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.MainActivity" />
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".play.DetailActivity">
             <meta-data
@@ -43,6 +46,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.MainActivity" />
+        </activity>
+        <activity
+            android:name=".play.battle.BattleActivity"
+            android:label="@string/title_activity_battle"
+            android:parentActivityName=".play.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
         </activity>
     </application>
 

@@ -26,8 +26,12 @@ public class RulesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         mDatabase = sqLiteDatabase;
         setupSkills();
+
         setupClericData();
         setupClericDomains();
+        setupFighterData();
+        setupRogueData();
+        setupWizardData();
     }
 
     public void setupSkills() {
@@ -89,7 +93,12 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         insertInSkillTable("40, 'Tumble', 'DEX', 0, 0, 0, 1, 0, 1, 0");
         insertInSkillTable("41, 'Use Magic Device', 'CHA', 0, 0, 0, 1, 0, 0, 0");
         insertInSkillTable("42, 'Use Rope', 'DEX', 1, 0, 0, 1, 0, 0, 0");
+    }
 
+    public void insertInSkillTable(String string) {
+        String SQL_CREATE_SKILL = "INSERT INTO " + RulesContract.SkillsEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_SKILL);
     }
 
     public void setupClericData() {
@@ -148,12 +157,6 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_CLERIC_DATA);
     }
 
-    public void insertInSkillTable(String string) {
-        String SQL_CREATE_SKILL = "INSERT INTO " + RulesContract.SkillsEntry.TABLE_NAME +
-                " VALUES (" + string + ")";
-        mDatabase.execSQL(SQL_CREATE_SKILL);
-    }
-
     public void setupClericDomains() {
         final String SQL_CREATE_CLERIC_DOMAIN_TABLE = "CREATE TABLE " +
                 RulesContract.ClericDomainsEntry.TABLE_NAME + " (" +
@@ -203,6 +206,152 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_CLERIC_DOMAIN);
     }
 
+    public void setupFighterData() {
+        final String SQL_CREATE_FIGHTER_TABLE = "CREATE TABLE " +
+                RulesContract.FighterEntry.TABLE_NAME + " (" +
+                RulesContract.FighterEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.FighterEntry.COLUMN_LEVEL + " STRING NOT NULL," +
+
+                RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
+                RulesContract.FighterEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
+                RulesContract.FighterEntry.COLUMN_BASE_ATTACK_3 + " INTEGER NOT NULL," +
+                RulesContract.FighterEntry.COLUMN_BASE_ATTACK_4 + " INTEGER NOT NULL," +
+                RulesContract.FighterEntry.COLUMN_FORT + " INTEGER NOT NULL," +
+                RulesContract.FighterEntry.COLUMN_REF + " INTEGER NOT NULL," +
+                RulesContract.FighterEntry.COLUMN_WILL + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_FIGHTER_TABLE);
+
+        //note that these are accumulative, so add row when add level
+        insertInFighterTable("1, '1',   1, 0, 0, 0, 2, 0, 0");
+        insertInFighterTable("2, '2',   1, 0, 0, 0, 1, 0, 0");
+        insertInFighterTable("3, '3',   1, 0, 0, 0, 0, 1, 1");
+        insertInFighterTable("4, '4',   1, 0, 0, 0, 1, 0, 0");
+        insertInFighterTable("5, '5',   1, 0, 0, 0, 0, 0, 0");
+        insertInFighterTable("6, '6',   1, 1, 0, 0, 1, 1, 1");
+        insertInFighterTable("7, '7',   1, 1, 0, 0, 0, 0, 0");
+        insertInFighterTable("8, '8',   1, 1, 0, 0, 1, 0, 0");
+        insertInFighterTable("9, '9',   1, 1, 0, 0, 0, 1, 1");
+        insertInFighterTable("10, '10', 1, 1, 0, 0, 1, 0, 0");
+        insertInFighterTable("11, '11', 1, 1, 1, 0, 0, 0, 0");
+        insertInFighterTable("12, '12', 1, 1, 1, 0, 1, 1, 1");
+        insertInFighterTable("13, '13', 1, 1, 1, 0, 0, 0, 0");
+        insertInFighterTable("14, '14', 1, 1, 1, 0, 1, 0, 0");
+        insertInFighterTable("15, '15', 1, 1, 1, 0, 0, 1, 1");
+        insertInFighterTable("16, '16', 1, 1, 1, 1, 1, 0, 0");
+        insertInFighterTable("17, '17', 1, 1, 1, 1, 0, 0, 0");
+        insertInFighterTable("18, '18', 1, 1, 1, 1, 1, 1, 1");
+        insertInFighterTable("19, '19', 1, 1, 1, 1, 0, 0, 0");
+        insertInFighterTable("20, '20', 1, 1, 1, 1, 1, 0, 0");
+
+    }
+
+    public void insertInFighterTable(String string) {
+        String SQL_CREATE_FIGHTER_DATA = "INSERT INTO " + RulesContract.FighterEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_FIGHTER_DATA);
+    }
+
+    public void setupRogueData() {
+        final String SQL_CREATE_ROGUE_TABLE = "CREATE TABLE " +
+                RulesContract.RogueEntry.TABLE_NAME + " (" +
+                RulesContract.RogueEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.RogueEntry.COLUMN_LEVEL + " STRING NOT NULL," +
+
+                RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
+                RulesContract.RogueEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
+                RulesContract.RogueEntry.COLUMN_BASE_ATTACK_3 + " INTEGER NOT NULL," +
+                RulesContract.RogueEntry.COLUMN_FORT + " INTEGER NOT NULL," +
+                RulesContract.RogueEntry.COLUMN_REF + " INTEGER NOT NULL," +
+                RulesContract.RogueEntry.COLUMN_WILL + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_ROGUE_TABLE);
+
+        //note that these are accumulative, so add row when add level
+        insertInRogueTable("1, '1',   0, 0, 0, 0, 2, 0");
+        insertInRogueTable("2, '2',   1, 0, 0, 0, 1, 0");
+        insertInRogueTable("3, '3',   1, 0, 0, 1, 0, 1");
+        insertInRogueTable("4, '4',   1, 0, 0, 0, 1, 0");
+        insertInRogueTable("5, '5',   0, 0, 0, 0, 0, 0");
+        insertInRogueTable("6, '6',   1, 0, 0, 1, 1, 1");
+        insertInRogueTable("7, '7',   1, 0, 0, 0, 0, 0");
+        insertInRogueTable("8, '8',   1, 1, 0, 0, 1, 0");
+        insertInRogueTable("9, '9',   0, 0, 0, 1, 0, 1");
+        insertInRogueTable("10, '10', 1, 1, 0, 0, 1, 0");
+        insertInRogueTable("11, '11', 1, 1, 0, 0, 0, 0");
+        insertInRogueTable("12, '12', 1, 1, 0, 1, 1, 1");
+        insertInRogueTable("13, '13', 0, 0, 0, 0, 0, 0");
+        insertInRogueTable("14, '14', 1, 1, 0, 0, 1, 0");
+        insertInRogueTable("15, '15', 1, 1, 1, 1, 0, 1");
+        insertInRogueTable("16, '16', 1, 1, 1, 0, 1, 0");
+        insertInRogueTable("17, '17', 0, 0, 0, 0, 0, 0");
+        insertInRogueTable("18, '18', 1, 1, 1, 1, 1, 1");
+        insertInRogueTable("19, '19', 1, 1, 1, 0, 0, 0");
+        insertInRogueTable("20, '20', 1, 1, 1, 0, 1, 0");
+
+    }
+
+    public void insertInRogueTable(String string) {
+        String SQL_CREATE_ROGUE_DATA = "INSERT INTO " + RulesContract.RogueEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_ROGUE_DATA);
+    }
+
+    public void setupWizardData() {
+        final String SQL_CREATE_WIZARD_TABLE = "CREATE TABLE " +
+                RulesContract.WizardEntry.TABLE_NAME + " (" +
+                RulesContract.WizardEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.WizardEntry.COLUMN_LEVEL + " STRING NOT NULL," +
+
+                RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_FORT + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_REF + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_WILL + " INTEGER NOT NULL," +
+
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L0 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L1 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L2 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L3 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L4 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L5 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L6 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L7 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L8 + " INTEGER NOT NULL," +
+                RulesContract.WizardEntry.COLUMN_SPELLS_PER_DAY_L9 + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_WIZARD_TABLE);
+
+        //note that these are accumulative, so add row when add level
+        insertInWizardTable("1, '1',   0, 0, 0, 0, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("2, '2',   1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("3, '3',   0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("4, '4',   1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("5, '5',   0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("6, '6',   1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("7, '7',   0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0");
+        insertInWizardTable("8, '8',   1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0");
+        insertInWizardTable("9, '9',   0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0");
+        insertInWizardTable("10, '10', 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0");
+        insertInWizardTable("11, '11', 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0");
+        insertInWizardTable("12, '12', 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0");
+        insertInWizardTable("13, '13', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0");
+        insertInWizardTable("14, '14', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0");
+        insertInWizardTable("15, '15', 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0");
+        insertInWizardTable("16, '16', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0");
+        insertInWizardTable("17, '17', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1");
+        insertInWizardTable("18, '18', 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
+        insertInWizardTable("19, '19', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1");
+        insertInWizardTable("20, '20', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
+
+    }
+
+    public void insertInWizardTable(String string) {
+        String SQL_CREATE_CLERIC_DATA = "INSERT INTO " + RulesContract.ClericEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_CLERIC_DATA);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -212,7 +361,11 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.SkillsEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.ClericEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.ClericDomainsEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.FighterEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.RogueEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.WizardEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

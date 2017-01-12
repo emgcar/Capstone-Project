@@ -19,6 +19,9 @@ public class RulesProvider extends ContentProvider {
     public static final int SKILLS = 100;
     public static final int CLERIC = 101;
     public static final int CLERIC_DOMAINS = 102;
+    public static final int FIGHTER = 103;
+    public static final int ROGUE = 104;
+    public static final int WIZARD = 105;
 
 
     @Override
@@ -42,6 +45,15 @@ public class RulesProvider extends ContentProvider {
                 break;
             case CLERIC_DOMAINS:
                 tableName = RulesContract.ClericDomainsEntry.TABLE_NAME;
+                break;
+            case FIGHTER:
+                tableName = RulesContract.FighterEntry.TABLE_NAME;
+                break;
+            case ROGUE:
+                tableName = RulesContract.RogueEntry.TABLE_NAME;
+                break;
+            case WIZARD:
+                tableName = RulesContract.WizardEntry.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -71,6 +83,12 @@ public class RulesProvider extends ContentProvider {
                 return RulesContract.ClericEntry.CONTENT_TYPE;
             case CLERIC_DOMAINS:
                 return RulesContract.ClericDomainsEntry.CONTENT_TYPE;
+            case FIGHTER:
+                return RulesContract.FighterEntry.CONTENT_TYPE;
+            case ROGUE:
+                return RulesContract.RogueEntry.CONTENT_TYPE;
+            case WIZARD:
+                return RulesContract.WizardEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -106,6 +124,9 @@ public class RulesProvider extends ContentProvider {
         matcher.addURI(authority, RulesContract.PATH_SKILLS, SKILLS);
         matcher.addURI(authority, RulesContract.PATH_CLERIC, CLERIC);
         matcher.addURI(authority, RulesContract.PATH_CLERIC_DOMAINS, CLERIC_DOMAINS);
+        matcher.addURI(authority, RulesContract.PATH_FIGHTER, FIGHTER);
+        matcher.addURI(authority, RulesContract.PATH_ROGUE, ROGUE);
+        matcher.addURI(authority, RulesContract.PATH_WIZARD, WIZARD);
 
         return matcher;
     }

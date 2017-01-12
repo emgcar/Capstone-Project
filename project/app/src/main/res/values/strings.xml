@@ -143,6 +143,7 @@
     <string name="domain_trickery" translatable="true">Trickery</string>
     <string name="domain_war" translatable="true">War</string>
     <string name="domain_water" translatable="true">Water</string>
+    <string name="title_activity_battle">BattleActivity</string>
 
 
 </resources>

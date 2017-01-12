@@ -21,29 +21,17 @@ import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.create.CreateActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.CharacterUtil;
 import com.brave_bunny.dndhelper.play.DetailActivity;
+import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SelectActivityFragment extends Fragment {
 
-    private static final String[] CHARACTER_COLUMNS = {
-            // In this case the id needs to be fully qualified with a table name, since
-            // the content provider joins the location & weather tables in the background
-            // (both have an _id column)
-            // On the one hand, that's annoying.  On the other, you can search the weather table
-            // using the location set by the user, which is only in the Location table.
-            // So the convenience is worth it.
-            CharacterContract.CharacterEntry.TABLE_NAME + "." + CharacterContract.CharacterEntry._ID,
-            CharacterContract.CharacterEntry.COLUMN_NAME
-    };
-
-    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
-    // must change.
-    static final int COL_CHARACTER_ID = 0;
-    static final int COL_CHARACTER_NAME = 1;
-
+    private static final int TRUE = 1;
+    private static final int FALSE = 0;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -87,7 +75,11 @@ public class SelectActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         if (isFinished(adapter, position)) {
-                            selectActivity = new Intent(getContext(), DetailActivity.class);
+                            if (isInBattle(index)) {
+                                selectActivity = new Intent(getContext(), BattleActivity.class);
+                            } else {
+                                selectActivity = new Intent(getContext(), DetailActivity.class);
+                            }
                         } else {
                             selectActivity = new Intent(getContext(), CreateActivity.class);
                         }
@@ -107,5 +99,11 @@ public class SelectActivityFragment extends Fragment {
     private boolean isFinished(CharacterAdapter adapter, int position) {
         long numberOfFinishedCharacters = adapter.getNumberOfFinishedCharacters();
         return (position <= numberOfFinishedCharacters);
+    }
+
+    private boolean isInBattle(long rowIndex) {
+        CharacterUtil characterUtil = new CharacterUtil();
+        int colIndex = CharacterUtil.COL_CHARACTER_IN_BATTLE;
+        return (characterUtil.getCharacterValue(getContext(), rowIndex, colIndex) == TRUE);
     }
 }

@@ -11,15 +11,15 @@ import android.provider.BaseColumns;
 
 public class RulesContract {
 
-    public static final int FALSE = 0;
-    public static final int TRUE = 1;
-
     public static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper.3-5_rules";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_SKILLS = "skills";
     public static final String PATH_CLERIC = "cleric";
     public static final String PATH_CLERIC_DOMAINS = "cleric_domains";
+    public static final String PATH_FIGHTER = "fighter";
+    public static final String PATH_ROGUE = "rogue";
+    public static final String PATH_WIZARD = "wizard";
 
     public static final class SkillsEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -98,6 +98,82 @@ public class RulesContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CLERIC_DOMAINS;
 
         public static Uri buildDomainUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class FighterEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_FIGHTER).build();
+
+        public static final String TABLE_NAME = "fighter";
+
+        public static final String COLUMN_LEVEL = "level";
+        public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
+        public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
+        public static final String COLUMN_BASE_ATTACK_3 = "base_attack_third";
+        public static final String COLUMN_BASE_ATTACK_4 = "base_attack_fourth";
+        public static final String COLUMN_FORT = "fortitude_save";
+        public static final String COLUMN_REF = "reflex_save";
+        public static final String COLUMN_WILL = "will_save";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FIGHTER;
+
+        public static Uri buildFighterUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class RogueEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROGUE).build();
+
+        public static final String TABLE_NAME = "rogue";
+
+        public static final String COLUMN_LEVEL = "level";
+        public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
+        public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
+        public static final String COLUMN_BASE_ATTACK_3 = "base_attack_third";
+        public static final String COLUMN_FORT = "fortitude_save";
+        public static final String COLUMN_REF = "reflex_save";
+        public static final String COLUMN_WILL = "will_save";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ROGUE;
+
+        public static Uri buildRogueUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class WizardEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_WIZARD).build();
+
+        public static final String TABLE_NAME = "wizard";
+
+        public static final String COLUMN_LEVEL = "level";
+        public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
+        public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
+        public static final String COLUMN_FORT = "fortitude_save";
+        public static final String COLUMN_REF = "reflex_save";
+        public static final String COLUMN_WILL = "will_save";
+        public static final String COLUMN_SPELLS_PER_DAY_L0 = "spells_per_day_0";
+        public static final String COLUMN_SPELLS_PER_DAY_L1 = "spells_per_day_1";
+        public static final String COLUMN_SPELLS_PER_DAY_L2 = "spells_per_day_2";
+        public static final String COLUMN_SPELLS_PER_DAY_L3 = "spells_per_day_3";
+        public static final String COLUMN_SPELLS_PER_DAY_L4 = "spells_per_day_4";
+        public static final String COLUMN_SPELLS_PER_DAY_L5 = "spells_per_day_5";
+        public static final String COLUMN_SPELLS_PER_DAY_L6 = "spells_per_day_6";
+        public static final String COLUMN_SPELLS_PER_DAY_L7 = "spells_per_day_7";
+        public static final String COLUMN_SPELLS_PER_DAY_L8 = "spells_per_day_8";
+        public static final String COLUMN_SPELLS_PER_DAY_L9 = "spells_per_day_9";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WIZARD;
+
+        public static Uri buildWizardUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
