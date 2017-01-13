@@ -12,10 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
-import com.udacity.brave_bunny.dnd_3_5_library.TrialContract;
-import com.udacity.brave_bunny.dnd_3_5_library.Utils;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -44,7 +42,7 @@ public class SkillsActivityFragment extends Fragment {
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
                 TextView tvBody = (TextView) view.findViewById(R.id.skill_name);
-                String body = cursor.getString(cursor.getColumnIndexOrThrow(TrialContract.SkillsEntry.COLUMN_NAME));
+                String body = cursor.getString(cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry.COLUMN_NAME));
                 tvBody.setText(body);
             }
         };

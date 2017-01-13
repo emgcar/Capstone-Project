@@ -1,1 +1,1 @@
-include ':app', ':dnd_3_5_library'
+include ':app'

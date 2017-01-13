@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DnDHelper.iml" filepath="$PROJECT_DIR$/DnDHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dnd_3_5_library/dnd_3_5_library.iml" filepath="$PROJECT_DIR$/dnd_3_5_library/dnd_3_5_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/edition3-5_library/edition3-5_library.iml" filepath="$PROJECT_DIR$/edition3-5_library/edition3-5_library.iml" />
     </modules>
   </component>
