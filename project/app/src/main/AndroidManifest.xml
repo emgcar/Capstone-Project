@@ -30,6 +30,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.MainActivity" />
+
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -39,9 +40,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.select.SelectActivity" />
         </activity>
-        <activity android:name=".create.AbilityActivity" />
+        <activity android:name=".create.base.AbilityActivity" />
         <activity
-            android:name=".create.SkillsActivity"
+            android:name=".create.skills_feats.SkillsActivity"
             android:label="Skiills">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -55,6 +56,23 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".create.classes.DeityActivity"
+            android:label="@string/title_activity_deity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".create.classes.SpellActivity"
+            android:label="@string/title_activity_spell"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".create.classes.FamiliarActivity"
+            android:label="@string/title_activity_familiar"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".create.skills_feats.FeatActivity"
+            android:label="@string/title_activity_feat"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

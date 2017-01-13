@@ -13,11 +13,20 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.create.base.AbilityActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
+import com.brave_bunny.dndhelper.database.CharacterUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
  * Created by Jemma on 8/7/2016.
@@ -41,9 +50,9 @@ public class CreateActivity extends AppCompatActivity {
         if (extras != null) {
             index = extras.getLong(CreateActivityFragment.ROW_INDEX);
         } else {
-            ContentValues blankCharacterValues = Utility.setNewInProgressContentValues();
-            index = Utility.insertValuesInTable(this, CharacterContract.InProgressEntry.TABLE_NAME,
-                    blankCharacterValues);
+            ContentValues blankCharacterValues = InProgressUtil.setNewInProgressContentValues();
+            index = InProgressUtil.insertValuesIntoInPrgoressTable(this,
+                    InProgressContract.CharacterEntry.TABLE_NAME, blankCharacterValues);
         }
     }
 
@@ -57,12 +66,12 @@ public class CreateActivity extends AppCompatActivity {
 
 
     public void createCharacter(View view) {
-        int characterState = Utility.checkStateOfCharacterChoices(this, index);
+        int characterState = InProgressUtil.checkStateOfCharacterChoices(this, index);
 
-        if (characterState == Utility.STATE_COMPLETE) {
-            ContentValues values = Utility.getCharacterContentValues(this, index);
-            Utility.insertValuesInTable(this, CharacterContract.CharacterEntry.TABLE_NAME, values);
-            Utility.deleteValuesFromTable(this, CharacterContract.InProgressEntry.TABLE_NAME, index);
+        if (characterState == InProgressUtil.STATE_COMPLETE) {
+            ContentValues values = InProgressUtil.getInProgressRow(this, index);
+            CharacterUtil.insertValuesInCharacterTable(this, CharacterContract.CharacterEntry.TABLE_NAME, values);
+            InProgressUtil.deleteValuesFromInProgressTable(this, InProgressContract.CharacterEntry.TABLE_NAME, index);
 
             this.finish();
         }
@@ -72,7 +81,7 @@ public class CreateActivity extends AppCompatActivity {
 
         Intent abilityActivity = new Intent(this, AbilityActivity.class);
 
-        ContentValues values = Utility.getInProgressContentValues(this, index);
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
         abilityActivity.putExtra(AbilityActivity.inprogressValues, values);
         abilityActivity.putExtra(AbilityActivity.indexValue, index);
 
@@ -158,7 +167,7 @@ public class CreateActivity extends AppCompatActivity {
 
         private void create_base() {
             EditText nameText = (EditText) rootView.findViewById(R.id.character_name);
-            nameText.setText(getCharacterName());
+            nameText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_NAME));
             nameText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -175,21 +184,129 @@ public class CreateActivity extends AppCompatActivity {
                     inputName(editable);
                 }
             });
+
+            ToggleButton genderToggle = (ToggleButton) rootView.findViewById(R.id.gender_toggle);
+            int value = getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_GENDER);
+            if (value == CharacterContract.GENDER_FEMALE) {
+                genderToggle.performClick();
+            }
+            genderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    int gender;
+                    if (isChecked) {
+                        gender = CharacterContract.GENDER_FEMALE;
+                    } else {
+                        gender = CharacterContract.GENDER_MALE;
+                    }
+                    inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_GENDER, gender);
+                }
+            });
+
+            Spinner classSpinner = (Spinner) rootView.findViewById(R.id.class_spinner);
+            classSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID));
+            classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            Spinner raceSpinner = (Spinner) rootView.findViewById(R.id.race_spinner);
+            raceSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_RACE_ID));
+            raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_RACE_ID, i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
+            updateAbilityScores();
+
+            Spinner alignSpinner = (Spinner) rootView.findViewById(R.id.align_spinner);
+            alignSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_ALIGN));
+            alignSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_ALIGN, i);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
 
         private void inputName(Editable editable) {
             ContentValues values = new ContentValues();
 
             String characterName = editable.toString();
-            values.put(CharacterContract.InProgressEntry.COLUMN_NAME, characterName);
+            values.put(InProgressContract.CharacterEntry.COLUMN_NAME, characterName);
 
-            Utility.updateValuesInTable(getContext(), CharacterContract.InProgressEntry.TABLE_NAME,
-                    values, index);
+            InProgressUtil.updateInProgressTable(getContext(),
+                    InProgressContract.CharacterEntry.TABLE_NAME, values, index);
         }
 
-        public String getCharacterName() {
-            ContentValues values = Utility.getInProgressContentValues(getContext(), index);
-            return values.getAsString(CharacterContract.InProgressEntry.COLUMN_NAME);
+        private void inputSpinnerValue(String column, int classId) {
+
+            ContentValues values = new ContentValues();
+            values.put(column, classId);
+
+            InProgressUtil.updateInProgressTable(getContext(),
+                    InProgressContract.CharacterEntry.TABLE_NAME, values, index);
+        }
+
+        public String getCharacterString(String column) {
+            ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+            return values.getAsString(column);
+        }
+
+        public int getSpinnerValue(String column) {
+            ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+            if (values.get(column) == null)
+                return 0;
+            return values.getAsInteger(column);
+        }
+
+        public void updateAbilityScores() {
+            TextView strText = (TextView) rootView.findViewById(R.id.ability_strength);
+            strText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_STR));
+
+            TextView dexText = (TextView) rootView.findViewById(R.id.ability_dexterity);
+            dexText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_DEX));
+
+            TextView conText = (TextView) rootView.findViewById(R.id.ability_constitution);
+            conText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CON));
+
+            TextView intText = (TextView) rootView.findViewById(R.id.ability_intelligence);
+            intText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_INT));
+
+            TextView wisText = (TextView) rootView.findViewById(R.id.ability_wisdom);
+            wisText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_WIS));
+
+            TextView chaText = (TextView) rootView.findViewById(R.id.ability_charisma);
+            chaText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CHA));
+        }
+
+        public String getAbilityScoreText(String column) {
+            ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+            int score = values.getAsInteger(column);
+
+            if (score == -1) {
+                return "";
+            } else {
+                return Integer.toString(score);
+            }
         }
     }
 }

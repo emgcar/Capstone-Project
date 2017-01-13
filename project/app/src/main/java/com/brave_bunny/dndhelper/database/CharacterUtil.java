@@ -1,8 +1,11 @@
 package com.brave_bunny.dndhelper.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.brave_bunny.dndhelper.Utility;
 
 import static com.brave_bunny.dndhelper.Utility.getIntFromCursor;
 
@@ -15,7 +18,7 @@ public class CharacterUtil {
             CharacterContract.CharacterEntry.TABLE_NAME + "." + CharacterContract.CharacterEntry._ID,
             CharacterContract.CharacterEntry.COLUMN_NAME,
             CharacterContract.CharacterEntry.COLUMN_GENDER,
-            CharacterContract.CharacterEntry.COLUMN_RACE_ID,
+            CharacterContract.CharacterEntry.COLUMN_RACE,
             CharacterContract.CharacterEntry.COLUMN_AGE,
             CharacterContract.CharacterEntry.COLUMN_WEIGHT,
             CharacterContract.CharacterEntry.COLUMN_HEIGHT,
@@ -77,6 +80,27 @@ public class CharacterUtil {
     public static final int COL_CHARACTER_HP_CURR = 25;
     public static final int COL_CHARACTER_IN_BATTLE = 26;
 
+    public static ContentValues getCharacterRow(Context context, long rowIndex) {
+        ContentValues values;
+
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + CharacterContract.CharacterEntry.TABLE_NAME
+                    + " WHERE " + CharacterContract.CharacterEntry._ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            cursor.moveToFirst();
+
+            values = Utility.cursorRowToContentValues(cursor);
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return values;
+    }
 
     public int getCharacterValue(Context context, long rowIndex, int colIndex) {
         int value;
@@ -92,10 +116,83 @@ public class CharacterUtil {
             cursor.moveToFirst();
 
             value = getIntFromCursor(cursor, CHARACTER_COLUMNS[colIndex]);
+            cursor.close();
         } finally {
             db.close();
         }
 
         return value;
+    }
+
+
+    // need to make sure no name duplication somehow
+    public boolean isFinished(Context context, String name) {
+        boolean value;
+
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + CharacterContract.CharacterEntry.TABLE_NAME
+                    + " WHERE " + CharacterContract.CharacterEntry.COLUMN_NAME + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{name});
+
+            cursor.moveToFirst();
+
+            value = (cursor.getCount() != 0);
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return value;
+    }
+
+    public static void updateCharacterTable(Context context, String tableName,
+                                            ContentValues values, long index) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String id = CHARACTER_COLUMNS[COL_CHARACTER_ID];
+
+            String query = "SELECT * FROM " + tableName + " WHERE " + id + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(index)});
+            try {
+                cursor.moveToFirst();
+                db.update(tableName, values, id + " = ?",
+                        new String[]{Long.toString(index)});
+            } finally {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static long insertValuesInCharacterTable(Context context, String tableName, ContentValues values) {
+        long index;
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            index = db.insert(tableName, null, values);
+        } finally {
+            db.close();
+        }
+        return index;
+    }
+
+    public static void deleteValuesFromCharacterTable(Context context, String tableName, long index) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String id = CHARACTER_COLUMNS[COL_CHARACTER_ID];
+
+        try {
+            db.delete(tableName, id + " = ?", new String[]{Long.toString(index)});
+        } finally {
+            db.close();
+        }
     }
 }

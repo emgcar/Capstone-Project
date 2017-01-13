@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create;
+package com.brave_bunny.dndhelper.create.base;
 
 import android.content.ContentValues;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.CharacterContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 public class AbilityActivity extends AppCompatActivity {
 
@@ -52,24 +54,24 @@ public class AbilityActivity extends AppCompatActivity {
         ContentValues abilityValues = new ContentValues();
 
         setChoiceToContentValue(abilityValues, R.id.ability_strength,
-                CharacterContract.InProgressEntry.COLUMN_STR);
+                InProgressContract.CharacterEntry.COLUMN_STR);
 
         setChoiceToContentValue(abilityValues, R.id.ability_dexterity,
-                CharacterContract.InProgressEntry.COLUMN_DEX);
+                InProgressContract.CharacterEntry.COLUMN_DEX);
 
         setChoiceToContentValue(abilityValues, R.id.ability_constitution,
-                CharacterContract.InProgressEntry.COLUMN_CON);
+                InProgressContract.CharacterEntry.COLUMN_CON);
 
         setChoiceToContentValue(abilityValues, R.id.ability_intelligence,
-                CharacterContract.InProgressEntry.COLUMN_INT);
+                InProgressContract.CharacterEntry.COLUMN_INT);
 
         setChoiceToContentValue(abilityValues, R.id.ability_wisdom,
-                CharacterContract.InProgressEntry.COLUMN_WIS);
+                InProgressContract.CharacterEntry.COLUMN_WIS);
 
         setChoiceToContentValue(abilityValues, R.id.ability_charisma,
-                CharacterContract.InProgressEntry.COLUMN_CHA);
+                InProgressContract.CharacterEntry.COLUMN_CHA);
 
-        Utility.updateValuesInTable(this, CharacterContract.InProgressEntry.TABLE_NAME,
+        InProgressUtil.updateInProgressTable(this, InProgressContract.CharacterEntry.TABLE_NAME,
                 abilityValues, index);
 
         this.finish();

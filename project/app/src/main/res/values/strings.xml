@@ -20,9 +20,16 @@
 
     <!-- types of species the player can play as -->
     <string name="race" translatable="true">Race: </string>
+    <string name="default_race" translatable="true">Click to select race</string>
     <string name="human" translatable="true">Human</string>
     <string name="dwarf" translatable="true">Elf</string>
     <string name="elf" translatable="true">Dwarf</string>
+    <string-array name="race_array" translatable="false">
+        <item name="default_race" translatable="false">@string/default_race</item>
+        <item name="human" translatable="false">@string/human</item>
+        <item name="dwarf" translatable="false">@string/elf</item>
+        <item name="elf" translatable="false">@string/dwarf</item>
+    </string-array>
 
     <string name="religion" translatable="true">Religion: </string>
     <string name="religion1" translatable="true">religion1</string>
@@ -32,6 +39,7 @@
 
     <!-- character personality alignments -->
     <string name="alignment" translatable="true">Alignment: </string>
+    <string name="default_align" translatable="true">Click to select alignment</string>
     <string name="lawful_good" translatable="true">Lawful Good</string>
     <string name="lawful_neutral" translatable="true">Lawful Neutral</string>
     <string name="lawful_evil" translatable="true">Lawful Evil</string>
@@ -41,15 +49,37 @@
     <string name="chaotic_good" translatable="true">Chaotic Good</string>
     <string name="chaotic_neutral" translatable="true">Chaotic Neutral</string>
     <string name="chaotic_evil" translatable="true">Chaotic Evil</string>
+    <string-array name="align_array" translatable="false">
+        <item name="default_race" translatable="false">@string/default_align</item>
+        <item name="lawful_good" translatable="false">@string/lawful_good</item>
+        <item name="lawful_neutral" translatable="false">@string/lawful_neutral</item>
+        <item name="lawful_evil" translatable="false">@string/lawful_evil</item>
+        <item name="neutral_good" translatable="false">@string/neutral_good</item>
+        <item name="neutral" translatable="false">@string/neutral</item>
+        <item name="neutral_evil" translatable="false">@string/neutral_evil</item>
+        <item name="chaotic_good" translatable="false">@string/chaotic_good</item>
+        <item name="chaotic_neutral" translatable="false">@string/chaotic_neutral</item>
+        <item name="chaotic_evil" translatable="false">@string/chaotic_evil</item>
+    </string-array>
 
     <!-- career choice for character -->
     <string name="class_prompt" translatable="true">Class: </string>
+    <string name="default_class" translatable="true">Click to select class</string>
     <string name="cleric" translatable="true">Cleric</string>
     <string name="fighter" translatable="true">Fighter</string>
     <string name="rogue" translatable="true">Rogue</string>
     <string name="wizard" translatable="true">Wizard</string>
+    <string-array name="class_array" translatable="false">
+        <item name="default_class" translatable="false">@string/default_class</item>
+        <item name="cleric" translatable="false">@string/cleric</item>
+        <item name="fighter" translatable="false">@string/fighter</item>
+        <item name="rogue" translatable="false">@string/rogue</item>
+        <item name="wizard" translatable="false">@string/wizard</item>
+    </string-array>
 
     <!-- base ability scores -->
+    <string name="ability_scores" translatable="true">Ability Scores: </string>
+    <string name="ability_scores_prompt" translatable="true">Choose Ability Scores</string>
     <string name="strength" translatable="true">Strength: </string>
     <string name="dexterity" translatable="true">Dexterity: </string>
     <string name="constitution" translatable="true">Constitution: </string>
@@ -144,6 +174,11 @@
     <string name="domain_war" translatable="true">War</string>
     <string name="domain_water" translatable="true">Water</string>
     <string name="title_activity_battle">BattleActivity</string>
+    <string name="title_activity_deity">DeityActivity</string>
+    <string name="title_activity_spell">SpellActivity</string>
+    <string name="title_activity_familiar">FamiliarActivity</string>
+    <string name="title_activity_feat">FeatActivity</string>
+
 
 
 </resources>

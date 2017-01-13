@@ -103,7 +103,7 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     int nameIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_NAME);
                     int genderIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_GENDER);
-                    int raceIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_RACE_ID);
+                    int raceIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_RACE);
                     int ageIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_AGE);
                     int weightIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_WEIGHT);
                     int heightIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_HEIGHT);

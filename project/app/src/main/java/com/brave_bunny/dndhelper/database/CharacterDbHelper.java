@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.brave_bunny.dndhelper.database.CharacterContract;
-
 /**
  * Created by Jemma on 8/7/2016.
  */
@@ -21,13 +19,26 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        createCharacterStatTable(sqLiteDatabase);
+        createCharacterClassTable(sqLiteDatabase);
+        createCharacterSpellsTable(sqLiteDatabase);
+        createCharacterSkillsTable(sqLiteDatabase);
+        createCharacterFeatsTable(sqLiteDatabase);
+        createCharacterItemsTable(sqLiteDatabase);
+        createCharacterArmorTable(sqLiteDatabase);
+        createCharacterWeaponsTable(sqLiteDatabase);
+
+        createDummyData(sqLiteDatabase);
+    }
+
+    private void createCharacterStatTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterEntry.TABLE_NAME + " (" +
                 CharacterContract.CharacterEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 CharacterContract.CharacterEntry.COLUMN_NAME + " TEXT UNIQUE NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_GENDER + " INTEGER NOT NULL," +
-                CharacterContract.CharacterEntry.COLUMN_RACE_ID + " INTEGER NOT NULL," +
+                CharacterContract.CharacterEntry.COLUMN_RACE + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_AGE + " INTEGER," +
                 CharacterContract.CharacterEntry.COLUMN_WEIGHT + " REAL," +
                 CharacterContract.CharacterEntry.COLUMN_HEIGHT + " REAL," +
@@ -57,46 +68,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.COLUMN_IN_BATTLE + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_TABLE);
+    }
 
-        createDummyData(sqLiteDatabase);
-
-        final String SQL_CREATE_INPROGRESS_TABLE = "CREATE TABLE " +
-                CharacterContract.InProgressEntry.TABLE_NAME + " (" +
-                CharacterContract.InProgressEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-
-                CharacterContract.InProgressEntry.COLUMN_NAME + " TEXT," +
-                CharacterContract.InProgressEntry.COLUMN_GENDER + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_RACE_ID + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_CLASS_ID + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_AGE + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_WEIGHT + " REAL," +
-                CharacterContract.InProgressEntry.COLUMN_HEIGHT + " REAL," +
-                CharacterContract.InProgressEntry.COLUMN_RELIGION_ID + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_ALIGN + " INTEGER," +
-
-                CharacterContract.InProgressEntry.COLUMN_STR + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_DEX + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_CON + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_INT + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_WIS + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_CHA + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_ABILITY_1 + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_ABILITY_2 + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_ABILITY_3 + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_ABILITY_4 + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_ABILITY_5 + " INTEGER NOT NULL," +
-                CharacterContract.InProgressEntry.COLUMN_ABILITY_6 + " INTEGER NOT NULL," +
-
-                CharacterContract.InProgressEntry.COLUMN_MONEY + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_LIGHT_LOAD + " REAL," +
-                CharacterContract.InProgressEntry.COLUMN_MED_LOAD + " REAL," +
-                CharacterContract.InProgressEntry.COLUMN_HEAVY_LOAD + " REAL," +
-
-                CharacterContract.InProgressEntry.COLUMN_AC + " INTEGER," +
-                CharacterContract.InProgressEntry.COLUMN_HP + " INTEGER )";
-
-        sqLiteDatabase.execSQL(SQL_CREATE_INPROGRESS_TABLE);
-
+    private void createCharacterClassTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_CLASSES_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterClasses.TABLE_NAME + " (" +
                 CharacterContract.CharacterClasses._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -106,7 +80,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterClasses.COLUMN_LEVEL + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_CLASSES_TABLE);
+    }
 
+    private void createCharacterSpellsTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_SPELLS_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterSpells.TABLE_NAME + " (" +
                 CharacterContract.CharacterSpells._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -115,7 +91,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterSpells.COLUMN_SPELL_ID + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_SPELLS_TABLE);
+    }
 
+    private void createCharacterSkillsTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_SKILLS_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterSkills.TABLE_NAME + " (" +
                 CharacterContract.CharacterSkills._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -129,7 +107,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterSkills.COLUMN_SKILL_MISC_MOD + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_SKILLS_TABLE);
+    }
 
+    private void createCharacterFeatsTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_FEATS_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterFeats.TABLE_NAME + " (" +
                 CharacterContract.CharacterFeats._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -138,7 +118,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterFeats.COLUMN_FEAT_ID + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_FEATS_TABLE);
+    }
 
+    private void createCharacterItemsTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_ITEMS_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterItems.TABLE_NAME + " (" +
                 CharacterContract.CharacterItems._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -147,7 +129,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterItems.COLUMN_ITEM_ID + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_ITEMS_TABLE);
+    }
 
+    private void createCharacterArmorTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_ARMOR_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterArmor.TABLE_NAME + " (" +
                 CharacterContract.CharacterArmor._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -157,7 +141,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterArmor.COLUMN_EQUIPPED + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_ARMOR_TABLE);
+    }
 
+    private void createCharacterWeaponsTable(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_CHARACTER_WEAPONS_TABLE = "CREATE TABLE " +
                 CharacterContract.CharacterWeapons.TABLE_NAME + " (" +
                 CharacterContract.CharacterWeapons._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -170,44 +156,10 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
     }
 
     private void createDummyData(SQLiteDatabase sqLiteDatabase) {
-        //createAlice(sqLiteDatabase);
-
-        String SQL_CREATE_CHARACTER = "INSERT INTO " +
-                CharacterContract.CharacterEntry.TABLE_NAME +
-                " VALUES (" +
-                    "2, 'Bob', 0, 2, 145, 121, 6.2, 0, 0," + // id, name, gender, raceID, age, weight, height, religionID, alignment
-                    " 10, 11, 12, 13, 14, 15," + //ability scores x6
-                    " 0, 0, 2, 0," + //base attack, fort, ref, will
-                    " 134, 32, 56, 89," + //money, light load, med load, heavy load
-                    " 18, 6, 3, 1" + //ac, max hp, curr hp, in battle
-                ");";
-
-
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
-
-        SQL_CREATE_CHARACTER = "INSERT INTO " +
-                CharacterContract.CharacterEntry.TABLE_NAME +
-                " VALUES (" +
-                    "3, 'Charlie', 0, 1, 238, 532, 3.7, 3, 7," + // id, name, gender, raceID, age, weight, height, religionID, alignment
-                    " 12, 13, 14, 15, 16, 17," + //ability scores x6
-                    " 0, 0, 2, 0," + //base attack, fort, ref, will
-                    "134, 32, 56, 89," + //money, light load, med load, heavy load
-                    "18, 6, 3, 0" + //ac, max hp, curr hp, in battle
-                ");";
-
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
-
-        SQL_CREATE_CHARACTER = "INSERT INTO " +
-                CharacterContract.CharacterEntry.TABLE_NAME +
-                " VALUES (" +
-                    "4, 'David', 0, 0, 24, 172, 5.11, 2, 5," + // id, name, gender, raceID, age, weight, height, religionID, alignment
-                    " 13, 14, 15, 16, 17, 18," + //ability scores x6
-                    " 0, 0, 2, 0," + //base attack, fort, ref, will
-                    "134, 32, 56, 89," + //money, light load, med load, heavy load
-                    "18, 6, 3, 1" + //ac, max hp, curr hp, in battle
-                ");";
-
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+        createAlice(sqLiteDatabase);
+        createBob(sqLiteDatabase);
+        createCharlie(sqLiteDatabase);
+        createDavid(sqLiteDatabase);
     }
 
     private void createAlice(SQLiteDatabase sqLiteDatabase) {
@@ -218,38 +170,53 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 " 10, 11, 12, 13, 14, 15," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 " 134, 32, 56, 89," + //money, light load, med load, heavy load
-                " 18, 6, 3" + //ac, max hp, curr hp, in battle
+                " 18, 6, 3, 0" + //ac, max hp, curr hp, in battle
+                ");";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+    }
+
+    private void createBob(SQLiteDatabase sqLiteDatabase) {
+        String SQL_CREATE_CHARACTER = "INSERT INTO " +
+                CharacterContract.CharacterEntry.TABLE_NAME +
+                " VALUES (" +
+                "2, 'Bob', 0, 2, 145, 121, 6.2, 0, 0," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 10, 11, 12, 13, 14, 15," + //ability scores x6
+                " 0, 0, 2, 0," + //base attack, fort, ref, will
+                " 134, 32, 56, 89," + //money, light load, med load, heavy load
+                " 18, 6, 3, 1" + //ac, max hp, curr hp, in battle
+                ");";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+    }
+
+    private void createCharlie(SQLiteDatabase sqLiteDatabase) {
+        String SQL_CREATE_CHARACTER = "INSERT INTO " +
+                CharacterContract.CharacterEntry.TABLE_NAME +
+                " VALUES (" +
+                "3, 'Charlie', 0, 1, 238, 532, 3.7, 3, 7," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 12, 13, 14, 15, 16, 17," + //ability scores x6
+                " 0, 0, 2, 0," + //base attack, fort, ref, will
+                "134, 32, 56, 89," + //money, light load, med load, heavy load
+                "18, 6, 3, 0" + //ac, max hp, curr hp, in battle
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
 
-        String SQL_CREATE_CHARACTER_SKILLS = "INSERT INTO " +
-                CharacterContract.CharacterSkills.TABLE_NAME +
-                " VALUES (" +
-                "0, 6, 5, 0, 4, 1, 0" + // charID, skillID, tot, class, ranks, abMOD, miscMOD
-                ");";
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_SKILLS);
+    }
 
-        SQL_CREATE_CHARACTER_SKILLS = "INSERT INTO " +
-                CharacterContract.CharacterSkills.TABLE_NAME +
+    private void createDavid(SQLiteDatabase sqLiteDatabase) {
+        String SQL_CREATE_CHARACTER = "INSERT INTO " +
+                CharacterContract.CharacterEntry.TABLE_NAME +
                 " VALUES (" +
-                "0, 23, 12, 1, 12, 11, 0" + // charID, skillID, tot, class, ranks, abMOD, miscMOD
+                "4, 'David', 0, 0, 24, 172, 5.11, 2, 5," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 13, 14, 15, 16, 17, 18," + //ability scores x6
+                " 0, 0, 2, 0," + //base attack, fort, ref, will
+                "134, 32, 56, 89," + //money, light load, med load, heavy load
+                "18, 6, 3, 1" + //ac, max hp, curr hp, in battle
                 ");";
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_SKILLS);
 
-        SQL_CREATE_CHARACTER_SKILLS = "INSERT INTO " +
-                CharacterContract.CharacterSkills.TABLE_NAME +
-                " VALUES (" +
-                "0, 36, 7, 1, 34, 2, 0" + // charID, skillID, tot, class, ranks, abMOD, miscMOD
-                ");";
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_SKILLS);
-
-        SQL_CREATE_CHARACTER_SKILLS = "INSERT INTO " +
-                CharacterContract.CharacterSkills.TABLE_NAME +
-                " VALUES (" +
-                "0, 40, 10, 1, 15, 25, 0" + // charID, skillID, tot, class, ranks, abMOD, miscMOD
-                ");";
-        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_SKILLS);
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
 
     }
 
@@ -262,7 +229,6 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
         // If you want to update the schema without wiping data, commenting out the next 2 lines
         // should be your top priority before modifying this method.
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CharacterContract.CharacterEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CharacterContract.InProgressEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CharacterContract.CharacterClasses.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CharacterContract.CharacterSpells.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + CharacterContract.CharacterFeats.TABLE_NAME);

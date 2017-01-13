@@ -14,6 +14,7 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.CharacterUtil;
 
 /**
  * Created by Jemma on 1/9/2017.
@@ -23,18 +24,18 @@ public class CharacterAdapter extends CursorAdapter {
 
     public final int NUMBER_VIEWS = 2;
 
-    public final int VIEW_TYPE_CHARACTER = 0;
-    public final int VIEW_TYPE_INPROGRESS = 1;
-
-    private long numberOfFinishedCharacters;
+    public final static int VIEW_TYPE_CHARACTER = 0;
+    public final static int VIEW_TYPE_INPROGRESS = 1;
 
     private Context mContext;
+    private Cursor mCursor;
+    private int mViewType;
 
-    public CharacterAdapter(Context context, Cursor c, int flags) {
+    public CharacterAdapter(Context context, Cursor c, int viewType, int flags) {
         super(context, c, flags);
         mContext = context;
-
-        findNumberOfFinishedCharacters();
+        mCursor = c;
+        mViewType = viewType;
     }
 
     @Override
@@ -58,7 +59,7 @@ public class CharacterAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
 
-        String name = cursor.getString(Utility.COL_CHARACTER_NAME);
+        String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
         viewHolder.nameView.setText(name);
     }
 
@@ -70,29 +71,7 @@ public class CharacterAdapter extends CursorAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        long numberOfCharacters = getNumberOfFinishedCharacters();
-
-        if (position <= numberOfCharacters) {
-            return VIEW_TYPE_CHARACTER;
-        } else {
-            return VIEW_TYPE_INPROGRESS;
-        }
-    }
-
-    private void findNumberOfFinishedCharacters() {
-        CharacterDbHelper dbHelper = new CharacterDbHelper(mContext);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            numberOfFinishedCharacters = DatabaseUtils.queryNumEntries(
-                    db, CharacterContract.CharacterEntry.TABLE_NAME);
-        } finally {
-            db.close();
-        }
-    }
-
-    public long getNumberOfFinishedCharacters() {
-        return numberOfFinishedCharacters;
+        return mViewType;
     }
 
     /**

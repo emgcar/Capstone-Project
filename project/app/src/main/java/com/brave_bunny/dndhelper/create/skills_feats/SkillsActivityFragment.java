@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create;
+package com.brave_bunny.dndhelper.create.skills_feats;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.udacity.brave_bunny.dnd_3_5_library.TrialContract;
 import com.udacity.brave_bunny.dnd_3_5_library.Utils;
 
@@ -31,7 +32,7 @@ public class SkillsActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_skills, container, false);
 
-        mCursor = Utility.getAllSkills(getContext());
+        mCursor = RulesUtils.getAllSkills(getContext());
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
 
         CursorAdapter adapter = new CursorAdapter(getContext(), mCursor) {

@@ -4,7 +4,7 @@
     android:name="com.brave_bunny.dndhelper.SelectActivityFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".create.SkillsActivity"
+    tools:context=".create.skills_feats.SkillsActivity"
     tools:layout="@android:layout/list_content">
 
 </FrameLayout>

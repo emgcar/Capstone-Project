@@ -1,11 +1,10 @@
-package com.brave_bunny.dndhelper.create;
+package com.brave_bunny.dndhelper.create.base;
 
 import android.content.ClipData;
 import android.content.ContentValues;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.os.UserManagerCompat;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.LayoutInflater;
@@ -17,6 +16,9 @@ import android.widget.TextView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.CharacterContract;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 
 public class AbilityFragment extends Fragment {
@@ -69,19 +71,19 @@ public class AbilityFragment extends Fragment {
     }
 
     private void setGlobalVars(ContentValues values) {
-        first = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_ABILITY_1);
-        second = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_ABILITY_2);
-        third = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_ABILITY_3);
-        fourth = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_ABILITY_4);
-        fifth = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_ABILITY_5);
-        sixth = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_ABILITY_6);
+        first = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ABILITY_1);
+        second = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ABILITY_2);
+        third = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ABILITY_3);
+        fourth = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ABILITY_4);
+        fifth = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ABILITY_5);
+        sixth = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ABILITY_6);
 
-        strength = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_STR);
-        dexterity = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_DEX);
-        constitution = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_CON);
-        intelligence = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_INT);
-        wisdom = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_WIS);
-        charisma = values.getAsInteger(CharacterContract.InProgressEntry.COLUMN_CHA);
+        strength = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_STR);
+        dexterity = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_DEX);
+        constitution = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CON);
+        intelligence = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_INT);
+        wisdom = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_WIS);
+        charisma = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CHA);
     }
 
     private void setConnections(View view) {
@@ -152,42 +154,42 @@ public class AbilityFragment extends Fragment {
     private void setPreviousState(View rootView) {
         TextView view;
 
-        if (Utility.isIntegerSet(strConnect)) {
+        if (InProgressUtil.isIntegerSet(strConnect)) {
             view = (TextView) rootView.findViewById(R.id.ability_strength);
             view.setText(Integer.toString(strength));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(strConnect);
         }
 
-        if (Utility.isIntegerSet(dexConnect)) {
+        if (InProgressUtil.isIntegerSet(dexConnect)) {
             view = (TextView) rootView.findViewById(R.id.ability_dexterity);
             view.setText(Integer.toString(dexterity));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(dexConnect);
         }
 
-        if (Utility.isIntegerSet(conConnect)) {
+        if (InProgressUtil.isIntegerSet(conConnect)) {
             view = (TextView) rootView.findViewById(R.id.ability_constitution);
             view.setText(Integer.toString(constitution));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(conConnect);
         }
 
-        if (Utility.isIntegerSet(intConnect)) {
+        if (InProgressUtil.isIntegerSet(intConnect)) {
             view = (TextView) rootView.findViewById(R.id.ability_intelligence);
             view.setText(Integer.toString(intelligence));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(intConnect);
         }
 
-        if (Utility.isIntegerSet(wisConnect)) {
+        if (InProgressUtil.isIntegerSet(wisConnect)) {
             view = (TextView) rootView.findViewById(R.id.ability_wisdom);
             view.setText(Integer.toString(wisdom));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(wisConnect);
         }
 
-        if (Utility.isIntegerSet(chaConnect)) {
+        if (InProgressUtil.isIntegerSet(chaConnect)) {
             view = (TextView) rootView.findViewById(R.id.ability_charisma);
             view.setText(Integer.toString(charisma));
             view.setTypeface(Typeface.DEFAULT_BOLD);

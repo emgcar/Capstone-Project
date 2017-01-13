@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.brave_bunny.dndhelper.create.CreateActivity;
-import com.brave_bunny.dndhelper.create.SkillsActivity;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.select.SelectActivity;
-import com.udacity.brave_bunny.dnd_3_5_library.TrialDbHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
 
         setupCharacterDb();
+        setupInProgressDb();
         setup35Library();
     }
 
@@ -32,16 +33,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(createActivity);
     }
 
-//    public void launchSkills(View view) {
-//        Intent createActivity = new Intent(this, SkillsActivity.class);
-//        startActivity(createActivity);
-//    }
-
     private void setupCharacterDb() {
         new CharacterDbHelper(this);
     }
 
+    private void setupInProgressDb() {
+        new InProgressDbHelper(this);
+    }
+
     private void setup35Library() {
-        new TrialDbHelper(this);
+        new RulesDbHelper(this);
     }
 }

@@ -22,6 +22,9 @@ import com.brave_bunny.dndhelper.create.CreateActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 import com.brave_bunny.dndhelper.play.DetailActivity;
 import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 
@@ -45,21 +48,18 @@ public class SelectActivityFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_select, container, false);
 
         CharacterDbHelper dbHelper = new CharacterDbHelper(getContext());
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        SQLiteDatabase characterDb = dbHelper.getReadableDatabase();
+
+        InProgressDbHelper inprogressHelper = new InProgressDbHelper(getContext());
+        SQLiteDatabase inprogressDb = inprogressHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM (SELECT " + CharacterContract.CharacterEntry._ID
-                    + ", " + CharacterContract.CharacterEntry.COLUMN_NAME + ", 1 AS FILTER FROM "
-                    + CharacterContract.CharacterEntry.TABLE_NAME
-                    + " UNION ALL SELECT " + CharacterContract.InProgressEntry._ID + ", "
-                    + CharacterContract.InProgressEntry.COLUMN_NAME + ", 2 AS FILTER FROM "
-                    + CharacterContract.InProgressEntry.TABLE_NAME
-                    + " ORDER BY " + CharacterContract.CharacterEntry.COLUMN_NAME + " ASC, "
-                    + CharacterContract.InProgressEntry.COLUMN_NAME + " ASC"
-                    + ") ORDER BY FILTER";
-            Cursor cursor = db.rawQuery(query, null);
-            final CharacterAdapter adapter = new CharacterAdapter(getContext(), cursor, 0);
+            String query = "SELECT * FROM " + CharacterContract.CharacterEntry.TABLE_NAME;
 
+            Cursor cursor = characterDb.rawQuery(query, null);
+
+            final CharacterAdapter adapter = new CharacterAdapter(getContext(), cursor,
+                    CharacterAdapter.VIEW_TYPE_CHARACTER, 0);
             ListView listView = (ListView) rootView.findViewById(R.id.listview_characters);
             listView.setAdapter(adapter);
 
@@ -70,18 +70,16 @@ public class SelectActivityFragment extends Fragment {
                     // CursorAdapter returns a cursor at the correct position for getItem(), or null
                     // if it cannot seek to that position.
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                    long index = cursor.getLong(Utility.COL_CHARACTER_ID);
+                    long index = cursor.getLong(CharacterUtil.COL_CHARACTER_ID);
+                    String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
                     Intent selectActivity;
 
                     if (cursor != null) {
-                        if (isFinished(adapter, position)) {
-                            if (isInBattle(index)) {
-                                selectActivity = new Intent(getContext(), BattleActivity.class);
-                            } else {
-                                selectActivity = new Intent(getContext(), DetailActivity.class);
-                            }
+                        // need to find better identifier
+                        if (isInBattle(index)) {
+                            selectActivity = new Intent(getContext(), BattleActivity.class);
                         } else {
-                            selectActivity = new Intent(getContext(), CreateActivity.class);
+                            selectActivity = new Intent(getContext(), DetailActivity.class);
                         }
                         selectActivity.putExtra(CreateActivity.CreateActivityFragment.ROW_INDEX, index);
                         startActivity(selectActivity);
@@ -89,16 +87,45 @@ public class SelectActivityFragment extends Fragment {
                 }
             });
 
+            String inProgressQuery = "SELECT " + InProgressContract.CharacterEntry.COLUMN_NAME +
+                    " FROM " + InProgressContract.CharacterEntry.TABLE_NAME;
+
+            Cursor inProgressCursor = inprogressDb.rawQuery(inProgressQuery, null);
+
+            final CharacterAdapter inProgress = new CharacterAdapter(getContext(), inProgressCursor,
+                    CharacterAdapter.VIEW_TYPE_INPROGRESS, 0);
+            listView = (ListView) rootView.findViewById(R.id.listview_inprogress);
+            listView.setAdapter(inProgress);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                    // if it cannot seek to that position.
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                    long index = cursor.getLong(InProgressUtil.COL_CHARACTER_ID);
+                    Intent selectActivity;
+
+                    if (cursor != null) {
+                        // need to find better identifier
+                        selectActivity = new Intent(getContext(), CreateActivity.class);
+                        selectActivity.putExtra(CreateActivity.CreateActivityFragment.ROW_INDEX, index);
+                        startActivity(selectActivity);
+                    }
+                }
+            });
         } finally {
-            db.close();
+            characterDb.close();
+            inprogressDb.close();
         }
 
         return rootView;
     }
 
-    private boolean isFinished(CharacterAdapter adapter, int position) {
-        long numberOfFinishedCharacters = adapter.getNumberOfFinishedCharacters();
-        return (position <= numberOfFinishedCharacters);
+    private boolean isFinished(String name) {
+        CharacterUtil characterUtil = new CharacterUtil();
+        return characterUtil.isFinished(getContext(), name);
     }
 
     private boolean isInBattle(long rowIndex) {
