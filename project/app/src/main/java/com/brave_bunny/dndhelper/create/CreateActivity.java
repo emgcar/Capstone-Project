@@ -132,6 +132,12 @@ public class CreateActivity extends AppCompatActivity {
         private View rootView;
 
         @Override
+        public void onResume() {
+            super.onResume();
+            updateAbilityScores();
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             Bundle args = getArguments();
@@ -280,22 +286,24 @@ public class CreateActivity extends AppCompatActivity {
 
         public void updateAbilityScores() {
             TextView strText = (TextView) rootView.findViewById(R.id.ability_strength);
-            strText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_STR));
+            if (strText != null) {
+                strText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_STR));
 
-            TextView dexText = (TextView) rootView.findViewById(R.id.ability_dexterity);
-            dexText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_DEX));
+                TextView dexText = (TextView) rootView.findViewById(R.id.ability_dexterity);
+                dexText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_DEX));
 
-            TextView conText = (TextView) rootView.findViewById(R.id.ability_constitution);
-            conText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CON));
+                TextView conText = (TextView) rootView.findViewById(R.id.ability_constitution);
+                conText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CON));
 
-            TextView intText = (TextView) rootView.findViewById(R.id.ability_intelligence);
-            intText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_INT));
+                TextView intText = (TextView) rootView.findViewById(R.id.ability_intelligence);
+                intText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_INT));
 
-            TextView wisText = (TextView) rootView.findViewById(R.id.ability_wisdom);
-            wisText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_WIS));
+                TextView wisText = (TextView) rootView.findViewById(R.id.ability_wisdom);
+                wisText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_WIS));
 
-            TextView chaText = (TextView) rootView.findViewById(R.id.ability_charisma);
-            chaText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CHA));
+                TextView chaText = (TextView) rootView.findViewById(R.id.ability_charisma);
+                chaText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CHA));
+            }
         }
 
         public String getAbilityScoreText(String column) {
