@@ -89,6 +89,7 @@
 
     <!-- saving throws -->
     <string name="base_attack" translatable="true">Base Attack Bonus: </string>
+    <string name="saving_throws" translatable="true">Saving Throws: </string>
     <string name="fort_save" translatable="true">Fortitude: </string>
     <string name="ref_save" translatable="true">Reflex: </string>
     <string name="will_save" translatable="true">Will: </string>
@@ -179,6 +180,9 @@
     <string name="title_activity_familiar">FamiliarActivity</string>
     <string name="title_activity_feat">FeatActivity</string>
 
-
+    <string name="hp_prompt" translatable="true">HP: </string>
+    <string name="select_deity" translatable="true">Select Diety</string>
+    <string name="select_familiar" translatable="true">Select Familiar</string>
+    <string name="select_spells" translatable="true">Select Spells</string>
 
 </resources>

@@ -11,5 +11,10 @@
     tools:context="com.brave_bunny.dndhelper.create.classes.DeityActivityFragment"
     tools:showIn="@layout/activity_deity">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Diety fragment"/>
+
 
 </RelativeLayout>

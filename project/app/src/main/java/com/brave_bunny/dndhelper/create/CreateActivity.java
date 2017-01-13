@@ -23,6 +23,7 @@ import android.widget.ToggleButton;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.create.base.AbilityActivity;
+import com.brave_bunny.dndhelper.create.classes.DeityActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
@@ -86,6 +87,24 @@ public class CreateActivity extends AppCompatActivity {
         abilityActivity.putExtra(AbilityActivity.indexValue, index);
 
         startActivity(abilityActivity);
+    }
+
+    public void launchDeitySelector(View view) {
+        Intent deityActivity = new Intent(this, DeityActivity.class);
+
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
+        deityActivity.putExtra(DeityActivity.inprogressValues, values);
+        deityActivity.putExtra(DeityActivity.indexValue, index);
+
+        startActivity(deityActivity);
+    }
+
+    public void launchSpellSelector(View view) {
+
+    }
+
+    public void launchFamiliarSelector(View view) {
+
     }
 
 

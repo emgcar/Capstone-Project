@@ -11,6 +11,9 @@ import com.brave_bunny.dndhelper.R;
 
 public class DeityActivity extends AppCompatActivity {
 
+    public static final String indexValue = "ROW_INDEX";
+    public static final String inprogressValues = "INPROGRESS_TABLE_VALUES";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
