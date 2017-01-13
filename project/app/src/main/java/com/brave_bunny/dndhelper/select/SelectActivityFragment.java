@@ -87,8 +87,7 @@ public class SelectActivityFragment extends Fragment {
                 }
             });
 
-            String inProgressQuery = "SELECT " + InProgressContract.CharacterEntry.COLUMN_NAME +
-                    " FROM " + InProgressContract.CharacterEntry.TABLE_NAME;
+            String inProgressQuery = "SELECT * FROM " + InProgressContract.CharacterEntry.TABLE_NAME;
 
             Cursor inProgressCursor = inprogressDb.rawQuery(inProgressQuery, null);
 
