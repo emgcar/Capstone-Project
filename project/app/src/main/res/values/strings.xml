@@ -184,5 +184,6 @@
     <string name="select_deity" translatable="true">Select Diety</string>
     <string name="select_familiar" translatable="true">Select Familiar</string>
     <string name="select_spells" translatable="true">Select Spells</string>
+    <string name="row_adapter" translatable="false">Row Adapter</string>
 
 </resources>

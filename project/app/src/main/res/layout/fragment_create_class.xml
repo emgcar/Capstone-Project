@@ -52,19 +52,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_deity"
-            android:onClick="launchDeitySelector"/>
+            android:onClick="launchDeitySelector"
+            android:id="@+id/select_deity"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_spells"
-            android:onClick="launchSpellSelector"/>
+            android:onClick="launchSpellSelector"
+            android:id="@+id/select_spells"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_familiar"
-            android:onClick="launchFamiliarSelector"/>
+            android:onClick="launchFamiliarSelector"
+            android:id="@+id/select_familiar"/>
 
         <LinearLayout
             android:layout_width="match_parent"

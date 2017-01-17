@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -21,11 +23,11 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.create.base.AbilityActivity;
 import com.brave_bunny.dndhelper.create.classes.DeityActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
@@ -35,6 +37,7 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 public class CreateActivity extends AppCompatActivity {
 
     long index;
+    public CreateCharacterPagerAdapter mPagerAdapter;
 
 
     @Override
@@ -58,13 +61,11 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     private void initializePagerAdapter() {
-        CreateCharacterPagerAdapter pagerAdapter =
-                new CreateCharacterPagerAdapter(getSupportFragmentManager(), index);
+        mPagerAdapter = new CreateCharacterPagerAdapter(getSupportFragmentManager(), index);
         ViewPager viewPager = (ViewPager) findViewById(R.id.pager_create);
-        viewPager.setAdapter(pagerAdapter);
+        viewPager.setAdapter(mPagerAdapter);
+        viewPager.setTag(R.string.row_adapter, mPagerAdapter);
     }
-
-
 
     public void createCharacter(View view) {
         int characterState = InProgressUtil.checkStateOfCharacterChoices(this, index);
@@ -113,6 +114,7 @@ public class CreateActivity extends AppCompatActivity {
 
         final private int numberOfCreateCharacterFragments = 7;
         private long index;
+        //boolean dataChanged = false;
 
         public CreateCharacterPagerAdapter(FragmentManager fm, long id) {
             super(fm);
@@ -133,6 +135,11 @@ public class CreateActivity extends AppCompatActivity {
         public int getCount() {
             return numberOfCreateCharacterFragments;
         }
+
+        @Override
+        public int getItemPosition(Object object){
+            return PagerAdapter.POSITION_NONE;
+        }
     }
 
     public static class CreateActivityFragment extends Fragment {
@@ -149,6 +156,7 @@ public class CreateActivity extends AppCompatActivity {
 
         private long index;
         private View rootView;
+        private ViewGroup mContainer;
 
         @Override
         public void onResume() {
@@ -159,6 +167,8 @@ public class CreateActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+            mContainer = container;
+
             Bundle args = getArguments();
             int pageNumber = args.getInt(PAGE_NUMBER);
             index = args.getLong(ROW_INDEX);
@@ -170,6 +180,7 @@ public class CreateActivity extends AppCompatActivity {
                     break;
                 case PAGE_CLASS:
                     rootView = inflater.inflate(R.layout.fragment_create_class, container, false);
+                    create_class();
                     break;
                 case PAGE_SKILL:
                     rootView = inflater.inflate(R.layout.fragment_create_skills, container, false);
@@ -233,6 +244,7 @@ public class CreateActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                     inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, i);
+                    updateClassPageDetails();
                 }
 
                 @Override
@@ -334,6 +346,48 @@ public class CreateActivity extends AppCompatActivity {
             } else {
                 return Integer.toString(score);
             }
+        }
+
+        public void create_class() {
+            int classSelection = getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+
+            Bundle args = getArguments();
+            int pageNumber = args.getInt(PAGE_NUMBER);
+            index = args.getLong(ROW_INDEX);
+
+            if (pageNumber == PAGE_CLASS) {
+                Button deityButton = (Button) rootView.findViewById(R.id.select_deity);
+                deityButton.setVisibility(View.INVISIBLE);
+
+                Button spellsButton = (Button) rootView.findViewById(R.id.select_spells);
+                spellsButton.setVisibility(View.INVISIBLE);
+
+                Button familiarButton = (Button) rootView.findViewById(R.id.select_familiar);
+                familiarButton.setVisibility(View.INVISIBLE);
+
+                switch (classSelection) {
+                    case RulesUtils.CLASS_CLERIC:
+                        deityButton.setVisibility(View.VISIBLE);
+                        break;
+                    case RulesUtils.CLASS_FIGHTER:
+                        break;
+                    case RulesUtils.CLASS_ROGUE:
+                        break;
+                    case RulesUtils.CLASS_WIZARD:
+                        spellsButton.setVisibility(View.VISIBLE);
+                        familiarButton.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                }
+
+            }
+        }
+
+        public void updateClassPageDetails() {
+           // ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager_create);
+            //CreateCharacterPagerAdapter pagerAdapter = (CreateCharacterPagerAdapter) rootView.getTag();
+            //pagerAdapter.notifyDataSetChanged();
+            
         }
     }
 }
