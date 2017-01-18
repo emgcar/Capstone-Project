@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.create.CreateActivity;
+import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
@@ -81,7 +82,7 @@ public class SelectActivityFragment extends Fragment {
                         } else {
                             selectActivity = new Intent(getContext(), DetailActivity.class);
                         }
-                        selectActivity.putExtra(CreateActivity.CreateActivityFragment.ROW_INDEX, index);
+                        selectActivity.putExtra(CreateActivityFragment.ROW_INDEX, index);
                         startActivity(selectActivity);
                     }
                 }
@@ -109,7 +110,7 @@ public class SelectActivityFragment extends Fragment {
                     if (cursor != null) {
                         // need to find better identifier
                         selectActivity = new Intent(getContext(), CreateActivity.class);
-                        selectActivity.putExtra(CreateActivity.CreateActivityFragment.ROW_INDEX, index);
+                        selectActivity.putExtra(CreateActivityFragment.ROW_INDEX, index);
                         startActivity(selectActivity);
                     }
                 }

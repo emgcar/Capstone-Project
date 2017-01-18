@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivity;
+import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
 
@@ -81,7 +82,7 @@ public class DetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             Bundle args = getArguments();
-            index = args.getLong(CreateActivity.CreateActivityFragment.ROW_INDEX);
+            index = args.getLong(CreateActivityFragment.ROW_INDEX);
 
             mRootView = inflater.inflate(R.layout.fragment_detail, container, false);
             mViewHolder = new ViewHolder(mRootView);
