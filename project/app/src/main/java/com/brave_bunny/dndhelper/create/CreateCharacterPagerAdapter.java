@@ -13,9 +13,8 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
 
     final private int numberOfCreateCharacterFragments = 7;
     private long index;
-    //boolean dataChanged = false;
 
-    private Fragment classFragment;
+    private CreateActivityFragment classFragment;
 
     public CreateCharacterPagerAdapter(FragmentManager fm, long id) {
         super(fm);
@@ -24,13 +23,13 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = new CreateActivityFragment();
+        CreateActivityFragment fragment = new CreateActivityFragment();
         Bundle args = new Bundle();
         args.putInt(CreateActivityFragment.PAGE_NUMBER, position + 1);
         args.putLong(CreateActivityFragment.ROW_INDEX, index);
         fragment.setArguments(args);
 
-        if (position == CreateActivityFragment.PAGE_CLASS) {
+        if ((position + 1) == CreateActivityFragment.PAGE_CLASS) {
             classFragment = fragment;
         }
 
@@ -42,7 +41,15 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
         return numberOfCreateCharacterFragments;
     }
 
-    public void updateClassPage(int position) {
-        classFragment.create_class();
+    public void updateClass(int position) {
+        if (classFragment != null) {
+            classFragment.create_class(position);
+        }
+    }
+
+    public void updateAlign(int position) {
+        if (classFragment != null) {
+            classFragment.update_align(position);
+        }
     }
 }

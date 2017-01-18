@@ -19,7 +19,8 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
  * Created by Jemma on 8/7/2016.
  */
 public class CreateActivity extends AppCompatActivity
-        implements CreateActivityFragment.OnClassSelectedListener {
+        implements CreateActivityFragment.OnClassSelectedListener,
+        CreateActivityFragment.OnAlignSelectedListener {
 
     long index;
     public CreateCharacterPagerAdapter mPagerAdapter;
@@ -53,8 +54,13 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void onClassSelected(int position) {
-        mPagerAdapter.updateClassPage(position);
-        mPagerAdapter.getItem(CreateActivityFragment.PAGE_CLASS).create_class();
+        mPagerAdapter.updateClass(position);
+        mPagerAdapter.notifyDataSetChanged();
+    }
+
+    public void onAlignSelected(int position) {
+        mPagerAdapter.updateAlign(position);
+        mPagerAdapter.notifyDataSetChanged();
     }
 
     public void createCharacter(View view) {

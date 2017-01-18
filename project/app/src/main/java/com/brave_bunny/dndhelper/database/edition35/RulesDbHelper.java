@@ -171,7 +171,7 @@ public class RulesDbHelper extends SQLiteOpenHelper {
                 RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL_EVIL + " INTEGER NOT NULL," +
                 RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_GOOD + " INTEGER NOT NULL," +
                 RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_NEUTRAL + " INTEGER NOT NULL," +
-                RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_EVIL + " INTEGER NOT NULL )";
+                RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_EVIL + " INTEGER NOT NULL )";
 
         mDatabase.execSQL(SQL_CREATE_CLERIC_DOMAIN_TABLE);
 
@@ -347,7 +347,7 @@ public class RulesDbHelper extends SQLiteOpenHelper {
     }
 
     public void insertInWizardTable(String string) {
-        String SQL_CREATE_CLERIC_DATA = "INSERT INTO " + RulesContract.ClericEntry.TABLE_NAME +
+        String SQL_CREATE_CLERIC_DATA = "INSERT INTO " + RulesContract.WizardEntry.TABLE_NAME +
                 " VALUES (" + string + ")";
         mDatabase.execSQL(SQL_CREATE_CLERIC_DATA);
     }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.ToggleButton;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.CharacterContract;
+import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
@@ -42,11 +44,17 @@ public class CreateActivityFragment extends Fragment {
     private long index;
     private View rootView;
 
-    OnClassSelectedListener mCallback;
+    OnClassSelectedListener mClassCallback;
+    OnAlignSelectedListener mAlignCallback;
 
-    // Container Activity must implement this interface
+    CreateClassViewHolder classViewHolder;
+
     public interface OnClassSelectedListener {
         public void onClassSelected(int position);
+    }
+
+    public interface OnAlignSelectedListener {
+        public void onAlignSelected(int position);
     }
 
     @Override
@@ -56,7 +64,8 @@ public class CreateActivityFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception
         try {
-            mCallback = (OnClassSelectedListener) activity;
+            mClassCallback = (OnClassSelectedListener) activity;
+            mAlignCallback = (OnAlignSelectedListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnClassSelectedListener");
@@ -102,6 +111,7 @@ public class CreateActivityFragment extends Fragment {
                 rootView = inflater.inflate(R.layout.fragment_create_finish, container, false);
                 break;
         }
+        classViewHolder = new CreateClassViewHolder(rootView);
         return rootView;
     }
 
@@ -148,7 +158,7 @@ public class CreateActivityFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, i);
-                mCallback.onClassSelected(i);
+                mClassCallback.onClassSelected(i);
             }
 
             @Override
@@ -179,6 +189,7 @@ public class CreateActivityFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_ALIGN, i);
+                mAlignCallback.onAlignSelected(i);
             }
 
             @Override
@@ -254,36 +265,133 @@ public class CreateActivityFragment extends Fragment {
 
     public void create_class() {
         int classSelection = getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+        update_class(classSelection);
+    }
 
+    public void create_class(int classSelection) {
+        update_class(classSelection);
+    }
+
+    public void update_class(int classSelection) {
         Bundle args = getArguments();
         int pageNumber = args.getInt(PAGE_NUMBER);
         index = args.getLong(ROW_INDEX);
 
-        if (pageNumber == PAGE_CLASS) {
-            Button deityButton = (Button) rootView.findViewById(R.id.select_deity);
-            deityButton.setVisibility(View.INVISIBLE);
+        if (pageNumber == PAGE_CLASS && classViewHolder != null) {
+            classViewHolder.mDeityButton.setVisibility(View.GONE);
+            classViewHolder.mSpellsButton.setVisibility(View.GONE);
+            classViewHolder.mFamiliarButton.setVisibility(View.GONE);
 
-            Button spellsButton = (Button) rootView.findViewById(R.id.select_spells);
-            spellsButton.setVisibility(View.INVISIBLE);
+            ContentValues values = RulesUtils.getFirstLevelStats(getContext(), classSelection);
+            int baseAttack;
+            String baseAttackString;
 
-            Button familiarButton = (Button) rootView.findViewById(R.id.select_familiar);
-            familiarButton.setVisibility(View.INVISIBLE);
+            int fortSave;
+            String fortSaveString;
+
+            int refSave;
+            String refSaveString;
+
+            int willSave;
+            String willSaveString;
 
             switch (classSelection) {
                 case RulesUtils.CLASS_CLERIC:
-                    deityButton.setVisibility(View.VISIBLE);
+                    classViewHolder.mClassText.setText(getString(R.string.cleric));
+                    classViewHolder.mDeityButton.setVisibility(View.VISIBLE);
+                    baseAttack = values.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
+                    baseAttackString = Integer.toString(baseAttack);
+                    fortSave = values.getAsInteger(RulesContract.ClericEntry.COLUMN_FORT);
+                    fortSaveString = Integer.toString(fortSave);
+                    refSave = values.getAsInteger(RulesContract.ClericEntry.COLUMN_REF);
+                    refSaveString = Integer.toString(refSave);
+                    willSave = values.getAsInteger(RulesContract.ClericEntry.COLUMN_WILL);
+                    willSaveString = Integer.toString(willSave);
                     break;
                 case RulesUtils.CLASS_FIGHTER:
+                    classViewHolder.mClassText.setText(getString(R.string.fighter));
+                    baseAttack = values.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
+                    baseAttackString = Integer.toString(baseAttack);
+                    fortSave = values.getAsInteger(RulesContract.FighterEntry.COLUMN_FORT);
+                    fortSaveString = Integer.toString(fortSave);
+                    refSave = values.getAsInteger(RulesContract.FighterEntry.COLUMN_REF);
+                    refSaveString = Integer.toString(refSave);
+                    willSave = values.getAsInteger(RulesContract.FighterEntry.COLUMN_WILL);
+                    willSaveString = Integer.toString(willSave);
                     break;
                 case RulesUtils.CLASS_ROGUE:
+                    classViewHolder.mClassText.setText(getString(R.string.rogue));
+                    baseAttack = values.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
+                    baseAttackString = Integer.toString(baseAttack);
+                    fortSave = values.getAsInteger(RulesContract.RogueEntry.COLUMN_FORT);
+                    fortSaveString = Integer.toString(fortSave);
+                    refSave = values.getAsInteger(RulesContract.RogueEntry.COLUMN_REF);
+                    refSaveString = Integer.toString(refSave);
+                    willSave = values.getAsInteger(RulesContract.RogueEntry.COLUMN_WILL);
+                    willSaveString = Integer.toString(willSave);
                     break;
                 case RulesUtils.CLASS_WIZARD:
-                    spellsButton.setVisibility(View.VISIBLE);
-                    familiarButton.setVisibility(View.VISIBLE);
+                    classViewHolder.mClassText.setText(getString(R.string.wizard));
+                    baseAttack = values.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
+                    baseAttackString = Integer.toString(baseAttack);
+                    fortSave = values.getAsInteger(RulesContract.WizardEntry.COLUMN_FORT);
+                    fortSaveString = Integer.toString(fortSave);
+                    refSave = values.getAsInteger(RulesContract.WizardEntry.COLUMN_REF);
+                    refSaveString = Integer.toString(refSave);
+                    willSave = values.getAsInteger(RulesContract.WizardEntry.COLUMN_WILL);
+                    willSaveString = Integer.toString(willSave);
+                    classViewHolder.mSpellsButton.setVisibility(View.VISIBLE);
+                    classViewHolder.mFamiliarButton.setVisibility(View.VISIBLE);
                     break;
                 default:
+                    baseAttackString = "";
+                    fortSaveString = "";
+                    refSaveString = "";
+                    willSaveString = "";
             }
 
+            classViewHolder.mBaseAttackText.setText(baseAttackString);
+            classViewHolder.mFortText.setText(fortSaveString);
+            classViewHolder.mRefText.setText(refSaveString);
+            classViewHolder.mWillText.setText(willSaveString);
+
+        }
+    }
+
+
+    public void update_align(int classSelection) {
+        if (classSelection == 0) {
+            classViewHolder.mDeityButton.setEnabled(false);
+        } else {
+            classViewHolder.mDeityButton.setEnabled(true);
+        }
+    }
+
+    public static class CreateClassViewHolder extends RecyclerView.ViewHolder {
+        public TextView mClassText;
+
+        public Button mDeityButton;
+        public Button mSpellsButton;
+        public Button mFamiliarButton;
+
+        public TextView mBaseAttackText;
+        public TextView mFortText;
+        public TextView mRefText;
+        public TextView mWillText;
+
+        public CreateClassViewHolder(View view) {
+            super(view);
+
+            mClassText = (TextView) view.findViewById(R.id.chosen_class);
+
+            mDeityButton = (Button) view.findViewById(R.id.select_deity);
+            mSpellsButton = (Button) view.findViewById(R.id.select_spells);
+            mFamiliarButton = (Button) view.findViewById(R.id.select_familiar);
+
+            mBaseAttackText = (TextView) view.findViewById(R.id.base_attack);
+            mFortText = (TextView) view.findViewById(R.id.fort_save);
+            mRefText = (TextView) view.findViewById(R.id.ref_save);
+            mWillText = (TextView) view.findViewById(R.id.will_save);
         }
     }
 }
