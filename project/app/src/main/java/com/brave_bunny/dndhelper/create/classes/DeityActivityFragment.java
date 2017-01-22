@@ -6,26 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
-import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
-import com.brave_bunny.dndhelper.select.CharacterAdapter;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -34,6 +27,7 @@ public class DeityActivityFragment extends Fragment {
 
     ContentValues mValues;
     View mRootView;
+    private final int numberDomains = 2;
 
     public DeityActivityFragment() {
     }
@@ -109,7 +103,7 @@ public class DeityActivityFragment extends Fragment {
                     + " WHERE " + alignment + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{"1"});
 
-            final DeityAdapter adapter = new DeityAdapter(getContext(), cursor, 0);
+            final SelectionListAdapter adapter = new SelectionListAdapter(getContext(), cursor, 0, numberDomains);
             final ListView listView = (ListView) view.findViewById(R.id.listview_cleric_domains);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -126,6 +120,7 @@ public class DeityActivityFragment extends Fragment {
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
 
+                        //not working accurately
                         if (itemView.isEnabled()) {
                             adapter.decreaseNumberSelected();
                             itemView.setEnabled(false);
@@ -146,7 +141,7 @@ public class DeityActivityFragment extends Fragment {
         }
     }
 
-    public void updateNumberSelected(DeityAdapter adapter) {
+    public void updateNumberSelected(SelectionListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_domains);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.select_domains, numberSelected));

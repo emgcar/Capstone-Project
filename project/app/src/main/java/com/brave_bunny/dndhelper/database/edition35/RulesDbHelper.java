@@ -29,9 +29,13 @@ public class RulesDbHelper extends SQLiteOpenHelper {
 
         setupClericData();
         setupClericDomains();
+
         setupFighterData();
         setupRogueData();
+
         setupWizardData();
+        setupSpellData();
+        setupFamiliarData();
     }
 
     public void setupSkills() {
@@ -51,6 +55,7 @@ public class RulesDbHelper extends SQLiteOpenHelper {
 
         mDatabase.execSQL(SQL_CREATE_SKILL_TABLE);
 
+        //if you change these, need to change familiar table skill reference
         insertInSkillTable("1, 'Appraise', 'INT', 1, 0, 0, 1, 0, 0, 0");
         insertInSkillTable("2, 'Balance', 'DEX', 1, 0, 0, 1, 0, 1, 0");
         insertInSkillTable("3, 'Bluff', 'CHA', 1, 0, 0, 1, 0, 0, 0");
@@ -352,6 +357,52 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_CLERIC_DATA);
     }
 
+    public void setupSpellData() {
+        /*final String SQL_CREATE_SPELL_TABLE = "CREATE TABLE " +
+                RulesContract.SpellsEntry.TABLE_NAME + " (" +
+                RulesContract.SpellsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.SpellsEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.SpellsEntry.COLUMN_LEVEL + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_SPELL_TABLE);
+
+        insertInSpellTable("1, 'Air', 0, 0, 0, 0, 1, 0, 0, 0, 0");
+        insertInSpellTable("2, 'Animal', 0, 0, 0, 1, 1, 0, 0, 0, 0");
+        insertInSpellTable("3, 'Chaos', 0, 0, 0, 0, 0, 0, 1, 1, 1");*/
+
+    }
+
+    public void insertInSpellTable(String string) {
+        String SQL_CREATE_SPELLS = "INSERT INTO " + RulesContract.SpellsEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_SPELLS);
+    }
+
+    public void setupFamiliarData() {
+        final String SQL_CREATE_FAMILIAR_TABLE = "CREATE TABLE " +
+                RulesContract.FamiliarEntry.TABLE_NAME + " (" +
+                RulesContract.FamiliarEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.FamiliarEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.FamiliarEntry.COLUMN_SKILL_ID + " INTEGER NOT NULL," +
+                RulesContract.FamiliarEntry.COLUMN_SKILL_BONUS + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_FAMILIAR_TABLE);
+
+        insertInFamiliarTable("1, 'Bat', 28, 3");
+        insertInFamiliarTable("2, 'Cat', 29, 3");
+        insertInFamiliarTable("3, 'Hawk', 37, 3");
+        insertInFamiliarTable("4, 'Lizard', 4, 3");
+        insertInFamiliarTable("5, 'Owl', 37, 3");
+        insertInFamiliarTable("6, 'Raven', 1, 3");
+        insertInFamiliarTable("7, 'Snake', 3, 3");
+    }
+
+    public void insertInFamiliarTable(String string) {
+        String SQL_CREATE_FAMILIARS = "INSERT INTO " + RulesContract.FamiliarEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_FAMILIARS);
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -366,6 +417,8 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.FighterEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.RogueEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.WizardEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.SpellsEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.FamiliarEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

@@ -183,8 +183,18 @@
 
     <string name="hp_prompt" translatable="true">HP: </string>
     <string name="select_deity" translatable="true">Select Diety</string>
-    <string name="select_familiar" translatable="true">Select Familiar</string>
     <string name="select_spells" translatable="true">Select Spells</string>
     <string name="row_adapter" translatable="false">Row Adapter</string>
+
+
+    <string name="select_familiar" translatable="true">Select Familiar</string>
+    <string name="familiar_bat" translatable="true">Bat</string>
+    <string name="familiar_cat" translatable="true">Cat</string>
+    <string name="familiar_hawk" translatable="true">Hawk</string>
+    <string name="familiar_lizard" translatable="true">Lizard</string>
+    <string name="familiar_owl" translatable="true">Owl</string>
+    <string name="familiar_raven" translatable="true">Raven</string>
+    <string name="familiar_snake" translatable="true">Snake</string>
+
 
 </resources>

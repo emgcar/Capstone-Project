@@ -15,14 +15,15 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
  * Created by Jemma on 1/18/2017.
  */
 
-public class DeityAdapter extends CursorAdapter {
+public class SelectionListAdapter extends CursorAdapter {
     View mView;
     private int numberSelected;
-    private final int maxSelected = 2;
+    private int maxSelected;
 
-    public DeityAdapter(Context context, Cursor c, int flags) {
+    public SelectionListAdapter(Context context, Cursor c, int flags, int maxAllowed) {
         super(context, c, flags);
         numberSelected = 0;
+        maxSelected = maxAllowed;
     }
 
     @Override
@@ -56,5 +57,9 @@ public class DeityAdapter extends CursorAdapter {
 
     public boolean atMaxSelected() {
         return (numberSelected == maxSelected);
+    }
+
+    public void changeMaxSelected(int newMax) {
+        maxSelected = newMax;
     }
 }

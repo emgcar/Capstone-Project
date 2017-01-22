@@ -60,19 +60,34 @@
         <activity
             android:name=".create.classes.DeityActivity"
             android:label="@string/title_activity_deity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
+        </activity>
         <activity
             android:name=".create.classes.SpellActivity"
             android:label="@string/title_activity_spell"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
+        </activity>
         <activity
             android:name=".create.classes.FamiliarActivity"
             android:label="@string/title_activity_familiar"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
+        </activity>
         <activity
             android:name=".create.skills_feats.FeatActivity"
             android:label="@string/title_activity_feat"
             android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
     </application>
 

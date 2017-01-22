@@ -20,6 +20,8 @@ public class RulesContract {
     public static final String PATH_FIGHTER = "fighter";
     public static final String PATH_ROGUE = "rogue";
     public static final String PATH_WIZARD = "wizard";
+    public static final String PATH_SPELLS = "spells";
+    public static final String PATH_FAMILIARS = "familiars";
 
     public static final class SkillsEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -174,6 +176,41 @@ public class RulesContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WIZARD;
 
         public static Uri buildWizardUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class SpellsEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_SPELLS).build();
+
+        public static final String TABLE_NAME = "spells";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_LEVEL = "level";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SPELLS;
+
+        public static Uri buildSpellsUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class FamiliarEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAMILIARS).build();
+
+        public static final String TABLE_NAME = "familiars";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_SKILL_ID = "skill_id";
+        public static final String COLUMN_SKILL_BONUS = "skill_bonus_amount";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILIARS;
+
+        public static Uri buildFamiliarUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

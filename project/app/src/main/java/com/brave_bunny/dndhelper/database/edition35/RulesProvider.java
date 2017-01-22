@@ -22,6 +22,8 @@ public class RulesProvider extends ContentProvider {
     public static final int FIGHTER = 103;
     public static final int ROGUE = 104;
     public static final int WIZARD = 105;
+    public static final int SPELLS = 106;
+    public static final int FAMILIARS = 107;
 
 
     @Override
@@ -54,6 +56,12 @@ public class RulesProvider extends ContentProvider {
                 break;
             case WIZARD:
                 tableName = RulesContract.WizardEntry.TABLE_NAME;
+                break;
+            case SPELLS:
+                tableName = RulesContract.SpellsEntry.TABLE_NAME;
+                break;
+            case FAMILIARS:
+                tableName = RulesContract.FamiliarEntry.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -89,6 +97,10 @@ public class RulesProvider extends ContentProvider {
                 return RulesContract.RogueEntry.CONTENT_TYPE;
             case WIZARD:
                 return RulesContract.WizardEntry.CONTENT_TYPE;
+            case SPELLS:
+                return RulesContract.SpellsEntry.CONTENT_TYPE;
+            case FAMILIARS:
+                return RulesContract.FamiliarEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -127,6 +139,8 @@ public class RulesProvider extends ContentProvider {
         matcher.addURI(authority, RulesContract.PATH_FIGHTER, FIGHTER);
         matcher.addURI(authority, RulesContract.PATH_ROGUE, ROGUE);
         matcher.addURI(authority, RulesContract.PATH_WIZARD, WIZARD);
+        matcher.addURI(authority, RulesContract.PATH_SPELLS, SPELLS);
+        matcher.addURI(authority, RulesContract.PATH_FAMILIARS, FAMILIARS);
 
         return matcher;
     }

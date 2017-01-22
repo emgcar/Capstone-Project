@@ -10,6 +10,7 @@ import android.view.View;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.base.AbilityActivity;
 import com.brave_bunny.dndhelper.create.classes.DeityActivity;
+import com.brave_bunny.dndhelper.create.classes.FamiliarActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
@@ -101,6 +102,12 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void launchFamiliarSelector(View view) {
+        Intent familiarActivity = new Intent(this, FamiliarActivity.class);
 
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
+        familiarActivity.putExtra(FamiliarActivity.inprogressValues, values);
+        familiarActivity.putExtra(FamiliarActivity.indexValue, index);
+
+        startActivity(familiarActivity);
     }
 }
