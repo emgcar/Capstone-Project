@@ -358,7 +358,7 @@ public class RulesDbHelper extends SQLiteOpenHelper {
     }
 
     public void setupSpellData() {
-        /*final String SQL_CREATE_SPELL_TABLE = "CREATE TABLE " +
+        final String SQL_CREATE_SPELL_TABLE = "CREATE TABLE " +
                 RulesContract.SpellsEntry.TABLE_NAME + " (" +
                 RulesContract.SpellsEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 RulesContract.SpellsEntry.COLUMN_NAME + " STRING NOT NULL," +
@@ -366,9 +366,67 @@ public class RulesDbHelper extends SQLiteOpenHelper {
 
         mDatabase.execSQL(SQL_CREATE_SPELL_TABLE);
 
-        insertInSpellTable("1, 'Air', 0, 0, 0, 0, 1, 0, 0, 0, 0");
-        insertInSpellTable("2, 'Animal', 0, 0, 0, 1, 1, 0, 0, 0, 0");
-        insertInSpellTable("3, 'Chaos', 0, 0, 0, 0, 0, 0, 1, 1, 1");*/
+        // level 0 spells
+        insertInSpellTable("1, 'Resistance', 0");
+        insertInSpellTable("2, 'Acid Splash', 0");
+        insertInSpellTable("3, 'Detect Poison', 0");
+        insertInSpellTable("4, 'Detect Magic', 0");
+        insertInSpellTable("5, 'Read Magic', 0");
+        insertInSpellTable("6, 'Daze', 0");
+        insertInSpellTable("7, 'Dancing Lights', 0");
+        insertInSpellTable("8, 'Flare', 0");
+        insertInSpellTable("9, 'Light', 0");
+        insertInSpellTable("10, 'Ray of Frost', 0");
+        insertInSpellTable("11, 'Ghost Sound', 0");
+        insertInSpellTable("12, 'Disrupt Undead', 0");
+        insertInSpellTable("13, 'Touch of Fatigue', 0");
+        insertInSpellTable("14, 'Mage Hand', 0");
+        insertInSpellTable("15, 'Mending', 0");
+        insertInSpellTable("16, 'Message', 0");
+        insertInSpellTable("17, 'Open/Close', 0");
+        insertInSpellTable("18, 'Arcane Mark', 0");
+        insertInSpellTable("19, 'Prestidigitation', 0");
+
+        // level 1 spells
+        insertInSpellTable("20, 'Alarm', 1");
+        insertInSpellTable("21, 'Endure Elements', 1");
+        insertInSpellTable("22, 'Hold Portal', 1");
+        insertInSpellTable("23, 'Protection from Chaos/Evil/Good/Law', 1");
+        insertInSpellTable("24, 'Shield', 1");
+        insertInSpellTable("25, 'Grease', 1");
+        insertInSpellTable("26, 'Mage Armor', 1");
+        insertInSpellTable("27, 'Mount', 1");
+        insertInSpellTable("28, 'Obscuring Mist', 1");
+        insertInSpellTable("29, 'Summon Monster I', 1");
+        insertInSpellTable("30, 'Unseen Servant', 1");
+        insertInSpellTable("31, 'Comprehend Languages', 1");
+        insertInSpellTable("32, 'Detect Secret Doors', 1");
+        insertInSpellTable("33, 'Detect Undead', 1");
+        insertInSpellTable("34, 'Identify', 1");
+        insertInSpellTable("35, 'True Strike', 1");
+        insertInSpellTable("36, 'Charm Person', 1");
+        insertInSpellTable("37, 'Hypnotism', 1");
+        insertInSpellTable("38, 'Sleep', 1");
+        insertInSpellTable("39, 'Burning Hands', 1");
+        insertInSpellTable("40, 'Magic Missile', 1");
+        insertInSpellTable("41, 'Shocking Grasp', 1");
+        insertInSpellTable("42, 'Tensers Floating Disk', 1");
+        insertInSpellTable("43, 'Color Spray', 1");
+        insertInSpellTable("44, 'Disguise Self', 1");
+        insertInSpellTable("45, 'Nystuls Magic Aura', 1");
+        insertInSpellTable("46, 'Silent Image', 1");
+        insertInSpellTable("47, 'Ventriloquism', 1");
+        insertInSpellTable("48, 'Cause Fear', 1");
+        insertInSpellTable("49, 'Chill Touch', 1");
+        insertInSpellTable("50, 'Ray of Enfeeblement', 1");
+        insertInSpellTable("51, 'Animate Rope', 1");
+        insertInSpellTable("52, 'Enlarge Person', 1");
+        insertInSpellTable("53, 'Erase', 1");
+        insertInSpellTable("54, 'Expeditious Retreat', 1");
+        insertInSpellTable("55, 'Feather Fall', 1");
+        insertInSpellTable("56, 'Jump', 1");
+        insertInSpellTable("57, 'Magic Weapon', 1");
+        insertInSpellTable("58, 'Reduce Person', 1");
 
     }
 

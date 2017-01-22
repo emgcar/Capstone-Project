@@ -36,10 +36,8 @@ public class CreateActivityFragment extends Fragment {
     public static final int PAGE_BASE = 1;
     public static final int PAGE_CLASS = 2;
     public static final int PAGE_SKILL = 3;
-    public static final int PAGE_WEAPONS = 4;
-    public static final int PAGE_ITEMS = 5;
-    public static final int PAGE_DETAIL = 6;
-    public static final int PAGE_FINISH = 7;
+    public static final int PAGE_ITEMS = 4;
+    public static final int PAGE_DETAIL = 5;
 
     private long index;
     private View rootView;
@@ -98,17 +96,11 @@ public class CreateActivityFragment extends Fragment {
             case PAGE_SKILL:
                 rootView = inflater.inflate(R.layout.fragment_create_skills, container, false);
                 break;
-            case PAGE_WEAPONS:
-                rootView = inflater.inflate(R.layout.fragment_create_weapons, container, false);
-                break;
             case PAGE_ITEMS:
                 rootView = inflater.inflate(R.layout.fragment_create_items, container, false);
                 break;
             case PAGE_DETAIL:
                 rootView = inflater.inflate(R.layout.fragment_create_detail, container, false);
-                break;
-            case PAGE_FINISH:
-                rootView = inflater.inflate(R.layout.fragment_create_finish, container, false);
                 break;
         }
         classViewHolder = new CreateClassViewHolder(rootView);

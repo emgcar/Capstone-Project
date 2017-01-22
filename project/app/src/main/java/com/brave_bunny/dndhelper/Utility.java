@@ -68,4 +68,8 @@ public class Utility {
 
         values.put(columnName, val);
     }
+
+    public static int scoreToModifier(int score) {
+        return (score - 10)/2;
+    }
 }

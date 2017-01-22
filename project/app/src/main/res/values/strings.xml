@@ -152,7 +152,7 @@
     <string name="use_rope" translatable="true">Use Rope</string>
 
     <!-- cleric domains -->
-    <string name="select_domains" translatable="true">Selected Domains: <xliff:g id="low">%1$d</xliff:g>/2</string>
+    <string name="select_domains" translatable="true">Selected Domains: <xliff:g id="curr">%1$d</xliff:g>/2</string>
     <string name="domain_air" translatable="true">Air</string>
     <string name="domain_animal" translatable="true">Animal</string>
     <string name="domain_chaos" translatable="true">Chaos</string>
@@ -197,4 +197,6 @@
     <string name="familiar_snake" translatable="true">Snake</string>
 
 
+    <!-- cleric domains -->
+    <string name="selected_spells" translatable="true">Selected Spells: <xliff:g id="curr">%1$d</xliff:g>/<xliff:g id="max">%2$d</xliff:g></string>
 </resources>

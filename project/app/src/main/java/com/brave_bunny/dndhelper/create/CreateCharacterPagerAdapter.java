@@ -11,7 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
 
-    final private int numberOfCreateCharacterFragments = 7;
+    final private int numberOfCreateCharacterFragments = 5;
     private long index;
 
     private CreateActivityFragment classFragment;

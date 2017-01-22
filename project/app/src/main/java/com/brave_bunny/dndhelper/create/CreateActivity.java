@@ -11,6 +11,7 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.base.AbilityActivity;
 import com.brave_bunny.dndhelper.create.classes.DeityActivity;
 import com.brave_bunny.dndhelper.create.classes.FamiliarActivity;
+import com.brave_bunny.dndhelper.create.classes.SpellActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
@@ -98,6 +99,13 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void launchSpellSelector(View view) {
+        Intent spellActivity = new Intent(this, SpellActivity.class);
+
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
+        spellActivity.putExtra(SpellActivity.inprogressValues, values);
+        spellActivity.putExtra(SpellActivity.indexValue, index);
+
+        startActivity(spellActivity);
 
     }
 
