@@ -16,6 +16,7 @@ import com.brave_bunny.dndhelper.create.CreateActivity;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -195,28 +196,28 @@ public class DetailActivity extends AppCompatActivity {
 
         private void setAlignment() {
             switch (alignment) {
-                case CharacterContract.ALIGN_LG:
+                case RulesUtils.ALIGN_LG:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_good);
                     break;
-                case CharacterContract.ALIGN_LN:
+                case RulesUtils.ALIGN_LN:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_neutral);
                     break;
-                case CharacterContract.ALIGN_LE:
+                case RulesUtils.ALIGN_LE:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_evil);
                     break;
-                case CharacterContract.ALIGN_NG:
+                case RulesUtils.ALIGN_NG:
                     mViewHolder.mAlignmentView.setText(R.string.neutral_good);
                     break;
-                case CharacterContract.ALIGN_N:
+                case RulesUtils.ALIGN_N:
                     mViewHolder.mAlignmentView.setText(R.string.neutral);
                     break;
-                case CharacterContract.ALIGN_NE:
+                case RulesUtils.ALIGN_NE:
                     mViewHolder.mAlignmentView.setText(R.string.neutral_evil);
                     break;
-                case CharacterContract.ALIGN_CG:
+                case RulesUtils.ALIGN_CG:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_good);
                     break;
-                case CharacterContract.ALIGN_CN:
+                case RulesUtils.ALIGN_CN:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_neutral);
                     break;
                 default:

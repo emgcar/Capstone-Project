@@ -24,16 +24,6 @@ public class CharacterContract {
     public static final int GENDER_MALE = 0;
     public static final int GENDER_FEMALE = 1;
 
-    public static final int ALIGN_LG = 0;
-    public static final int ALIGN_LN = 1;
-    public static final int ALIGN_LE = 2;
-    public static final int ALIGN_NG = 3;
-    public static final int ALIGN_N = 4;
-    public static final int ALIGN_NE = 5;
-    public static final int ALIGN_CG = 6;
-    public static final int ALIGN_CN = 7;
-    public static final int ALIGN_CE = 8;
-
     public static final int EQUIPPED_FALSE = 0;
     public static final int EQUIPPED_TRUE = 1;
 

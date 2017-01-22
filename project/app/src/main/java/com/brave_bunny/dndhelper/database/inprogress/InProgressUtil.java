@@ -19,7 +19,7 @@ import static com.brave_bunny.dndhelper.Utility.getIntFromCursor;
 
 public class InProgressUtil {
 
-    private static final String[] INPROGRESS_COLUMNS = {
+    public static final String[] INPROGRESS_COLUMNS = {
             InProgressContract.CharacterEntry.TABLE_NAME + "." + InProgressContract.CharacterEntry._ID,
             InProgressContract.CharacterEntry.COLUMN_NAME,
             InProgressContract.CharacterEntry.COLUMN_GENDER,

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name" translatable="true">Scrolls of Adventure</string>
     <string name="select_character" translatable="true">Select Character</string>
     <string name="create_character" translatable="true">Create Character</string>
@@ -152,6 +152,7 @@
     <string name="use_rope" translatable="true">Use Rope</string>
 
     <!-- cleric domains -->
+    <string name="select_domains" translatable="true">Selected Domains: <xliff:g id="low">%1$d</xliff:g>/2</string>
     <string name="domain_air" translatable="true">Air</string>
     <string name="domain_animal" translatable="true">Animal</string>
     <string name="domain_chaos" translatable="true">Chaos</string>

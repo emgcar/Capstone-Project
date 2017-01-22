@@ -28,13 +28,50 @@ public class RulesUtils {
             RulesContract.ClericEntry.COLUMN_WILL
     };
 
-    public static final int COL_CLERIC_LEVEL = 0;
-    public static final int COL_CLERIC_BASE_1 = 1;
-    public static final int COL_CLERIC_BASE_2 = 2;
-    public static final int COL_CLERIC_BASE_3 = 3;
-    public static final int COL_CLERIC_FORT = 4;
-    public static final int COL_CLERIC_REF = 5;
-    public static final int COL_CLERIC_WILL = 6;
+    public static final int COL_CLERIC_ID = 0;
+    public static final int COL_CLERIC_LEVEL = 1;
+    public static final int COL_CLERIC_BASE_1 = 2;
+    public static final int COL_CLERIC_BASE_2 = 3;
+    public static final int COL_CLERIC_BASE_3 = 4;
+    public static final int COL_CLERIC_FORT = 5;
+    public static final int COL_CLERIC_REF = 6;
+    public static final int COL_CLERIC_WILL = 7;
+
+    public static final int ALIGN_LG = 1;
+    public static final int ALIGN_LN = 2;
+    public static final int ALIGN_LE = 3;
+    public static final int ALIGN_NG = 4;
+    public static final int ALIGN_N = 5;
+    public static final int ALIGN_NE = 6;
+    public static final int ALIGN_CG = 7;
+    public static final int ALIGN_CN = 8;
+    public static final int ALIGN_CE = 9;
+
+    private static final String[] CLERIC_DOMAIN_COLUMNS = {
+            RulesContract.ClericDomainsEntry.TABLE_NAME + "." + RulesContract.ClericEntry._ID,
+            RulesContract.ClericDomainsEntry.COLUMN_NAME,
+            RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_GOOD,
+            RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_NEUTRAL,
+            RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_EVIL,
+            RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL_GOOD,
+            RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL,
+            RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL_EVIL,
+            RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_GOOD,
+            RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_NEUTRAL,
+            RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_EVIL
+    };
+
+    public static final int COL_DOMAIN_ID = 0;
+    public static final int COL_DOMAIN_NAME = 1;
+    public static final int COL_DOMAIN_LAWFUL_GOOD = 2;
+    public static final int COL_DOMAIN_LAWFUL_NEUTRAL = 3;
+    public static final int COL_DOMAIN_LAWFUL_EVIL = 4;
+    public static final int COL_DOMAIN_NEUTRAL_GOOD = 5;
+    public static final int COL_DOMAIN_NEUTRAL = 6;
+    public static final int COL_DOMAIN_NEUTRAL_EVIL = 7;
+    public static final int COL_DOMAIN_CHAOTIC_GOOD = 8;
+    public static final int COL_DOMAIN_CHAOTIC_NEUTRAL = 9;
+    public static final int COL_DOMAIN_CHAOTIC_EVIL = 10;
 
 
     public static Cursor getAllSkills(Context context) {
