@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
@@ -75,15 +73,16 @@ public class FamiliarActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int familiarId = InProgressUtil.getInProgressValue(mContext, rowIndex,
-                                InProgressUtil.COL_CHARACTER_FAMILIAR);
+                        long familiarId = (long)itemView.getTag(R.string.select_familiar);
 
-                        if(InProgressUtil.isFamiliarSelected(getContext(), rowIndex, familiarId)) {
+                        if(InProgressUtil.isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
                             InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, -1);
                             itemView.setEnabled(false);
+                            adapter.notifyDataSetChanged();
                         } else {
                             InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, familiarId);
                             itemView.setEnabled(true);
+                            adapter.notifyDataSetChanged();
                         }
                     }
                 }

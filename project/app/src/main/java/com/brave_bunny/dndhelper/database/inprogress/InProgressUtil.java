@@ -286,7 +286,7 @@ public class InProgressUtil {
             case RulesUtils.CLASS_ROGUE:
                 break;
             case RulesUtils.CLASS_WIZARD:
-                //TODO check for selected familiar
+                isPartiallyFilled |= isFamiliarSelected(context, values);
                 int numberSpells = numberSpellsSelected(context, values);
                 isPartiallyFilled |= (numberSpells > 0);
                 break;
@@ -331,7 +331,8 @@ public class InProgressUtil {
             case RulesUtils.CLASS_ROGUE:
                 break;
             case RulesUtils.CLASS_WIZARD:
-                //TODO check for selected familiar
+                isFilled &= isFamiliarSelected(context, values);
+
                 int numberSpells = numberSpellsSelected(context, values);
                 Object intScore = values.get(InProgressContract.CharacterEntry.COLUMN_INT);
                 if (intScore != null) {
@@ -365,26 +366,9 @@ public class InProgressUtil {
     }
 
     //TODO: familiar saving
-    /*public static int isFamiliarSelected(Context context, ContentValues values) {
-        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
-        int numberDomains;
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "SELECT * FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-
-            numberDomains = cursor.getCount();
-            cursor.close();
-        } finally {
-            db.close();
-        }
-
-        return numberDomains;
-    }*/
+    public static boolean isFamiliarSelected(Context context, ContentValues values) {
+        return isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID);
+    }
 
     public static int numberSpellsSelected(Context context, ContentValues values) {
         long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
@@ -606,7 +590,7 @@ public class InProgressUtil {
         }
     }
 
-    public static boolean isFamiliarSelected(Context context, long rowIndex, long familiarId) {
+    public static boolean isFamiliarSameAsSelected(Context context, long rowIndex, long familiarId) {
         long chosenFamiliar = getInProgressValue(context, rowIndex, InProgressUtil.COL_CHARACTER_FAMILIAR);
 
         if (familiarId == chosenFamiliar) {

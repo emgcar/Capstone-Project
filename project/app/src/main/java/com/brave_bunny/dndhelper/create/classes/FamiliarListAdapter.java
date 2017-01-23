@@ -49,7 +49,7 @@ public class FamiliarListAdapter extends CursorAdapter {
         View view = super.getView(position, convertView, parent);
         view.setEnabled(false);
         long familiarIndex = (long)view.getTag(R.string.select_familiar);
-        if (InProgressUtil.isFamiliarSelected(mContext, mRowIndex, familiarIndex)) {
+        if (InProgressUtil.isFamiliarSameAsSelected(mContext, mRowIndex, familiarIndex)) {
             view.setEnabled(true);
         }
         return view;
