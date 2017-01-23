@@ -18,7 +18,9 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -28,6 +30,8 @@ public class SpellActivityFragment extends Fragment {
     private View mRootView;
     private ContentValues mValues;
     private int mIntScore;
+    static long rowIndex;
+    InProgressUtil mInProgressUtil;
 
     public SpellActivityFragment() {
     }
@@ -36,9 +40,11 @@ public class SpellActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_spell, container, false);
+        mInProgressUtil = new InProgressUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
         mValues = (ContentValues) extras.get(DeityActivity.inprogressValues);
+        rowIndex = (long) extras.get(DeityActivity.indexValue);
         mIntScore = mValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_INT);
 
         getSpells(getContext(), mRootView);
@@ -46,6 +52,7 @@ public class SpellActivityFragment extends Fragment {
         return mRootView;
     }
 
+    //TODO: populate previous choices
     public void getSpells(Context context, View view) {
 
         RulesDbHelper dbHelper = new RulesDbHelper(context);
@@ -58,7 +65,7 @@ public class SpellActivityFragment extends Fragment {
 
             int numberSpells = getNumberSpells();
 
-            final SelectionListAdapter adapter = new SelectionListAdapter(getContext(), cursor, 0, numberSpells);
+            final SpellListAdapter adapter = new SpellListAdapter(getContext(), cursor, 0, rowIndex, numberSpells);
             final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -74,17 +81,17 @@ public class SpellActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        int spellId = cursor.getInt(RulesUtils.COL_DOMAIN_ID);
 
-                        //not working accurately
-                        if (itemView.isEnabled()) {
+                        if(InProgressUtil.isSpellSelected(getContext(), rowIndex, spellId)) {
                             adapter.decreaseNumberSelected();
+                            mInProgressUtil.removeSpellSelection(getContext(), rowIndex, spellId);
                             itemView.setEnabled(false);
                         } else {
                             if (!adapter.atMaxSelected()) {
                                 adapter.increaseNumberSelected();
+                                mInProgressUtil.addSpellSelection(getContext(), rowIndex, spellId);
                                 itemView.setEnabled(true);
-                            } else {
-                                itemView.setEnabled(false);
                             }
                         }
                         updateNumberSelected(adapter);
@@ -105,7 +112,7 @@ public class SpellActivityFragment extends Fragment {
         return numberSpells;
     }
 
-    public void updateNumberSelected(SelectionListAdapter adapter) {
+    public void updateNumberSelected(SpellListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.selected_spells, numberSelected, getNumberSpells()));

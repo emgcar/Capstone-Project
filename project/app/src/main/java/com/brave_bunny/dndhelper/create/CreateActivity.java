@@ -45,7 +45,7 @@ public class CreateActivity extends AppCompatActivity
             index = extras.getLong(CreateActivityFragment.ROW_INDEX);
         } else {
             ContentValues blankCharacterValues = InProgressUtil.setNewInProgressContentValues();
-            index = InProgressUtil.insertValuesIntoInPrgoressTable(this,
+            index = InProgressUtil.insertValuesIntoInProgressTable(this,
                     InProgressContract.CharacterEntry.TABLE_NAME, blankCharacterValues);
         }
     }

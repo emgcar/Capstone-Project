@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -25,6 +27,8 @@ public class FamiliarActivityFragment extends Fragment {
 
     private View mRootView;
     private ContentValues mValues;
+    static long rowIndex;
+    private Context mContext;
 
     public FamiliarActivityFragment() {
     }
@@ -35,13 +39,16 @@ public class FamiliarActivityFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_familiar, container, false);
 
         Bundle extras = getActivity().getIntent().getExtras();
-        mValues = (ContentValues) extras.get(DeityActivity.inprogressValues);
+        mValues = (ContentValues) extras.get(FamiliarActivity.inprogressValues);
+        rowIndex = (long) extras.get(FamiliarActivity.indexValue);
 
         getFamiliars(getContext(), mRootView);
+        mContext = getContext();
 
         return mRootView;
     }
 
+    //TODO: populate previous choices
     public void getFamiliars(Context context, View view) {
         ContentValues[] allValues;
 
@@ -52,7 +59,7 @@ public class FamiliarActivityFragment extends Fragment {
             String query = "SELECT * FROM " + RulesContract.FamiliarEntry.TABLE_NAME;
             Cursor cursor = db.rawQuery(query, null);
 
-            final SelectionListAdapter adapter = new SelectionListAdapter(getContext(), cursor, 0, 1);
+            final FamiliarListAdapter adapter = new FamiliarListAdapter(getContext(), cursor, 0, rowIndex);
             final ListView listView = (ListView) view.findViewById(R.id.listview_familiars);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -68,12 +75,14 @@ public class FamiliarActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        int familiarId = InProgressUtil.getInProgressValue(mContext, rowIndex,
+                                InProgressUtil.COL_CHARACTER_FAMILIAR);
 
-                        //not working accurately
-                        if (itemView.isEnabled()) {
+                        if(InProgressUtil.isFamiliarSelected(getContext(), rowIndex, familiarId)) {
+                            InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, -1);
                             itemView.setEnabled(false);
                         } else {
-                            deselectAll(listView);
+                            InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, familiarId);
                             itemView.setEnabled(true);
                         }
                     }

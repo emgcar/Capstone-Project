@@ -73,6 +73,30 @@ public class RulesUtils {
     public static final int COL_DOMAIN_CHAOTIC_NEUTRAL = 9;
     public static final int COL_DOMAIN_CHAOTIC_EVIL = 10;
 
+    private static final String[] SPELL_COLUMNS = {
+            RulesContract.SpellsEntry.TABLE_NAME + "." + RulesContract.SpellsEntry._ID,
+            RulesContract.SpellsEntry.COLUMN_NAME,
+            RulesContract.SpellsEntry.COLUMN_LEVEL
+    };
+
+    public static final int COL_SPELL_ID = 0;
+    public static final int COL_SPELL_NAME = 1;
+    public static final int COL_SPELL_LEVEL = 2;
+
+    private static final String[] FAMILIAR_COLUMNS = {
+            RulesContract.FamiliarEntry.TABLE_NAME + "." + RulesContract.FamiliarEntry._ID,
+            RulesContract.FamiliarEntry.COLUMN_NAME,
+            RulesContract.FamiliarEntry.COLUMN_SKILL_ID,
+            RulesContract.FamiliarEntry.COLUMN_SKILL_BONUS
+    };
+
+    public static final int COL_FAMILIAR_ID = 0;
+    public static final int COL_FAMILIAR_NAME = 1;
+    public static final int COL_FAMILIAR_SKILL_ID = 2;
+    public static final int COL_FAMILIAR_SKILL_BONUS = 3;
+
+    public static final int numberSpellsUntilLevelOne = 19;
+
 
     public static Cursor getAllSkills(Context context) {
             Cursor cursor;

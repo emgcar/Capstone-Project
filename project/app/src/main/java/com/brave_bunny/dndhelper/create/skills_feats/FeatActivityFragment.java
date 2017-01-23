@@ -15,9 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.classes.SelectionListAdapter;
+import com.brave_bunny.dndhelper.create.classes.DeityActivity;
+import com.brave_bunny.dndhelper.create.classes.DeityListAdapter;
+import com.brave_bunny.dndhelper.create.classes.FamiliarListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
 /**
  * Created by Jemma on 1/22/2017.
  */
@@ -26,6 +30,8 @@ public class FeatActivityFragment extends Fragment {
 
     private View mRootView;
     private ContentValues mValues;
+    InProgressUtil mInProgressUtil;
+    static long rowIndex;
 
     public FeatActivityFragment() {
     }
@@ -34,15 +40,18 @@ public class FeatActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_feat, container, false);
+        mInProgressUtil = new InProgressUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
         mValues = (ContentValues) extras.get(FeatActivity.inprogressValues);
+        rowIndex = (long) extras.get(FeatActivity.indexValue);
 
         getFeats(getContext(), mRootView);
 
         return mRootView;
     }
 
+    //TODO: populate previous choices
     public void getFeats(Context context, View view) {
 
         RulesDbHelper dbHelper = new RulesDbHelper(context);
@@ -54,7 +63,7 @@ public class FeatActivityFragment extends Fragment {
 
             int numberFeats = getNumberFeats();
 
-            final SelectionListAdapter adapter = new SelectionListAdapter(getContext(), cursor, 0, numberFeats);
+            final DeityListAdapter adapter = new DeityListAdapter(getContext(), cursor, 0, rowIndex, numberFeats);
             final ListView listView = (ListView) view.findViewById(R.id.listview_feat);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -97,7 +106,7 @@ public class FeatActivityFragment extends Fragment {
         return 2;
     }
 
-    public void updateNumberSelected(SelectionListAdapter adapter) {
+    public void updateNumberSelected(DeityListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.selected_spells, numberSelected, getNumberFeats()));

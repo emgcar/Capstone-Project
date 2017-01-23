@@ -226,7 +226,8 @@ public class CreateActivityFragment extends Fragment {
         return values.getAsInteger(column);
     }
 
-    //TODO find way to increase HP on class page when CON stat changes
+    //TODO find way to change HP on class page when CON stat changes
+    //TODO: find way to change max spells when INT stat changes
     public void updateAbilityScores() {
         TextView strText = (TextView) rootView.findViewById(R.id.ability_strength);
         if (strText != null) {
@@ -375,6 +376,7 @@ public class CreateActivityFragment extends Fragment {
         classViewHolder.mHPText.setText(hitPointsString);
     }
 
+    //TODO: change chosen domain columns
     public void update_align(int classSelection) {
         if (classSelection == 0) {
             classViewHolder.mDeityButton.setEnabled(false);

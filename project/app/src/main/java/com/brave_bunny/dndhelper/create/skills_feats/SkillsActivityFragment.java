@@ -25,6 +25,7 @@ public class SkillsActivityFragment extends Fragment {
     public SkillsActivityFragment() {
     }
 
+    //TODO: populate previous choices
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

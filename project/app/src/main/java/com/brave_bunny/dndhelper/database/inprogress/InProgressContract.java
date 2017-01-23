@@ -17,6 +17,10 @@ public class InProgressContract {
     public static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper.inprogress";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_INPROGRESS_STAT = "stat";
+    public static final String PATH_INPROGRESS_CLERIC_DOMAIN = "cleric_domain";
+    public static final String PATH_INPROGRESS_SPELL = "spell";
+    public static final String PATH_INPROGRESS_SKILL = "skill";
+    public static final String PATH_INPROGRESS_FEAT = "feat";
 
     public static final class CharacterEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -55,10 +59,77 @@ public class InProgressContract {
         public static final String COLUMN_AC = "armor_class";
         public static final String COLUMN_HP = "hit_points";
 
+        public static final String COLUMN_FAMILIAR_ID = "familiar_id";
+
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_STAT;
 
         public static Uri buildCharacterUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ClericDomainEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_CLERIC_DOMAIN).build();
+        public static final String TABLE_NAME = "inprogress_cleric_domain";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_DOMAIN_ID = "domain_id";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_CLERIC_DOMAIN;
+
+        public static Uri buildClericDomainUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class SpellEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_SPELL).build();
+        public static final String TABLE_NAME = "inprogress_spell";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_SPELL_ID = "spell_id";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_SPELL;
+
+        public static Uri buildSpellUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class SkillEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_SKILL).build();
+        public static final String TABLE_NAME = "inprogress_skill";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_SKILL_ID = "skill_id";
+        public static final String COLUMN_RANKS = "ranks";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_SKILL;
+
+        public static Uri buildSkillUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class FeatEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_FEAT).build();
+        public static final String TABLE_NAME = "inprogress_feat";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_FEAT_ID = "feat_id";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_FEAT;
+
+        public static Uri buildFeatUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

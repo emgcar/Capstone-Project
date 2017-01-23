@@ -17,6 +17,10 @@ public class InProgressProvider extends ContentProvider {
     private InProgressDbHelper mOpenHelper;
 
     public static final int INPROGRESS_STATS = 100;
+    public static final int INPROGRESS_CLERIC_DOMAIN = 101;
+    public static final int INPROGRESS_SPELLS = 102;
+    public static final int INPROGRESS_SKILLS = 103;
+    public static final int INPROGRESS_FEATS = 104;
 
 
     @Override
@@ -34,6 +38,18 @@ public class InProgressProvider extends ContentProvider {
         switch (sUriMatcher.match(uri)) {
             case INPROGRESS_STATS:
                 tableName = InProgressContract.CharacterEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_CLERIC_DOMAIN:
+                tableName = InProgressContract.ClericDomainEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_SPELLS:
+                tableName = InProgressContract.SpellEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_SKILLS:
+                tableName = InProgressContract.SkillEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_FEATS:
+                tableName = InProgressContract.FeatEntry.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -59,6 +75,14 @@ public class InProgressProvider extends ContentProvider {
         switch (match) {
             case INPROGRESS_STATS:
                 return InProgressContract.CharacterEntry.CONTENT_TYPE;
+            case INPROGRESS_CLERIC_DOMAIN:
+                return InProgressContract.ClericDomainEntry.CONTENT_TYPE;
+            case INPROGRESS_SPELLS:
+                return InProgressContract.SpellEntry.CONTENT_TYPE;
+            case INPROGRESS_SKILLS:
+                return InProgressContract.SkillEntry.CONTENT_TYPE;
+            case INPROGRESS_FEATS:
+                return InProgressContract.FeatEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -75,6 +99,38 @@ public class InProgressProvider extends ContentProvider {
                 long _id = db.insert(InProgressContract.CharacterEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
                     returnUri = InProgressContract.CharacterEntry.buildCharacterUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case INPROGRESS_CLERIC_DOMAIN: {
+                long _id = db.insert(InProgressContract.ClericDomainEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.ClericDomainEntry.buildClericDomainUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case INPROGRESS_SPELLS: {
+                long _id = db.insert(InProgressContract.SpellEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.SpellEntry.buildSpellUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case INPROGRESS_SKILLS: {
+                long _id = db.insert(InProgressContract.SkillEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.SkillEntry.buildSkillUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case INPROGRESS_FEATS: {
+                long _id = db.insert(InProgressContract.FeatEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.FeatEntry.buildFeatUri(_id);
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
@@ -97,6 +153,18 @@ public class InProgressProvider extends ContentProvider {
         switch (match) {
             case INPROGRESS_STATS:
                 tableName = InProgressContract.CharacterEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_CLERIC_DOMAIN:
+                tableName = InProgressContract.ClericDomainEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_SPELLS:
+                tableName = InProgressContract.SpellEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_SKILLS:
+                tableName = InProgressContract.SkillEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_FEATS:
+                tableName = InProgressContract.FeatEntry.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -122,6 +190,18 @@ public class InProgressProvider extends ContentProvider {
             case INPROGRESS_STATS:
                 tableName = InProgressContract.CharacterEntry.TABLE_NAME;
                 break;
+            case INPROGRESS_CLERIC_DOMAIN:
+                tableName = InProgressContract.ClericDomainEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_SPELLS:
+                tableName = InProgressContract.SpellEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_SKILLS:
+                tableName = InProgressContract.SkillEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_FEATS:
+                tableName = InProgressContract.FeatEntry.TABLE_NAME;
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -145,6 +225,10 @@ public class InProgressProvider extends ContentProvider {
 
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_STAT, INPROGRESS_STATS);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_CLERIC_DOMAIN, INPROGRESS_CLERIC_DOMAIN);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_SPELL, INPROGRESS_SPELLS);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_SKILL, INPROGRESS_SKILLS);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_FEAT, INPROGRESS_FEATS);
 
         return matcher;
     }

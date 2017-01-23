@@ -19,6 +19,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -26,8 +27,10 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 public class DeityActivityFragment extends Fragment {
 
     ContentValues mValues;
+    static long rowIndex;
     View mRootView;
     private final int numberDomains = 2;
+    InProgressUtil mInProgressUtil;
 
     public DeityActivityFragment() {
     }
@@ -36,9 +39,11 @@ public class DeityActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_deity, container, false);
+        mInProgressUtil = new InProgressUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
         mValues = (ContentValues) extras.get(DeityActivity.inprogressValues);
+        rowIndex = (long) extras.get(DeityActivity.indexValue);
         int align = mValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ALIGN);
         /// put in edge case for error here, in case button doesn't gray out
 
@@ -92,7 +97,8 @@ public class DeityActivityFragment extends Fragment {
         return mRootView;
     }
 
-    public void getClericDomainsByAlignment(Context context, String alignment, View view) {
+    //TODO: populate previous choices
+    public void getClericDomainsByAlignment(final Context context, String alignment, View view) {
         ContentValues[] allValues;
 
         RulesDbHelper dbHelper = new RulesDbHelper(context);
@@ -103,7 +109,7 @@ public class DeityActivityFragment extends Fragment {
                     + " WHERE " + alignment + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{"1"});
 
-            final SelectionListAdapter adapter = new SelectionListAdapter(getContext(), cursor, 0, numberDomains);
+            final DeityListAdapter adapter = new DeityListAdapter(getContext(), cursor, 0, rowIndex, numberDomains);
             final ListView listView = (ListView) view.findViewById(R.id.listview_cleric_domains);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -119,17 +125,17 @@ public class DeityActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        int domainId = cursor.getInt(RulesUtils.COL_DOMAIN_ID);
 
-                        //not working accurately
-                        if (itemView.isEnabled()) {
+                        if(InProgressUtil.isDomainSelected(getContext(), rowIndex, domainId)) {
                             adapter.decreaseNumberSelected();
+                            mInProgressUtil.removeDomainSelection(getContext(), rowIndex, domainId);
                             itemView.setEnabled(false);
                         } else {
                             if (!adapter.atMaxSelected()) {
                                 adapter.increaseNumberSelected();
+                                mInProgressUtil.addDomainSelection(getContext(), rowIndex, domainId);
                                 itemView.setEnabled(true);
-                            } else {
-                                itemView.setEnabled(false);
                             }
                         }
                         updateNumberSelected(adapter);
@@ -141,7 +147,7 @@ public class DeityActivityFragment extends Fragment {
         }
     }
 
-    public void updateNumberSelected(SelectionListAdapter adapter) {
+    public void updateNumberSelected(DeityListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_domains);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.select_domains, numberSelected));
