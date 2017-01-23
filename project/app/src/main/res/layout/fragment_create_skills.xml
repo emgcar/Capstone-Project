@@ -15,15 +15,17 @@
         android:orientation="vertical"
         android:layout_gravity="center">
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Skills" />
+            android:text="@string/select_skills"
+            android:onClick="launchSkillSelector"/>
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Feats" />
+            android:text="@string/select_feats"
+            android:onClick="launchFeatSelector"/>
 
     </LinearLayout>
 

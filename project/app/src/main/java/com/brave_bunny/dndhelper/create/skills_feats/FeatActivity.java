@@ -11,6 +11,9 @@ import com.brave_bunny.dndhelper.R;
 
 public class FeatActivity extends AppCompatActivity {
 
+    public static final String indexValue = "ROW_INDEX";
+    public static final String inprogressValues = "INPROGRESS_TABLE_VALUES";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +29,6 @@ public class FeatActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
-
 }

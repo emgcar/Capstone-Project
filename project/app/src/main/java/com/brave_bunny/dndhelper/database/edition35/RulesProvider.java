@@ -17,14 +17,15 @@ public class RulesProvider extends ContentProvider {
     private RulesDbHelper mOpenHelper;
 
     public static final int SKILLS = 100;
-    public static final int CLASSES = 101;
-    public static final int CLERIC = 102;
-    public static final int CLERIC_DOMAINS = 103;
-    public static final int FIGHTER = 104;
-    public static final int ROGUE = 105;
-    public static final int WIZARD = 106;
-    public static final int SPELLS = 107;
-    public static final int FAMILIARS = 108;
+    public static final int FEATS = 101;
+    public static final int CLASSES = 102;
+    public static final int CLERIC = 103;
+    public static final int CLERIC_DOMAINS = 104;
+    public static final int FIGHTER = 105;
+    public static final int ROGUE = 106;
+    public static final int WIZARD = 107;
+    public static final int SPELLS = 108;
+    public static final int FAMILIARS = 109;
 
 
     @Override
@@ -41,6 +42,9 @@ public class RulesProvider extends ContentProvider {
 
         switch (sUriMatcher.match(uri)) {
             case SKILLS:
+                tableName = RulesContract.SkillsEntry.TABLE_NAME;
+                break;
+            case FEATS:
                 tableName = RulesContract.SkillsEntry.TABLE_NAME;
                 break;
             case CLASSES:
@@ -91,6 +95,8 @@ public class RulesProvider extends ContentProvider {
         switch (match) {
             case SKILLS:
                 return RulesContract.SkillsEntry.CONTENT_TYPE;
+            case FEATS:
+                return RulesContract.SkillsEntry.CONTENT_TYPE;
             case CLASSES:
                 return RulesContract.ClassEntry.CONTENT_TYPE;
             case CLERIC:
@@ -140,6 +146,7 @@ public class RulesProvider extends ContentProvider {
 
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, RulesContract.PATH_SKILLS, SKILLS);
+        matcher.addURI(authority, RulesContract.PATH_FEATS, FEATS);
         matcher.addURI(authority, RulesContract.PATH_CLASSES, CLASSES);
         matcher.addURI(authority, RulesContract.PATH_CLERIC, CLERIC);
         matcher.addURI(authority, RulesContract.PATH_CLERIC_DOMAINS, CLERIC_DOMAINS);

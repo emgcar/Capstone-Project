@@ -15,6 +15,7 @@ public class RulesContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PATH_SKILLS = "skills";
+    public static final String PATH_FEATS = "feats";
     public static final String PATH_CLASSES = "classes";
     public static final String PATH_CLERIC = "cleric";
     public static final String PATH_CLERIC_DOMAINS = "cleric_domains";
@@ -42,6 +43,22 @@ public class RulesContract {
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SKILLS;
+
+        public static Uri buildSkillUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class FeatEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_FEATS).build();
+
+        public static final String TABLE_NAME = "feats";
+
+        public static final String COLUMN_NAME = "name";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FEATS;
 
         public static Uri buildSkillUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);

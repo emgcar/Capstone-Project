@@ -109,6 +109,7 @@
     <!-- skills activity strings -->
     <string name="title_activity_skills">SkillsActivity</string>
     <string name="skills" translatable="true">Skills: </string>
+    <string name="select_skills" translatable="true">Select Skills</string>
     <string name="appraise" translatable="true">Appraise</string>
     <string name="balance" translatable="true">Balance</string>
     <string name="bluff" translatable="true">Bluff</string>
@@ -150,6 +151,11 @@
     <string name="tumble" translatable="true">Tumble</string>
     <string name="use_magic_device" translatable="true">Use Magic Device</string>
     <string name="use_rope" translatable="true">Use Rope</string>
+
+    <!-- feats  activity strings -->
+    <string name="title_activity_feats">FeatsActivity</string>
+    <string name="feats" translatable="true">Feats: </string>
+    <string name="select_feats" translatable="true">Select Feats</string>
 
     <!-- cleric domains -->
     <string name="select_domains" translatable="true">Selected Domains: <xliff:g id="curr">%1$d</xliff:g>/2</string>
@@ -197,6 +203,13 @@
     <string name="familiar_snake" translatable="true">Snake</string>
 
 
-    <!-- cleric domains -->
+    <!-- spells -->
     <string name="selected_spells" translatable="true">Selected Spells: <xliff:g id="curr">%1$d</xliff:g>/<xliff:g id="max">%2$d</xliff:g></string>
+
+
+    <!--items-->
+    <string name="select_armor" translatable="true">Select Armor</string>
+    <string name="select_weapons" translatable="true">Select Weapons</string>
+    <string name="select_items" translatable="true">Select Items</string>
+
 </resources>

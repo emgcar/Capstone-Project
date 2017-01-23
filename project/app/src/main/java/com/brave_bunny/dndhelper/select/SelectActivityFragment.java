@@ -37,6 +37,8 @@ public class SelectActivityFragment extends Fragment {
     private static final int TRUE = 1;
     private static final int FALSE = 0;
 
+    //TODO allow for swipe for delete action, but with confirmation menu
+
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

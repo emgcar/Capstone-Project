@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.brave_bunny.dndhelper.database.CharacterContract;
-
 /**
  * Created by Jemma on 1/10/2017.
  */
@@ -26,6 +24,7 @@ public class RulesDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         mDatabase = sqLiteDatabase;
         setupSkills();
+        setupFeats();
 
         setupClassData();
         setupClericData();
@@ -103,6 +102,31 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_SKILL = "INSERT INTO " + RulesContract.SkillsEntry.TABLE_NAME +
                 " VALUES (" + string + ")";
         mDatabase.execSQL(SQL_CREATE_SKILL);
+    }
+
+    public void setupFeats() {
+        final String SQL_CREATE_FEAT_TABLE = "CREATE TABLE " +
+                RulesContract.FeatEntry.TABLE_NAME + " (" +
+                RulesContract.FeatEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.ClassEntry.COLUMN_NAME + " STRING NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_FEAT_TABLE);
+
+        insertInFeatTable("1, 'Acrobatic'");
+        insertInFeatTable("2, 'Agile'");
+        insertInFeatTable("3, 'Alertness'");
+        insertInFeatTable("4, 'Animal Affinity'");
+        insertInFeatTable("5, 'Armor Proficiency (Light)'");
+        insertInFeatTable("6, 'Armor Proficiency (Medium)'");
+        insertInFeatTable("7, 'Armor Proficiency (Heavy)'");
+        insertInFeatTable("8, 'Athletic'");
+        insertInFeatTable("9, 'Augment Summoning'");
+    }
+
+    public void insertInFeatTable(String string) {
+        String SQL_CREATE_FEATS = "INSERT INTO " + RulesContract.FeatEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_FEATS);
     }
 
     public void setupClassData() {
