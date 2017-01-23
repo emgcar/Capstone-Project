@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 
 import java.util.Random;
 
@@ -238,52 +239,103 @@ public class InProgressUtil {
     }
 
     private static boolean isAtLeastPartiallyFilled(ContentValues values) {
-        boolean isAtLeastPartiallyFilled = false;
+        boolean isPartiallyFilled = areDetailsPartiallyFilled(values);
+        isPartiallyFilled |= areAbilitiesPartiallyFilled(values);
+        isPartiallyFilled |= areClassSpecificsPartiallyFilled(values);
+        return isPartiallyFilled;
+    }
 
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isStringSet(values.get(InProgressContract.CharacterEntry.COLUMN_NAME).toString());
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_STR));
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_DEX));
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_CON));
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_INT));
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_WIS));
-        isAtLeastPartiallyFilled = isAtLeastPartiallyFilled ||
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_CHA));
+    private static boolean areDetailsPartiallyFilled(ContentValues values) {
+        boolean isPartiallyFilled = isStringSet(values, InProgressContract.CharacterEntry.COLUMN_NAME);
+        isPartiallyFilled |= isOptionSelected(values, InProgressContract.CharacterEntry.COLUMN_RACE_ID);
+        return isPartiallyFilled;
+    }
 
-        return isAtLeastPartiallyFilled;
+    private static boolean areAbilitiesPartiallyFilled(ContentValues values) {
+        boolean isPartiallyFilled = isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_STR);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_DEX);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CON);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_INT);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_WIS);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CHA);
+        return isPartiallyFilled;
+    }
+
+    private static boolean areClassSpecificsPartiallyFilled(ContentValues values) {
+        int classValue = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+        boolean isPartiallyFilled = (classValue > 0);
+
+        switch (classValue) {
+            case RulesUtils.CLASS_CLERIC:
+                //TODO check for two selected domains
+                break;
+            case RulesUtils.CLASS_FIGHTER:
+                break;
+            case RulesUtils.CLASS_ROGUE:
+                break;
+            case RulesUtils.CLASS_WIZARD:
+                //TODO check for selected familiar
+                //TODO check for selected spells
+                break;
+        }
+        return isPartiallyFilled;
     }
 
     private static boolean isCompletelyFilled(ContentValues values) {
-        boolean isCompletelyFilled = true;
-
-        isCompletelyFilled = isCompletelyFilled &&
-                isStringSet(values.get(InProgressContract.CharacterEntry.COLUMN_NAME).toString());
-        isCompletelyFilled = isCompletelyFilled &&
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_STR));
-        isCompletelyFilled = isCompletelyFilled &&
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_DEX));
-        isCompletelyFilled = isCompletelyFilled &&
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_CON));
-        isCompletelyFilled = isCompletelyFilled &&
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_INT));
-        isCompletelyFilled = isCompletelyFilled &&
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_WIS));
-        isCompletelyFilled = isCompletelyFilled &&
-                isIntegerSet((Integer)values.get(InProgressContract.CharacterEntry.COLUMN_CHA));
-
+        boolean isCompletelyFilled = areDetailsFilled(values);
+        isCompletelyFilled &= areAbilitiesFilled(values);
+        isCompletelyFilled &= areClassSpecificsFilled(values);
         return isCompletelyFilled;
     }
 
-    public static boolean isIntegerSet(int value) {
-        return (value != -1);
+    private static boolean areDetailsFilled(ContentValues values) {
+        boolean isFilled = isStringSet(values, InProgressContract.CharacterEntry.COLUMN_NAME);
+        isFilled &= isOptionSelected(values, InProgressContract.CharacterEntry.COLUMN_RACE_ID);
+        return isFilled;
     }
 
-    public static boolean isStringSet(String value) {
-        return (!value.equals(""));
+    private static boolean areAbilitiesFilled(ContentValues values) {
+        boolean isFilled = isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_STR);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_DEX);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CON);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_INT);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_WIS);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CHA);
+        return isFilled;
+    }
+
+    private static boolean areClassSpecificsFilled(ContentValues values) {
+        int classValue = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+        boolean isPartiallyFilled = (classValue > 0);
+
+        switch (classValue) {
+            case RulesUtils.CLASS_CLERIC:
+                //TODO check for two selected domains
+                break;
+            case RulesUtils.CLASS_FIGHTER:
+                break;
+            case RulesUtils.CLASS_ROGUE:
+                break;
+            case RulesUtils.CLASS_WIZARD:
+                //TODO check for selected familiar
+                //TODO check for selected spells
+                break;
+        }
+        return isPartiallyFilled;
+    }
+
+    public static boolean isOptionSelected(ContentValues values, String column) {
+        int inProgressValue = values.getAsInteger(column);
+        return (inProgressValue > 0);
+    }
+
+    public static boolean isIntegerSet(ContentValues values, String column) {
+        int inProgressValue = values.getAsInteger(column);
+        return (inProgressValue != -1);
+    }
+
+    public static boolean isStringSet(ContentValues values, String column) {
+        String inProgressValue = values.getAsString(column);
+        return (!inProgressValue.equals(""));
     }
 }

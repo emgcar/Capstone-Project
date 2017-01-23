@@ -39,9 +39,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.COLUMN_NAME + " TEXT UNIQUE NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_GENDER + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_RACE + " INTEGER NOT NULL," +
-                CharacterContract.CharacterEntry.COLUMN_AGE + " INTEGER," +
-                CharacterContract.CharacterEntry.COLUMN_WEIGHT + " REAL," +
-                CharacterContract.CharacterEntry.COLUMN_HEIGHT + " REAL," +
+                CharacterContract.CharacterEntry.COLUMN_AGE + " STRING," +
+                CharacterContract.CharacterEntry.COLUMN_WEIGHT + " STRING," +
+                CharacterContract.CharacterEntry.COLUMN_HEIGHT + " STRING," +
                 CharacterContract.CharacterEntry.COLUMN_RELIGION_ID + " INTEGER," +
                 CharacterContract.CharacterEntry.COLUMN_ALIGN + " INTEGER NOT NULL," +
 

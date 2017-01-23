@@ -147,4 +147,30 @@ public class RulesUtils {
                 return "";
         }
     }
+
+    public static ContentValues getFirstLevelClassStats(Context context, int selectedClass) {
+        String tableName = RulesContract.ClassEntry.TABLE_NAME;
+        if (tableName == "") return null;
+
+        ContentValues values = null;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + tableName + " WHERE " + RulesContract.ClassEntry._ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Integer.toString(selectedClass)});
+
+            cursor.moveToFirst();
+
+            if (cursor.getCount() > 0) {
+                values = Utility.cursorRowToContentValues(cursor);
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return values;
+    }
 }

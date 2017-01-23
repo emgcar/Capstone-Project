@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
@@ -101,6 +102,7 @@ public class CreateActivityFragment extends Fragment {
                 break;
             case PAGE_DETAIL:
                 rootView = inflater.inflate(R.layout.fragment_create_detail, container, false);
+                create_detail();
                 break;
         }
         classViewHolder = new CreateClassViewHolder(rootView);
@@ -191,6 +193,8 @@ public class CreateActivityFragment extends Fragment {
         });
     }
 
+    //TODO don't allow saving of same name characters
+    //TODO update UI to notify users of this
     private void inputName(Editable editable) {
         ContentValues values = new ContentValues();
 
@@ -222,6 +226,7 @@ public class CreateActivityFragment extends Fragment {
         return values.getAsInteger(column);
     }
 
+    //TODO find way to increase HP on class page when CON stat changes
     public void updateAbilityScores() {
         TextView strText = (TextView) rootView.findViewById(R.id.ability_strength);
         if (strText != null) {
@@ -275,6 +280,7 @@ public class CreateActivityFragment extends Fragment {
             classViewHolder.mFamiliarButton.setVisibility(View.GONE);
 
             ContentValues values = RulesUtils.getFirstLevelStats(getContext(), classSelection);
+
             int baseAttack;
             String baseAttackString;
 
@@ -291,6 +297,7 @@ public class CreateActivityFragment extends Fragment {
                 case RulesUtils.CLASS_CLERIC:
                     classViewHolder.mClassText.setText(getString(R.string.cleric));
                     classViewHolder.mDeityButton.setVisibility(View.VISIBLE);
+                    setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
                     fortSave = values.getAsInteger(RulesContract.ClericEntry.COLUMN_FORT);
@@ -302,6 +309,7 @@ public class CreateActivityFragment extends Fragment {
                     break;
                 case RulesUtils.CLASS_FIGHTER:
                     classViewHolder.mClassText.setText(getString(R.string.fighter));
+                    setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
                     fortSave = values.getAsInteger(RulesContract.FighterEntry.COLUMN_FORT);
@@ -313,6 +321,7 @@ public class CreateActivityFragment extends Fragment {
                     break;
                 case RulesUtils.CLASS_ROGUE:
                     classViewHolder.mClassText.setText(getString(R.string.rogue));
+                    setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
                     fortSave = values.getAsInteger(RulesContract.RogueEntry.COLUMN_FORT);
@@ -324,6 +333,7 @@ public class CreateActivityFragment extends Fragment {
                     break;
                 case RulesUtils.CLASS_WIZARD:
                     classViewHolder.mClassText.setText(getString(R.string.wizard));
+                    setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
                     fortSave = values.getAsInteger(RulesContract.WizardEntry.COLUMN_FORT);
@@ -350,6 +360,20 @@ public class CreateActivityFragment extends Fragment {
         }
     }
 
+    // TODO: update on ability score change
+    public void setHPText(int classSelection) {
+        ContentValues classValues = RulesUtils.getFirstLevelClassStats(getContext(), classSelection);
+        int hitPoints = classValues.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
+
+        ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+        int conScore = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CON);
+        if (conScore != -1) {
+            hitPoints += Utility.scoreToModifier(conScore);
+        }
+
+        String hitPointsString = Integer.toString(hitPoints);
+        classViewHolder.mHPText.setText(hitPointsString);
+    }
 
     public void update_align(int classSelection) {
         if (classSelection == 0) {
@@ -359,8 +383,81 @@ public class CreateActivityFragment extends Fragment {
         }
     }
 
+    public void create_detail() {
+        //TODO set max string length
+        EditText ageText = (EditText) rootView.findViewById(R.id.character_age);
+        ageText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_AGE));
+        ageText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                inputDetail(editable, InProgressContract.CharacterEntry.COLUMN_AGE);
+            }
+        });
+
+        //TODO set max string length
+        EditText weightText = (EditText) rootView.findViewById(R.id.character_weight);
+        weightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_WEIGHT));
+        weightText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                inputDetail(editable, InProgressContract.CharacterEntry.COLUMN_WEIGHT);
+            }
+        });
+
+        //TODO set max string length
+        EditText heightText = (EditText) rootView.findViewById(R.id.character_height);
+        heightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_HEIGHT));
+        heightText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                inputDetail(editable, InProgressContract.CharacterEntry.COLUMN_HEIGHT);
+            }
+        });
+    }
+
+    private void inputDetail(Editable editable, String column) {
+        ContentValues values = new ContentValues();
+
+        String characterName = editable.toString();
+        values.put(column, characterName);
+
+        InProgressUtil.updateInProgressTable(getContext(),
+                InProgressContract.CharacterEntry.TABLE_NAME, values, index);
+    }
+
     public static class CreateClassViewHolder extends RecyclerView.ViewHolder {
         public TextView mClassText;
+        public TextView mHPText;
 
         public Button mDeityButton;
         public Button mSpellsButton;
@@ -375,6 +472,7 @@ public class CreateActivityFragment extends Fragment {
             super(view);
 
             mClassText = (TextView) view.findViewById(R.id.chosen_class);
+            mHPText = (TextView) view.findViewById(R.id.hp);
 
             mDeityButton = (Button) view.findViewById(R.id.select_deity);
             mSpellsButton = (Button) view.findViewById(R.id.select_spells);

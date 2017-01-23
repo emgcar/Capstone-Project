@@ -154,42 +154,42 @@ public class AbilityFragment extends Fragment {
     private void setPreviousState(View rootView) {
         TextView view;
 
-        if (InProgressUtil.isIntegerSet(strConnect)) {
+        if (strConnect != -1) {
             view = (TextView) rootView.findViewById(R.id.ability_strength);
             view.setText(Integer.toString(strength));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(strConnect);
         }
 
-        if (InProgressUtil.isIntegerSet(dexConnect)) {
+        if (dexConnect != -1) {
             view = (TextView) rootView.findViewById(R.id.ability_dexterity);
             view.setText(Integer.toString(dexterity));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(dexConnect);
         }
 
-        if (InProgressUtil.isIntegerSet(conConnect)) {
+        if (conConnect != -1) {
             view = (TextView) rootView.findViewById(R.id.ability_constitution);
             view.setText(Integer.toString(constitution));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(conConnect);
         }
 
-        if (InProgressUtil.isIntegerSet(intConnect)) {
+        if (intConnect != -1) {
             view = (TextView) rootView.findViewById(R.id.ability_intelligence);
             view.setText(Integer.toString(intelligence));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(intConnect);
         }
 
-        if (InProgressUtil.isIntegerSet(wisConnect)) {
+        if (wisConnect != -1) {
             view = (TextView) rootView.findViewById(R.id.ability_wisdom);
             view.setText(Integer.toString(wisdom));
             view.setTypeface(Typeface.DEFAULT_BOLD);
             view.setTag(wisConnect);
         }
 
-        if (InProgressUtil.isIntegerSet(chaConnect)) {
+        if (chaConnect != -1) {
             view = (TextView) rootView.findViewById(R.id.ability_charisma);
             view.setText(Integer.toString(charisma));
             view.setTypeface(Typeface.DEFAULT_BOLD);

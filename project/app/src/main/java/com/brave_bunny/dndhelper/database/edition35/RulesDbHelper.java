@@ -27,12 +27,11 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase = sqLiteDatabase;
         setupSkills();
 
+        setupClassData();
         setupClericData();
         setupClericDomains();
-
         setupFighterData();
         setupRogueData();
-
         setupWizardData();
         setupSpellData();
         setupFamiliarData();
@@ -104,6 +103,27 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_SKILL = "INSERT INTO " + RulesContract.SkillsEntry.TABLE_NAME +
                 " VALUES (" + string + ")";
         mDatabase.execSQL(SQL_CREATE_SKILL);
+    }
+
+    public void setupClassData() {
+        final String SQL_CREATE_CLASS_TABLE = "CREATE TABLE " +
+                RulesContract.ClassEntry.TABLE_NAME + " (" +
+                RulesContract.ClassEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.ClassEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.ClassEntry.COLUMN_HIT_DIE + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_CLASS_TABLE);
+
+        insertInClassTable("1, 'Cleric', 8");
+        insertInClassTable("2, 'Fighter', 10");
+        insertInClassTable("3, 'Rogue', 6");
+        insertInClassTable("4, 'Wizard', 4");
+    }
+
+    public void insertInClassTable(String string) {
+        String SQL_CREATE_CLASSES = "INSERT INTO " + RulesContract.ClassEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_CLASSES);
     }
 
     public void setupClericData() {

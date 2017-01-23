@@ -29,9 +29,9 @@ public class InProgressDbHelper extends SQLiteOpenHelper{
                 InProgressContract.CharacterEntry.COLUMN_GENDER + " INTEGER," +
                 InProgressContract.CharacterEntry.COLUMN_RACE_ID + " INTEGER," +
                 InProgressContract.CharacterEntry.COLUMN_CLASS_ID + " INTEGER," +
-                InProgressContract.CharacterEntry.COLUMN_AGE + " INTEGER," +
-                InProgressContract.CharacterEntry.COLUMN_WEIGHT + " REAL," +
-                InProgressContract.CharacterEntry.COLUMN_HEIGHT + " REAL," +
+                InProgressContract.CharacterEntry.COLUMN_AGE + " STRING," +
+                InProgressContract.CharacterEntry.COLUMN_WEIGHT + " STRING," +
+                InProgressContract.CharacterEntry.COLUMN_HEIGHT + " STRING," +
                 InProgressContract.CharacterEntry.COLUMN_RELIGION_ID + " INTEGER," +
                 InProgressContract.CharacterEntry.COLUMN_ALIGN + " INTEGER," +
 
