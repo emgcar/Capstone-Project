@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
@@ -57,7 +58,8 @@ public class FamiliarActivityFragment extends Fragment {
             String query = "SELECT * FROM " + RulesContract.FamiliarEntry.TABLE_NAME;
             Cursor cursor = db.rawQuery(query, null);
 
-            final FamiliarListAdapter adapter = new FamiliarListAdapter(getContext(), cursor, 0, rowIndex);
+            final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor,
+                    DnDListAdapter.LIST_TYPE_FAMILIAR, 0, rowIndex, 1);
             final ListView listView = (ListView) view.findViewById(R.id.listview_familiars);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -73,7 +75,7 @@ public class FamiliarActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        long familiarId = (long)itemView.getTag(R.string.select_familiar);
+                        long familiarId = cursor.getInt(RulesUtils.COL_FAMILIAR_ID);
 
                         if(InProgressUtil.isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
                             InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, -1);

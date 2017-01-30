@@ -109,7 +109,8 @@ public class DeityActivityFragment extends Fragment {
                     + " WHERE " + alignment + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{"1"});
 
-            final DeityListAdapter adapter = new DeityListAdapter(getContext(), cursor, 0, rowIndex, numberDomains);
+            final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor, 0,
+                    DnDListAdapter.LIST_TYPE_DEITY, rowIndex, numberDomains);
             final ListView listView = (ListView) view.findViewById(R.id.listview_cleric_domains);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -147,7 +148,7 @@ public class DeityActivityFragment extends Fragment {
         }
     }
 
-    public void updateNumberSelected(DeityListAdapter adapter) {
+    public void updateNumberSelected(DnDListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_domains);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.select_domains, numberSelected));

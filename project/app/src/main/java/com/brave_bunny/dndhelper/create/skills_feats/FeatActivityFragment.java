@@ -15,9 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.classes.DeityActivity;
-import com.brave_bunny.dndhelper.create.classes.DeityListAdapter;
-import com.brave_bunny.dndhelper.create.classes.FamiliarListAdapter;
+import com.brave_bunny.dndhelper.create.classes.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
@@ -63,7 +61,8 @@ public class FeatActivityFragment extends Fragment {
 
             int numberFeats = getNumberFeats();
 
-            final DeityListAdapter adapter = new DeityListAdapter(getContext(), cursor, 0, rowIndex, numberFeats);
+            final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor, 0,
+                    DnDListAdapter.LIST_TYPE_DEITY, rowIndex, numberFeats);
             final ListView listView = (ListView) view.findViewById(R.id.listview_feat);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -106,7 +105,7 @@ public class FeatActivityFragment extends Fragment {
         return 2;
     }
 
-    public void updateNumberSelected(DeityListAdapter adapter) {
+    public void updateNumberSelected(DnDListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.selected_spells, numberSelected, getNumberFeats()));

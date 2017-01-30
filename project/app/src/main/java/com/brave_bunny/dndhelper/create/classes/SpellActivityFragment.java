@@ -28,7 +28,6 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 public class SpellActivityFragment extends Fragment {
 
     private View mRootView;
-    private ContentValues mValues;
     private int mIntScore;
     static long rowIndex;
     InProgressUtil mInProgressUtil;
@@ -43,9 +42,8 @@ public class SpellActivityFragment extends Fragment {
         mInProgressUtil = new InProgressUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
-        mValues = (ContentValues) extras.get(DeityActivity.inprogressValues);
         rowIndex = (long) extras.get(DeityActivity.indexValue);
-        mIntScore = mValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_INT);
+        mIntScore = InProgressUtil.getTotalIntelligenceScore(getContext(), rowIndex);
 
         getSpells(getContext(), mRootView);
 
@@ -65,7 +63,8 @@ public class SpellActivityFragment extends Fragment {
 
             int numberSpells = getNumberSpells();
 
-            final SpellListAdapter adapter = new SpellListAdapter(getContext(), cursor, 0, rowIndex, numberSpells);
+            final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor, 0,
+                    DnDListAdapter.LIST_TYPE_SPELL, rowIndex, numberSpells);
             final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -112,7 +111,7 @@ public class SpellActivityFragment extends Fragment {
         return numberSpells;
     }
 
-    public void updateNumberSelected(SpellListAdapter adapter) {
+    public void updateNumberSelected(DnDListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.selected_spells, numberSelected, getNumberSpells()));
