@@ -18,14 +18,15 @@ public class RulesProvider extends ContentProvider {
 
     public static final int SKILLS = 100;
     public static final int FEATS = 101;
-    public static final int CLASSES = 102;
-    public static final int CLERIC = 103;
-    public static final int CLERIC_DOMAINS = 104;
-    public static final int FIGHTER = 105;
-    public static final int ROGUE = 106;
-    public static final int WIZARD = 107;
-    public static final int SPELLS = 108;
-    public static final int FAMILIARS = 109;
+    public static final int RACES = 102;
+    public static final int CLASSES = 103;
+    public static final int CLERIC = 104;
+    public static final int CLERIC_DOMAINS = 105;
+    public static final int FIGHTER = 106;
+    public static final int ROGUE = 107;
+    public static final int WIZARD = 108;
+    public static final int SPELLS = 109;
+    public static final int FAMILIARS = 110;
 
 
     @Override
@@ -46,6 +47,9 @@ public class RulesProvider extends ContentProvider {
                 break;
             case FEATS:
                 tableName = RulesContract.SkillsEntry.TABLE_NAME;
+                break;
+            case RACES:
+                tableName = RulesContract.RaceEntry.TABLE_NAME;
                 break;
             case CLASSES:
                 tableName = RulesContract.ClassEntry.TABLE_NAME;
@@ -97,6 +101,8 @@ public class RulesProvider extends ContentProvider {
                 return RulesContract.SkillsEntry.CONTENT_TYPE;
             case FEATS:
                 return RulesContract.SkillsEntry.CONTENT_TYPE;
+            case RACES:
+                return RulesContract.RaceEntry.CONTENT_TYPE;
             case CLASSES:
                 return RulesContract.ClassEntry.CONTENT_TYPE;
             case CLERIC:
@@ -147,6 +153,7 @@ public class RulesProvider extends ContentProvider {
         // For each type of URI you want to add, create a corresponding code.
         matcher.addURI(authority, RulesContract.PATH_SKILLS, SKILLS);
         matcher.addURI(authority, RulesContract.PATH_FEATS, FEATS);
+        matcher.addURI(authority, RulesContract.PATH_RACES, RACES);
         matcher.addURI(authority, RulesContract.PATH_CLASSES, CLASSES);
         matcher.addURI(authority, RulesContract.PATH_CLERIC, CLERIC);
         matcher.addURI(authority, RulesContract.PATH_CLERIC_DOMAINS, CLERIC_DOMAINS);

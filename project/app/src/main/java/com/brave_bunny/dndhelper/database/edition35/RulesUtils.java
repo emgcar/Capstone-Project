@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 
 /**
  * Created by Jemma on 1/11/2017.
@@ -16,6 +17,10 @@ public class RulesUtils {
     public final static int CLASS_FIGHTER = 2;
     public final static int CLASS_ROGUE = 3;
     public final static int CLASS_WIZARD = 4;
+
+    public final static int RACE_HUMAN = 1;
+    public final static int RACE_DWARF = 2;
+    public final static int RACE_ELF = 3;
 
     private static final String[] CLERIC_STAT_COLUMNS = {
             RulesContract.ClericEntry.TABLE_NAME + "." + RulesContract.ClericEntry._ID,
@@ -190,6 +195,28 @@ public class RulesUtils {
             if (cursor.getCount() > 0) {
                 values = Utility.cursorRowToContentValues(cursor);
             }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return values;
+    }
+
+    public static ContentValues getRaceStats(Context context, int selectedRace) {
+        ContentValues values;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.RaceEntry.TABLE_NAME + " WHERE "
+                    + RulesContract.RaceEntry._ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Integer.toString(selectedRace)});
+
+            cursor.moveToFirst();
+
+            values = Utility.cursorRowToContentValues(cursor);
             cursor.close();
         } finally {
             db.close();

@@ -26,6 +26,8 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         setupSkills();
         setupFeats();
 
+        setupRaceData();
+
         setupClassData();
         setupClericData();
         setupClericDomains();
@@ -127,6 +129,32 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_FEATS = "INSERT INTO " + RulesContract.FeatEntry.TABLE_NAME +
                 " VALUES (" + string + ")";
         mDatabase.execSQL(SQL_CREATE_FEATS);
+    }
+
+    public void setupRaceData() {
+        final String SQL_CREATE_CLASS_TABLE = "CREATE TABLE " +
+                RulesContract.RaceEntry.TABLE_NAME + " (" +
+                RulesContract.RaceEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.RaceEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_STR + " INTEGER NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_DEX + " INTEGER NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_CON + " INTEGER NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_INT + " INTEGER NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_WIS + " INTEGER NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_CHA + " INTEGER NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_CLASS_TABLE);
+
+        //                             STR DEX CON INT WIS CHA
+        insertInRaceTable("1, 'Human',  0,  0,  0,  0,  0,  0");
+        insertInRaceTable("2, 'Dwarf',  0,  0,  2,  0,  0, -2");
+        insertInRaceTable("3, 'Elf',    0,  2, -2,  0,  0,  0");
+    }
+
+    public void insertInRaceTable(String string) {
+        String SQL_CREATE_CLASSES = "INSERT INTO " + RulesContract.RaceEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_CLASSES);
     }
 
     public void setupClassData() {

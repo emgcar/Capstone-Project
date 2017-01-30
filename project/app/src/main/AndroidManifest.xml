@@ -46,7 +46,7 @@
             android:label="Skiills">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.MainActivity" />
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
         <activity
             android:name=".play.battle.BattleActivity"

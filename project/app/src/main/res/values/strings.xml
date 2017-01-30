@@ -188,7 +188,7 @@
     <string name="title_activity_feat">FeatActivity</string>
 
     <string name="hp_prompt" translatable="true">HP: </string>
-    <string name="select_deity" translatable="true">Select Diety</string>
+    <string name="select_deity" translatable="true">Select Deity</string>
     <string name="select_spells" translatable="true">Select Spells</string>
     <string name="row_adapter" translatable="false">Row Adapter</string>
 

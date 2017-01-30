@@ -94,7 +94,7 @@ public class InProgressUtil {
     public static final int COL_CHARACTER_AC = 26;
     public static final int COL_CHARACTER_HP = 27;
 
-    public static final int COL_CHARACTER_FAMILIAR = 28;
+    private static final int COL_CHARACTER_FAMILIAR = 28;
 
     public static ContentValues getInProgressRow(Context context, long rowIndex) {
         ContentValues values;
@@ -119,7 +119,7 @@ public class InProgressUtil {
     }
 
 
-    public static int getInProgressValue(Context context, long rowIndex, int colIndex) {
+    private static int getInProgressValue(Context context, long rowIndex, int colIndex) {
         int value;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
@@ -286,7 +286,7 @@ public class InProgressUtil {
             case RulesUtils.CLASS_ROGUE:
                 break;
             case RulesUtils.CLASS_WIZARD:
-                isPartiallyFilled |= isFamiliarSelected(context, values);
+                isPartiallyFilled |= isFamiliarSelected(values);
                 int numberSpells = numberSpellsSelected(context, values);
                 isPartiallyFilled |= (numberSpells > 0);
                 break;
@@ -331,7 +331,7 @@ public class InProgressUtil {
             case RulesUtils.CLASS_ROGUE:
                 break;
             case RulesUtils.CLASS_WIZARD:
-                isFilled &= isFamiliarSelected(context, values);
+                isFilled &= isFamiliarSelected(values);
 
                 int numberSpells = numberSpellsSelected(context, values);
                 Object intScore = values.get(InProgressContract.CharacterEntry.COLUMN_INT);
@@ -344,7 +344,7 @@ public class InProgressUtil {
         return isFilled;
     }
 
-    public static int numberDomainsSelected(Context context, ContentValues values) {
+    private static int numberDomainsSelected(Context context, ContentValues values) {
         long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
         int numberDomains;
 
@@ -365,12 +365,11 @@ public class InProgressUtil {
         return numberDomains;
     }
 
-    //TODO: familiar saving
-    public static boolean isFamiliarSelected(Context context, ContentValues values) {
+    private static boolean isFamiliarSelected(ContentValues values) {
         return isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID);
     }
 
-    public static int numberSpellsSelected(Context context, ContentValues values) {
+    private static int numberSpellsSelected(Context context, ContentValues values) {
         long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
         int numberSpells;
 
@@ -391,17 +390,17 @@ public class InProgressUtil {
         return numberSpells;
     }
 
-    public static boolean isOptionSelected(ContentValues values, String column) {
+    private static boolean isOptionSelected(ContentValues values, String column) {
         int inProgressValue = values.getAsInteger(column);
         return (inProgressValue > 0);
     }
 
-    public static boolean isIntegerSet(ContentValues values, String column) {
+    private static boolean isIntegerSet(ContentValues values, String column) {
         int inProgressValue = values.getAsInteger(column);
         return (inProgressValue != -1);
     }
 
-    public static boolean isStringSet(ContentValues values, String column) {
+    private static boolean isStringSet(ContentValues values, String column) {
         String inProgressValue = values.getAsString(column);
         return (!inProgressValue.equals(""));
     }
@@ -449,6 +448,7 @@ public class InProgressUtil {
             if (cursor.getCount() > 0) {
                 isSelected = true;
             }
+            cursor.close();
         } finally {
             db.close();
         }
@@ -466,6 +466,7 @@ public class InProgressUtil {
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numDomains = cursor.getCount();
+            cursor.close();
         } finally {
             db.close();
         }
@@ -518,6 +519,7 @@ public class InProgressUtil {
             if (cursor.getCount() > 0) {
                 isSelected = true;
             }
+            cursor.close();
         } finally {
             db.close();
         }
@@ -535,59 +537,11 @@ public class InProgressUtil {
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numSpells = cursor.getCount();
+            cursor.close();
         } finally {
             db.close();
         }
         return numSpells;
-    }
-
-    //TODO for all final tables
-    public void removeAllCharacterData(Context context, long rowIndex) {
-        removeAllCharacterStats(context, rowIndex);
-        removeAllCharacterDomains(context, rowIndex);
-        removeAllCharacterSpells(context, rowIndex);
-    }
-
-    public void removeAllCharacterStats(Context context, long rowIndex) {
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "DELETE FROM " + InProgressContract.CharacterEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.CharacterEntry._ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-        } finally {
-            db.close();
-        }
-    }
-
-    public void removeAllCharacterDomains(Context context, long rowIndex) {
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "DELETE FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-        } finally {
-            db.close();
-        }
-    }
-
-    public void removeAllCharacterSpells(Context context, long rowIndex) {
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "DELETE FROM " + InProgressContract.SpellEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.SpellEntry.COLUMN_CHARACTER_ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-        } finally {
-            db.close();
-        }
     }
 
     public static boolean isFamiliarSameAsSelected(Context context, long rowIndex, long familiarId) {
@@ -603,6 +557,107 @@ public class InProgressUtil {
         ContentValues values = getInProgressRow(context, rowIndex);
         values.put(InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID, familiarId);
         updateInProgressTable(context, InProgressContract.CharacterEntry.TABLE_NAME, values, rowIndex);
+    }
+
+    //TODO for all final tables
+    public void removeAllCharacterData(Context context, long rowIndex) {
+        removeAllCharacterStats(context, rowIndex);
+        removeAllCharacterDomains(context, rowIndex);
+        removeAllCharacterSpells(context, rowIndex);
+    }
+
+    private void removeAllCharacterStats(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.CharacterEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.CharacterEntry._ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
+    private void removeAllCharacterDomains(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
+    private void removeAllCharacterSpells(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.SpellEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.SpellEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
+    private static int getTotalAbilityScore(Context context, long rowIndex,
+                                     String inProgressAbilityColumn, String raceAbilityColumn) {
+
+        ContentValues inProgressValues = getInProgressRow(context, rowIndex);
+        int baseScore = inProgressValues.getAsInteger(inProgressAbilityColumn);
+        if (baseScore == -1) return baseScore;
+
+        int raceId = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_RACE_ID);
+        if (raceId != 0) {
+            ContentValues raceValues = RulesUtils.getRaceStats(context, raceId);
+            baseScore += raceValues.getAsInteger(raceAbilityColumn);
+        }
+
+        return baseScore;
+    }
+
+    public static int getTotalStrengthScore(Context context, long rowIndex) {
+        return getTotalAbilityScore(context, rowIndex,
+                InProgressContract.CharacterEntry.COLUMN_STR,
+                RulesContract.RaceEntry.COLUMN_STR);
+    }
+
+    public static int getTotalDexterityScore(Context context, long rowIndex) {
+        return getTotalAbilityScore(context, rowIndex,
+                InProgressContract.CharacterEntry.COLUMN_DEX,
+                RulesContract.RaceEntry.COLUMN_DEX);
+    }
+
+    public static int getTotalConstitutionScore(Context context, long rowIndex) {
+        return getTotalAbilityScore(context, rowIndex,
+                InProgressContract.CharacterEntry.COLUMN_CON,
+                RulesContract.RaceEntry.COLUMN_CON);
+    }
+
+    public static int getTotalIntelligenceScore(Context context, long rowIndex) {
+        return getTotalAbilityScore(context, rowIndex,
+                InProgressContract.CharacterEntry.COLUMN_INT,
+                RulesContract.RaceEntry.COLUMN_INT);
+    }
+
+    public static int getTotalWisdomScore(Context context, long rowIndex) {
+        return getTotalAbilityScore(context, rowIndex,
+                InProgressContract.CharacterEntry.COLUMN_WIS,
+                RulesContract.RaceEntry.COLUMN_WIS);
+    }
+
+    public static int getTotalCharismaScore(Context context, long rowIndex) {
+        return getTotalAbilityScore(context, rowIndex,
+                InProgressContract.CharacterEntry.COLUMN_CHA,
+                RulesContract.RaceEntry.COLUMN_CHA);
     }
 
 }

@@ -16,6 +16,7 @@ public class RulesContract {
 
     public static final String PATH_SKILLS = "skills";
     public static final String PATH_FEATS = "feats";
+    public static final String PATH_RACES = "races";
     public static final String PATH_CLASSES = "classes";
     public static final String PATH_CLERIC = "cleric";
     public static final String PATH_CLERIC_DOMAINS = "cleric_domains";
@@ -61,6 +62,29 @@ public class RulesContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FEATS;
 
         public static Uri buildSkillUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class RaceEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_RACES).build();
+
+        public static final String TABLE_NAME = "races";
+
+        public static final String COLUMN_NAME = "name";
+
+        public static final String COLUMN_STR = "strength_mod";
+        public static final String COLUMN_DEX = "dexterity_mod";
+        public static final String COLUMN_CON = "constitution_mod";
+        public static final String COLUMN_INT = "intelligence_mod";
+        public static final String COLUMN_WIS = "wisdom_mod";
+        public static final String COLUMN_CHA = "charisma_mod";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RACES;
+
+        public static Uri buildRaceUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

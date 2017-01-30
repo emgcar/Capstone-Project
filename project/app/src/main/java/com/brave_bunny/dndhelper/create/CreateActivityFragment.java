@@ -46,7 +46,9 @@ public class CreateActivityFragment extends Fragment {
     OnClassSelectedListener mClassCallback;
     OnAlignSelectedListener mAlignCallback;
 
+    CreateBaseViewHolder baseViewHolder;
     CreateClassViewHolder classViewHolder;
+    CreateDetailViewHolder detailViewHolder;
 
     public interface OnClassSelectedListener {
         public void onClassSelected(int position);
@@ -88,10 +90,12 @@ public class CreateActivityFragment extends Fragment {
         switch (pageNumber) {
             case PAGE_BASE:
                 rootView = inflater.inflate(R.layout.fragment_create_base, container, false);
+                baseViewHolder = new CreateBaseViewHolder(rootView);
                 create_base();
                 break;
             case PAGE_CLASS:
                 rootView = inflater.inflate(R.layout.fragment_create_class, container, false);
+                classViewHolder = new CreateClassViewHolder(rootView);
                 create_class();
                 break;
             case PAGE_SKILL:
@@ -102,17 +106,16 @@ public class CreateActivityFragment extends Fragment {
                 break;
             case PAGE_DETAIL:
                 rootView = inflater.inflate(R.layout.fragment_create_detail, container, false);
+                detailViewHolder = new CreateDetailViewHolder(rootView);
                 create_detail();
                 break;
         }
-        classViewHolder = new CreateClassViewHolder(rootView);
         return rootView;
     }
 
     private void create_base() {
-        EditText nameText = (EditText) rootView.findViewById(R.id.character_name);
-        nameText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_NAME));
-        nameText.addTextChangedListener(new TextWatcher() {
+        baseViewHolder.mNameText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_NAME));
+        baseViewHolder.mNameText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -129,12 +132,11 @@ public class CreateActivityFragment extends Fragment {
             }
         });
 
-        ToggleButton genderToggle = (ToggleButton) rootView.findViewById(R.id.gender_toggle);
         int value = getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_GENDER);
         if (value == CharacterContract.GENDER_FEMALE) {
-            genderToggle.performClick();
+            baseViewHolder.mGenderToggle.performClick();
         }
-        genderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        baseViewHolder.mGenderToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int gender;
                 if (isChecked) {
@@ -146,9 +148,8 @@ public class CreateActivityFragment extends Fragment {
             }
         });
 
-        Spinner classSpinner = (Spinner) rootView.findViewById(R.id.class_spinner);
-        classSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID));
-        classSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        baseViewHolder.mClassSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID));
+        baseViewHolder.mClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, i);
@@ -161,12 +162,12 @@ public class CreateActivityFragment extends Fragment {
             }
         });
 
-        Spinner raceSpinner = (Spinner) rootView.findViewById(R.id.race_spinner);
-        raceSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_RACE_ID));
-        raceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        baseViewHolder.mRaceSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_RACE_ID));
+        baseViewHolder.mRaceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_RACE_ID, i);
+                updateAbilityScores();
             }
 
             @Override
@@ -177,9 +178,8 @@ public class CreateActivityFragment extends Fragment {
 
         updateAbilityScores();
 
-        Spinner alignSpinner = (Spinner) rootView.findViewById(R.id.align_spinner);
-        alignSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_ALIGN));
-        alignSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        baseViewHolder.mAlignSpinner.setSelection(getSpinnerValue(InProgressContract.CharacterEntry.COLUMN_ALIGN));
+        baseViewHolder.mAlignSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_ALIGN, i);
@@ -229,36 +229,29 @@ public class CreateActivityFragment extends Fragment {
     //TODO find way to change HP on class page when CON stat changes
     //TODO: find way to change max spells when INT stat changes
     public void updateAbilityScores() {
-        TextView strText = (TextView) rootView.findViewById(R.id.ability_strength);
-        if (strText != null) {
-            strText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_STR));
-
-            TextView dexText = (TextView) rootView.findViewById(R.id.ability_dexterity);
-            dexText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_DEX));
-
-            TextView conText = (TextView) rootView.findViewById(R.id.ability_constitution);
-            conText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CON));
-
-            TextView intText = (TextView) rootView.findViewById(R.id.ability_intelligence);
-            intText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_INT));
-
-            TextView wisText = (TextView) rootView.findViewById(R.id.ability_wisdom);
-            wisText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_WIS));
-
-            TextView chaText = (TextView) rootView.findViewById(R.id.ability_charisma);
-            chaText.setText(getAbilityScoreText(InProgressContract.CharacterEntry.COLUMN_CHA));
+        if (baseViewHolder != null) {
+            setAbilityScore(baseViewHolder.mStrText,
+                    InProgressUtil.getTotalStrengthScore(getContext(), index));
+            setAbilityScore(baseViewHolder.mDexText,
+                    InProgressUtil.getTotalDexterityScore(getContext(), index));
+            setAbilityScore(baseViewHolder.mConText,
+                    InProgressUtil.getTotalConstitutionScore(getContext(), index));
+            setAbilityScore(baseViewHolder.mIntText,
+                    InProgressUtil.getTotalIntelligenceScore(getContext(), index));
+            setAbilityScore(baseViewHolder.mWisText,
+                    InProgressUtil.getTotalWisdomScore(getContext(), index));
+            setAbilityScore(baseViewHolder.mChaText,
+                    InProgressUtil.getTotalCharismaScore(getContext(), index));
         }
     }
 
-    public String getAbilityScoreText(String column) {
-        ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
-        int score = values.getAsInteger(column);
-
-        if (score == -1) {
-            return "";
-        } else {
-            return Integer.toString(score);
+    //TODO set content description
+    public void setAbilityScore(TextView view, int score) {
+        String scoreString = "";
+        if (score != -1) {
+            scoreString = Integer.toString(score);
         }
+        view.setText(scoreString);
     }
 
     public void create_class() {
@@ -270,6 +263,7 @@ public class CreateActivityFragment extends Fragment {
         update_class(classSelection);
     }
 
+    //TODO: add stat buffs to ref, fort, will
     public void update_class(int classSelection) {
         Bundle args = getArguments();
         int pageNumber = args.getInt(PAGE_NUMBER);
@@ -387,9 +381,8 @@ public class CreateActivityFragment extends Fragment {
 
     public void create_detail() {
         //TODO set max string length
-        EditText ageText = (EditText) rootView.findViewById(R.id.character_age);
-        ageText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_AGE));
-        ageText.addTextChangedListener(new TextWatcher() {
+        detailViewHolder.mAgeText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_AGE));
+        detailViewHolder.mAgeText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -407,9 +400,8 @@ public class CreateActivityFragment extends Fragment {
         });
 
         //TODO set max string length
-        EditText weightText = (EditText) rootView.findViewById(R.id.character_weight);
-        weightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_WEIGHT));
-        weightText.addTextChangedListener(new TextWatcher() {
+        detailViewHolder.mWeightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_WEIGHT));
+        detailViewHolder.mWeightText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -427,9 +419,8 @@ public class CreateActivityFragment extends Fragment {
         });
 
         //TODO set max string length
-        EditText heightText = (EditText) rootView.findViewById(R.id.character_height);
-        heightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_HEIGHT));
-        heightText.addTextChangedListener(new TextWatcher() {
+        detailViewHolder.mHeightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_HEIGHT));
+        detailViewHolder.mHeightText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -455,6 +446,38 @@ public class CreateActivityFragment extends Fragment {
 
         InProgressUtil.updateInProgressTable(getContext(),
                 InProgressContract.CharacterEntry.TABLE_NAME, values, index);
+    }
+
+    public static class CreateBaseViewHolder extends RecyclerView.ViewHolder {
+        public EditText mNameText;
+        public ToggleButton mGenderToggle;
+        public Spinner mClassSpinner;
+        public Spinner mRaceSpinner;
+        public Spinner mAlignSpinner;
+
+        public TextView mStrText;
+        public TextView mDexText;
+        public TextView mConText;
+        public TextView mIntText;
+        public TextView mWisText;
+        public TextView mChaText;
+
+        public CreateBaseViewHolder(View view) {
+            super(view);
+
+            mNameText = (EditText) view.findViewById(R.id.character_name);
+            mGenderToggle = (ToggleButton) view.findViewById(R.id.gender_toggle);
+            mClassSpinner = (Spinner) view.findViewById(R.id.class_spinner);
+            mRaceSpinner = (Spinner) view.findViewById(R.id.race_spinner);
+            mAlignSpinner = (Spinner) view.findViewById(R.id.align_spinner);
+
+            mStrText = (TextView) view.findViewById(R.id.ability_strength);
+            mDexText = (TextView) view.findViewById(R.id.ability_dexterity);
+            mConText = (TextView) view.findViewById(R.id.ability_constitution);
+            mIntText = (TextView) view.findViewById(R.id.ability_intelligence);
+            mWisText = (TextView) view.findViewById(R.id.ability_wisdom);
+            mChaText = (TextView) view.findViewById(R.id.ability_charisma);
+        }
     }
 
     public static class CreateClassViewHolder extends RecyclerView.ViewHolder {
@@ -484,6 +507,20 @@ public class CreateActivityFragment extends Fragment {
             mFortText = (TextView) view.findViewById(R.id.fort_save);
             mRefText = (TextView) view.findViewById(R.id.ref_save);
             mWillText = (TextView) view.findViewById(R.id.will_save);
+        }
+    }
+
+    public static class CreateDetailViewHolder extends RecyclerView.ViewHolder {
+        public EditText mAgeText;
+        public EditText mWeightText;
+        public EditText mHeightText;
+
+        public CreateDetailViewHolder(View view) {
+            super(view);
+
+            mAgeText = (EditText) view.findViewById(R.id.character_age);
+            mWeightText = (EditText) view.findViewById(R.id.character_weight);
+            mHeightText = (EditText) view.findViewById(R.id.character_height);
         }
     }
 }
