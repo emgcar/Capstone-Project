@@ -102,6 +102,14 @@ public class RulesUtils {
 
     public static final int numberSpellsUntilLevelOne = 19;
 
+    private static final String[] FEATS_COLUMNS = {
+            RulesContract.FeatEntry.TABLE_NAME + "." + RulesContract.FeatEntry._ID,
+            RulesContract.FeatEntry.COLUMN_NAME
+    };
+
+    public static final int COL_FEAT_ID = 0;
+    public static final int COL_FEAT_NAME = 1;
+
 
     public static Cursor getAllSkills(Context context) {
             Cursor cursor;

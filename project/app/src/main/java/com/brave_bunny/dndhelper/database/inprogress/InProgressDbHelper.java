@@ -24,6 +24,7 @@ public class InProgressDbHelper extends SQLiteOpenHelper{
         addCharacterTable(sqLiteDatabase);
         addClericDomainTable(sqLiteDatabase);
         addSpellTable(sqLiteDatabase);
+        addFeatTable(sqLiteDatabase);
     }
 
     private void addCharacterTable(SQLiteDatabase sqLiteDatabase) {

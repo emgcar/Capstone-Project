@@ -660,4 +660,72 @@ public class InProgressUtil {
                 RulesContract.RaceEntry.COLUMN_CHA);
     }
 
+    public static int getNumberFeatsSelected(Context context, long rowIndex) {
+        int numDomains = 0;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.FeatEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.FeatEntry.COLUMN_CHARACTER_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            numDomains = cursor.getCount();
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return numDomains;
+    }
+
+    public static boolean isFeatSelected(Context context, long rowIndex, long featId) {
+        boolean isSelected = false;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.FeatEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.FeatEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.FeatEntry.COLUMN_FEAT_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(featId)});
+            if (cursor.getCount() > 0) {
+                isSelected = true;
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return isSelected;
+    }
+
+    public void removeFeatSelection(Context context, long rowIndex, int featId) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.FeatEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.FeatEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.FeatEntry.COLUMN_FEAT_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(featId)});
+        } finally {
+            db.close();
+        }
+    }
+
+    public void addFeatSelection(Context context, long rowIndex, int featId) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.FeatEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.FeatEntry.COLUMN_FEAT_ID, featId);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(InProgressContract.FeatEntry.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
+    }
+
 }

@@ -15,9 +15,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.classes.DnDListAdapter;
+import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
@@ -62,7 +63,7 @@ public class FeatActivityFragment extends Fragment {
             int numberFeats = getNumberFeats();
 
             final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor, 0,
-                    DnDListAdapter.LIST_TYPE_DEITY, rowIndex, numberFeats);
+                    DnDListAdapter.LIST_TYPE_FEAT, rowIndex, numberFeats);
             final ListView listView = (ListView) view.findViewById(R.id.listview_feat);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -78,17 +79,17 @@ public class FeatActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        int featId = cursor.getInt(RulesUtils.COL_FEAT_ID);
 
-                        //not working accurately
-                        if (itemView.isEnabled()) {
+                        if(InProgressUtil.isFeatSelected(getContext(), rowIndex, featId)) {
                             adapter.decreaseNumberSelected();
+                            mInProgressUtil.removeFeatSelection(getContext(), rowIndex, featId);
                             itemView.setEnabled(false);
                         } else {
                             if (!adapter.atMaxSelected()) {
                                 adapter.increaseNumberSelected();
+                                mInProgressUtil.addFeatSelection(getContext(), rowIndex, featId);
                                 itemView.setEnabled(true);
-                            } else {
-                                itemView.setEnabled(false);
                             }
                         }
                         updateNumberSelected(adapter);
@@ -106,9 +107,9 @@ public class FeatActivityFragment extends Fragment {
     }
 
     public void updateNumberSelected(DnDListAdapter adapter) {
-        TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
+        TextView textView = (TextView) mRootView.findViewById(R.id.remaining_feats);
         int numberSelected = adapter.getNumberSelected();
-        textView.setText(getString(R.string.selected_spells, numberSelected, getNumberFeats()));
+        textView.setText(getString(R.string.selected_feats, numberSelected, getNumberFeats()));
     }
 
     /* START http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */

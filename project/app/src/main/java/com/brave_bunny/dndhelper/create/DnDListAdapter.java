@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create.classes;
+package com.brave_bunny.dndhelper.create;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -21,6 +21,7 @@ public class DnDListAdapter extends CursorAdapter {
     public static final int LIST_TYPE_DEITY = 0;
     public static final int LIST_TYPE_FAMILIAR = 1;
     public static final int LIST_TYPE_SPELL = 2;
+    public static final int LIST_TYPE_FEAT = 3;
 
 
     View mView;
@@ -54,6 +55,9 @@ public class DnDListAdapter extends CursorAdapter {
             case LIST_TYPE_SPELL:
                 numberSelected = InProgressUtil.getNumberSpellSelected(context, mRowIndex);
                 break;
+            case LIST_TYPE_FEAT:
+                numberSelected = InProgressUtil.getNumberFeatsSelected(context, mRowIndex);
+                break;
         }
         return mView;
     }
@@ -76,6 +80,10 @@ public class DnDListAdapter extends CursorAdapter {
             case LIST_TYPE_SPELL:
                 name = cursor.getString(RulesUtils.COL_SPELL_NAME);
                 view.setTag(R.string.select_spells, cursor.getLong(RulesUtils.COL_SPELL_ID));
+                break;
+            case LIST_TYPE_FEAT:
+                name = cursor.getString(RulesUtils.COL_FEAT_NAME);
+                view.setTag(R.string.select_feats, cursor.getLong(RulesUtils.COL_FEAT_ID));
                 break;
         }
 
@@ -105,6 +113,12 @@ public class DnDListAdapter extends CursorAdapter {
             case LIST_TYPE_SPELL:
                 index = (long)view.getTag(R.string.select_spells);
                 if (InProgressUtil.isSpellSelected(mContext, mRowIndex, index)) {
+                    view.setEnabled(true);
+                }
+                break;
+            case LIST_TYPE_FEAT:
+                index = (long)view.getTag(R.string.select_feats);
+                if (InProgressUtil.isFeatSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;

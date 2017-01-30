@@ -1,6 +1,5 @@
 package com.brave_bunny.dndhelper.create.classes;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -16,10 +15,10 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**

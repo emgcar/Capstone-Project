@@ -212,4 +212,9 @@
     <string name="select_weapons" translatable="true">Select Weapons</string>
     <string name="select_items" translatable="true">Select Items</string>
 
+
+    <!-- spells -->
+    <string name="selected_feats" translatable="true">Selected Feats: <xliff:g id="curr">%1$d</xliff:g>/<xliff:g id="max">%2$d</xliff:g></string>
+
+
 </resources>
