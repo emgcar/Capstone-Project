@@ -27,6 +27,7 @@ public class CharacterContract {
     public static final int EQUIPPED_FALSE = 0;
     public static final int EQUIPPED_TRUE = 1;
 
+    // on change, update CharacterUtil.java, createNewCharacter()
     public static final class CharacterEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CHARACTERS).build();

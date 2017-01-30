@@ -560,13 +560,13 @@ public class InProgressUtil {
     }
 
     //TODO for all final tables
-    public void removeAllCharacterData(Context context, long rowIndex) {
+    public static void removeAllCharacterData(Context context, long rowIndex) {
         removeAllCharacterStats(context, rowIndex);
         removeAllCharacterDomains(context, rowIndex);
         removeAllCharacterSpells(context, rowIndex);
     }
 
-    private void removeAllCharacterStats(Context context, long rowIndex) {
+    private static void removeAllCharacterStats(Context context, long rowIndex) {
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -580,7 +580,7 @@ public class InProgressUtil {
         }
     }
 
-    private void removeAllCharacterDomains(Context context, long rowIndex) {
+    private static void removeAllCharacterDomains(Context context, long rowIndex) {
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -594,7 +594,7 @@ public class InProgressUtil {
         }
     }
 
-    private void removeAllCharacterSpells(Context context, long rowIndex) {
+    private static void removeAllCharacterSpells(Context context, long rowIndex) {
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();

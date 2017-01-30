@@ -71,9 +71,8 @@ public class CreateActivity extends AppCompatActivity
         int characterState = InProgressUtil.checkStateOfCharacterChoices(this, index);
 
         if (characterState == InProgressUtil.STATE_COMPLETE) {
-            ContentValues values = InProgressUtil.getInProgressRow(this, index);
-            CharacterUtil.insertValuesInCharacterTable(this, CharacterContract.CharacterEntry.TABLE_NAME, values);
-            InProgressUtil.deleteValuesFromInProgressTable(this, InProgressContract.CharacterEntry.TABLE_NAME, index);
+            CharacterUtil.createNewCharacter(this, index);
+            InProgressUtil.removeAllCharacterData(this, index);
 
             this.finish();
         }

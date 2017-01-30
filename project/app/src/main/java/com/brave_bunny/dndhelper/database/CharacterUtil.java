@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 import static com.brave_bunny.dndhelper.Utility.getIntFromCursor;
 
@@ -14,6 +17,10 @@ import static com.brave_bunny.dndhelper.Utility.getIntFromCursor;
  */
 
 public class CharacterUtil {
+
+    private static final int TRUE = 1;
+    private static final int FALSE = 0;
+
     private static final String[] CHARACTER_COLUMNS = {
             CharacterContract.CharacterEntry.TABLE_NAME + "." + CharacterContract.CharacterEntry._ID,
             CharacterContract.CharacterEntry.COLUMN_NAME,
@@ -170,10 +177,11 @@ public class CharacterUtil {
         }
     }
 
-    public static long insertValuesInCharacterTable(Context context, String tableName, ContentValues values) {
+    public static long insertValuesInCharacterTable(Context context, ContentValues values) {
         long index;
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String tableName = InProgressContract.CharacterEntry.TABLE_NAME;
 
         try {
             index = db.insert(tableName, null, values);
@@ -181,6 +189,107 @@ public class CharacterUtil {
             db.close();
         }
         return index;
+    }
+
+    //TODO add all chosen content to all tables (deity, spells, familiar, skills, feats, ...)
+    public static long createNewCharacter(Context context, long inProgressIndex) {
+        ContentValues inProgressValues = InProgressUtil.getInProgressRow(context, inProgressIndex);
+        ContentValues characterValues = new ContentValues();
+
+        // adding character name
+        String nameString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_NAME);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_NAME, nameString);
+
+        // adding character gender
+        int genderChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_GENDER);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_GENDER, genderChoice);
+
+        // adding character race
+        int raceChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_RACE_ID);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_RACE, raceChoice);
+
+        // adding character age
+        String ageString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_AGE);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_AGE, ageString);
+
+        // adding character weight
+        String weightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_WEIGHT);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WEIGHT, weightString);
+
+        // adding character height
+        String heightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_HEIGHT);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEIGHT, heightString);
+
+        //TODO save religion?
+        // adding character religion
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_RELIGION_ID, 0);
+
+        // adding character alignment
+        int alignChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ALIGN);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
+
+        // adding character strength
+        int strTotal = InProgressUtil.getTotalStrengthScore(context, inProgressIndex);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_STR, strTotal);
+
+        // adding character dexterity
+        int dexTotal = InProgressUtil.getTotalDexterityScore(context, inProgressIndex);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_DEX, dexTotal);
+
+        // adding character constitution
+        int conTotal = InProgressUtil.getTotalConstitutionScore(context, inProgressIndex);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_CON, conTotal);
+
+        // adding character intelligence
+        int intTotal = InProgressUtil.getTotalIntelligenceScore(context, inProgressIndex);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_INT, intTotal);
+
+        // adding character wisdom
+        int wisTotal = InProgressUtil.getTotalWisdomScore(context, inProgressIndex);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WIS, wisTotal);
+
+        // adding character charisma
+        int chaTotal = InProgressUtil.getTotalCharismaScore(context, inProgressIndex);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_CHA, chaTotal);
+
+        //TODO get base attack, fort, reflex, and will
+        // adding character base attack bonus
+
+        // adding character fortitude
+
+        // adding character reflex
+
+        // adding character will
+
+        //TODO get money and load levels
+        // adding character money
+
+        // adding character light load
+
+        // adding character medium load
+
+        // adding character heavy load
+
+        //TODO get ac, hp max, and hp current
+        // adding character AC
+
+        // adding character HP max
+
+        // adding character HP current
+
+        // adding character in battle
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_IN_BATTLE, FALSE);
+
+        long characterIndex = insertValuesInCharacterTable(context, characterValues);
+
+        //TODO transfer spells
+        //TODO transfer familiar
+        //TODO transfer domains
+        //TODO transfer skills
+        //TODO transfer feats
+        //TODO transfer items
+
+        return characterIndex;
     }
 
     public static void deleteValuesFromCharacterTable(Context context, String tableName, long index) {
