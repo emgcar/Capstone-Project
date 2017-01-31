@@ -27,6 +27,9 @@ public class RulesProvider extends ContentProvider {
     public static final int WIZARD = 108;
     public static final int SPELLS = 109;
     public static final int FAMILIARS = 110;
+    public static final int ARMOR = 111;
+    public static final int WEAPONS = 112;
+    public static final int ITEMS = 113;
 
 
     @Override
@@ -75,6 +78,15 @@ public class RulesProvider extends ContentProvider {
             case FAMILIARS:
                 tableName = RulesContract.FamiliarEntry.TABLE_NAME;
                 break;
+            case ARMOR:
+                tableName = RulesContract.ArmorEntry.TABLE_NAME;
+                break;
+            case WEAPONS:
+                tableName = RulesContract.WeaponEntry.TABLE_NAME;
+                break;
+            case ITEMS:
+                tableName = RulesContract.ItemEntry.TABLE_NAME;
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -119,6 +131,12 @@ public class RulesProvider extends ContentProvider {
                 return RulesContract.SpellsEntry.CONTENT_TYPE;
             case FAMILIARS:
                 return RulesContract.FamiliarEntry.CONTENT_TYPE;
+            case ARMOR:
+                return RulesContract.ArmorEntry.CONTENT_TYPE;
+            case WEAPONS:
+                return RulesContract.WeaponEntry.CONTENT_TYPE;
+            case ITEMS:
+                return RulesContract.ItemEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -162,6 +180,9 @@ public class RulesProvider extends ContentProvider {
         matcher.addURI(authority, RulesContract.PATH_WIZARD, WIZARD);
         matcher.addURI(authority, RulesContract.PATH_SPELLS, SPELLS);
         matcher.addURI(authority, RulesContract.PATH_FAMILIARS, FAMILIARS);
+        matcher.addURI(authority, RulesContract.PATH_ARMOR, ARMOR);
+        matcher.addURI(authority, RulesContract.PATH_WEAPONS, WEAPONS);
+        matcher.addURI(authority, RulesContract.PATH_ITEMS, ITEMS);
 
         return matcher;
     }

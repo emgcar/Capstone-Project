@@ -12,6 +12,9 @@ import com.brave_bunny.dndhelper.create.base.AbilityActivity;
 import com.brave_bunny.dndhelper.create.classes.DeityActivity;
 import com.brave_bunny.dndhelper.create.classes.FamiliarActivity;
 import com.brave_bunny.dndhelper.create.classes.SpellActivity;
+import com.brave_bunny.dndhelper.create.inventory.ArmorActivity;
+import com.brave_bunny.dndhelper.create.inventory.ItemActivity;
+import com.brave_bunny.dndhelper.create.inventory.WeaponActivity;
 import com.brave_bunny.dndhelper.create.skills_feats.FeatActivity;
 import com.brave_bunny.dndhelper.create.skills_feats.SkillsActivity;
 import com.brave_bunny.dndhelper.database.CharacterContract;
@@ -138,5 +141,35 @@ public class CreateActivity extends AppCompatActivity
         featActivity.putExtra(FeatActivity.indexValue, index);
 
         startActivity(featActivity);
+    }
+
+    public void launchArmorSelector(View view) {
+        Intent armorActivity = new Intent(this, ArmorActivity.class);
+
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
+        armorActivity.putExtra(ArmorActivity.inprogressValues, values);
+        armorActivity.putExtra(ArmorActivity.indexValue, index);
+
+        startActivity(armorActivity);
+    }
+
+    public void launchWeaponSelector(View view) {
+        Intent weaponActivity = new Intent(this, WeaponActivity.class);
+
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
+        weaponActivity.putExtra(WeaponActivity.inprogressValues, values);
+        weaponActivity.putExtra(WeaponActivity.indexValue, index);
+
+        startActivity(weaponActivity);
+    }
+
+    public void launchItemSelector(View view) {
+        Intent itemActivity = new Intent(this, ItemActivity.class);
+
+        ContentValues values = InProgressUtil.getInProgressRow(this, index);
+        itemActivity.putExtra(ItemActivity.inprogressValues, values);
+        itemActivity.putExtra(ItemActivity.indexValue, index);
+
+        startActivity(itemActivity);
     }
 }

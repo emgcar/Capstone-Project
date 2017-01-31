@@ -36,6 +36,10 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         setupWizardData();
         setupSpellData();
         setupFamiliarData();
+
+        setupArmorData();
+        setupWeaponData();
+        setupItemData();
     }
 
     public void setupSkills() {
@@ -550,5 +554,121 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.SpellsEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + RulesContract.FamiliarEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
+    }
+
+    public void setupArmorData() {
+        final String SQL_CREATE_ARMOR_TABLE = "CREATE TABLE " +
+                RulesContract.ArmorEntry.TABLE_NAME + " (" +
+                RulesContract.ArmorEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.ArmorEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.ArmorEntry.COLUMN_ARMOR_WEIGHT + " REAL NOT NULL," +
+                RulesContract.ArmorEntry.COLUMN_ARMOR_COST + " REAL NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_ARMOR_TABLE);
+
+        // LIGHT ARMOR
+        insertInArmorTable("1, 'Padded Armor', 10, 5");
+        insertInArmorTable("2, 'Leather Armor', 15, 10");
+        insertInArmorTable("3, 'Studded Leather Armor', 20, 25");
+        insertInArmorTable("4, 'Chain Shirt', 25, 100");
+
+        // MEDIUM ARMOR
+        insertInArmorTable("5, 'Hide Armor', 25, 15");
+        insertInArmorTable("6, 'Scale Mail Armor', 30, 50");
+        insertInArmorTable("7, 'Chainmail Armor', 40, 150");
+        insertInArmorTable("8, 'Breastplace Armor', 30, 200");
+
+        //HEAVY ARMOR
+        insertInArmorTable("9, 'Splint Mail Armor', 45, 200");
+        insertInArmorTable("10, 'Banded Mail Armor', 35, 250");
+        insertInArmorTable("11, 'Half-Plate Armor', 50, 600");
+        insertInArmorTable("12, 'Full Plate Armor', 50, 1500");
+
+    }
+
+    public void insertInArmorTable(String string) {
+        String SQL_CREATE_ARMOR = "INSERT INTO " + RulesContract.ArmorEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_ARMOR);
+    }
+
+    public void setupWeaponData() {
+        final String SQL_CREATE_WEAPON_TABLE = "CREATE TABLE " +
+                RulesContract.WeaponEntry.TABLE_NAME + " (" +
+                RulesContract.WeaponEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.WeaponEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.WeaponEntry.COLUMN_WEAPON_WEIGHT + " REAL NOT NULL," +
+                RulesContract.WeaponEntry.COLUMN_WEAPON_COST + " REAL NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_WEAPON_TABLE);
+
+        // SIMPLE WEAPONS
+        // UNARMED ATTACKS
+        insertInWeaponTable("1, 'Gauntlet', 1, 2");
+        insertInWeaponTable("2, 'Unarmed Strike', 0, 0");
+        // LIGHT MELEE WEAPONS
+        insertInWeaponTable("3, 'Dagger', 1, 2");
+        insertInWeaponTable("4, 'Light Mace', 4, 5");
+        insertInWeaponTable("5, 'Sickle', 2, 6");
+        // ONE-HANDED MELEE WEAPONS
+        insertInWeaponTable("6, 'Club', 3, 0");
+        insertInWeaponTable("7, 'Heavy Mace', 8, 12");
+        insertInWeaponTable("8, 'Morningstar', 6, 8");
+        insertInWeaponTable("9, 'Shortspear', 3, 1");
+        // TWO-HANDED MELEE WEAPONS
+        insertInWeaponTable("10, 'Longspear', 9, 5");
+        insertInWeaponTable("11, 'Quarterstaff', 4, 0");
+        insertInWeaponTable("12, 'Spear', 6, 2");
+        // RANGED WEAPONS
+        insertInWeaponTable("13, 'Heavy Crossbow', 8, 50");
+        insertInWeaponTable("14, 'Light Crossbow', 4, 35");
+        insertInWeaponTable("15, 'Dart', 0.5, 0.5");
+        insertInWeaponTable("16, 'Javelin', 2, 1");
+        insertInWeaponTable("17, 'Sling', 0, 0");
+    }
+
+    public void insertInWeaponTable(String string) {
+        String SQL_CREATE_WEAPON = "INSERT INTO " + RulesContract.WeaponEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_WEAPON);
+    }
+
+    public void setupItemData() {
+        final String SQL_CREATE_ITEM_TABLE = "CREATE TABLE " +
+                RulesContract.ItemEntry.TABLE_NAME + " (" +
+                RulesContract.ItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                RulesContract.ItemEntry.COLUMN_NAME + " STRING NOT NULL," +
+                RulesContract.ItemEntry.COLUMN_ITEM_WEIGHT + " REAL NOT NULL," +
+                RulesContract.ItemEntry.COLUMN_ITEM_COST + " REAL NOT NULL )";
+
+        mDatabase.execSQL(SQL_CREATE_ITEM_TABLE);
+
+        // ADVENTURING GEAR
+        insertInItemTable("1, 'Backpack (empty)', 2, 2");
+        insertInItemTable("2, 'Bedroll', 5, 0.1");
+        insertInItemTable("3, 'Candle', 0, 0.01");
+        insertInItemTable("4, 'Chain (10 ft)', 2, 30");
+        insertInItemTable("5, 'Crowbar', 5, 2");
+        insertInItemTable("6, 'Flint and Steel', 0, 1");
+        insertInItemTable("7, 'Grappling Hook', 4, 1");
+        insertInItemTable("8, 'Ladder (10 foot)', 20, 0.05");
+        insertInItemTable("9, 'Common Lamp', 1, 0.1");
+        insertInItemTable("10, 'Bullseye Lantern', 3, 12");
+        insertInItemTable("11, 'Hooded Lantern', 2, 7");
+        insertInItemTable("12, 'Belt Pouch (empty)', 0.5, 1");
+        insertInItemTable("13, 'Trail Rations', 1, 0.5");
+        insertInItemTable("14, 'Hempen Rope (50 ft)', 10, 1");
+        insertInItemTable("15, 'Silk Rope (50 ft)', 5, 10");
+        insertInItemTable("16, 'Sack (empty)', 0.5, 0.1");
+        insertInItemTable("17, 'Shovel', 8, 2");
+        insertInItemTable("18, 'Tent', 20, 10");
+        insertInItemTable("19, 'Torch', 1, 0.01");
+        insertInItemTable("20, 'Waterskin', 4, 1");
+    }
+
+    public void insertInItemTable(String string) {
+        String SQL_CREATE_ITEM = "INSERT INTO " + RulesContract.ItemEntry.TABLE_NAME +
+                " VALUES (" + string + ")";
+        mDatabase.execSQL(SQL_CREATE_ITEM);
     }
 }

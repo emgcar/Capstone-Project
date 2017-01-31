@@ -215,6 +215,9 @@
 
     <!-- spells -->
     <string name="selected_feats" translatable="true">Selected Feats: <xliff:g id="curr">%1$d</xliff:g>/<xliff:g id="max">%2$d</xliff:g></string>
+    <string name="title_activity_weapon">WeaponActivity</string>
+    <string name="title_activity_armor">ArmorActivity</string>
+    <string name="title_activity_item">ItemActivity</string>
 
 
 </resources>

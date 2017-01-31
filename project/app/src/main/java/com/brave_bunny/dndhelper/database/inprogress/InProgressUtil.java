@@ -108,6 +108,86 @@ public class InProgressUtil {
     public static final int COL_SKILL_SKILL_ID = 2;
     public static final int COL_SKILL_RANKS = 3;
 
+    private static final String[] ARMOR_COLUMNS = {
+            InProgressContract.ArmorEntry.TABLE_NAME + "." + InProgressContract.ArmorEntry._ID,
+            InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID,
+            InProgressContract.ArmorEntry.COLUMN_ARMOR_ID,
+            InProgressContract.ArmorEntry.COLUMN_COUNT
+    };
+
+    public static final int COL_ARMOR_INPUT_ID = 0;
+    public static final int COL_ARMOR_CHARACTER_ID = 1;
+    public static final int COL_ARMOR_ARMOR_ID = 2;
+    public static final int COL_ARMOR_COUNT = 3;
+
+    private static final String[] WEAPON_COLUMNS = {
+            InProgressContract.WeaponEntry.TABLE_NAME + "." + InProgressContract.WeaponEntry._ID,
+            InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID,
+            InProgressContract.WeaponEntry.COLUMN_WEAPON_ID,
+            InProgressContract.WeaponEntry.COLUMN_COUNT
+    };
+
+    public static final int COL_WEAPON_INPUT_ID = 0;
+    public static final int COL_WEAPON_CHARACTER_ID = 1;
+    public static final int COL_WEAPON_WEAPON_ID = 2;
+    public static final int COL_WEAPON_COUNT = 3;
+
+    private static final String[] ITEM_COLUMNS = {
+            InProgressContract.ItemEntry.TABLE_NAME + "." + InProgressContract.ItemEntry._ID,
+            InProgressContract.ItemEntry.COLUMN_CHARACTER_ID,
+            InProgressContract.ItemEntry.COLUMN_ITEM_ID,
+            InProgressContract.ItemEntry.COLUMN_COUNT
+    };
+
+    public static final int COL_ITEM_INPUT_ID = 0;
+    public static final int COL_ITEM_CHARACTER_ID = 1;
+    public static final int COL_ITEM_ITEM_ID = 2;
+    public static final int COL_ITEM_COUNT = 3;
+
+    public static final int STATE_EMPTY = 0;
+    public static final int STATE_PARTIAL = 1;
+    public static final int STATE_COMPLETE = 2;
+
+    private static boolean isOptionSelected(ContentValues values, String column) {
+        int inProgressValue = values.getAsInteger(column);
+        return (inProgressValue > 0);
+    }
+
+    private static boolean isIntegerSet(ContentValues values, String column) {
+        int inProgressValue = values.getAsInteger(column);
+        return (inProgressValue != -1);
+    }
+
+    private static boolean isStringSet(ContentValues values, String column) {
+        String inProgressValue = values.getAsString(column);
+        return (!inProgressValue.equals(""));
+    }
+
+    /*
+     *      CHARACTER util functions
+     */
+
+    //TODO for all final tables
+    public static void removeAllCharacterData(Context context, long rowIndex) {
+        removeAllCharacterStats(context, rowIndex);
+        removeAllCharacterDomains(context, rowIndex);
+        removeAllCharacterSpells(context, rowIndex);
+    }
+
+    private static void removeAllCharacterStats(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.CharacterEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.CharacterEntry._ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
     public static ContentValues getInProgressRow(Context context, long rowIndex) {
         ContentValues values;
 
@@ -129,7 +209,6 @@ public class InProgressUtil {
 
         return values;
     }
-
 
     public static int getInProgressValue(Context context, long rowIndex, int colIndex) {
         int value;
@@ -154,7 +233,7 @@ public class InProgressUtil {
     }
 
     public static void updateInProgressTable(Context context, String tableName,
-                                            ContentValues values, long index) {
+                                             ContentValues values, long index) {
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -230,25 +309,6 @@ public class InProgressUtil {
         return characterValues;
     }
 
-    private static int generateAbilityScore(Random rand) {
-        int sum = 0;
-        int minimum = -1;
-
-        for (int i = 0; i < 4; i++) {
-            int dieValue = rand.nextInt(6) + 1;
-            if (minimum == -1 || minimum > dieValue) {
-                minimum = dieValue;
-            }
-            sum += dieValue;
-        }
-
-        return sum - minimum;
-    }
-
-    public static final int STATE_EMPTY = 0;
-    public static final int STATE_PARTIAL = 1;
-    public static final int STATE_COMPLETE = 2;
-
     public static int checkStateOfCharacterChoices(Context context, long index) {
         ContentValues values = getInProgressRow(context, index);
 
@@ -271,16 +331,6 @@ public class InProgressUtil {
     private static boolean areDetailsPartiallyFilled(ContentValues values) {
         boolean isPartiallyFilled = isStringSet(values, InProgressContract.CharacterEntry.COLUMN_NAME);
         isPartiallyFilled |= isOptionSelected(values, InProgressContract.CharacterEntry.COLUMN_RACE_ID);
-        return isPartiallyFilled;
-    }
-
-    private static boolean areAbilitiesPartiallyFilled(ContentValues values) {
-        boolean isPartiallyFilled = isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_STR);
-        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_DEX);
-        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CON);
-        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_INT);
-        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_WIS);
-        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CHA);
         return isPartiallyFilled;
     }
 
@@ -319,16 +369,6 @@ public class InProgressUtil {
         return isFilled;
     }
 
-    private static boolean areAbilitiesFilled(ContentValues values) {
-        boolean isFilled = isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_STR);
-        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_DEX);
-        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CON);
-        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_INT);
-        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_WIS);
-        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CHA);
-        return isFilled;
-    }
-
     private static boolean areClassSpecificsFilled(Context context, ContentValues values) {
         int classValue = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
         boolean isFilled = (classValue > 0);
@@ -356,65 +396,45 @@ public class InProgressUtil {
         return isFilled;
     }
 
-    private static int numberDomainsSelected(Context context, ContentValues values) {
-        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
-        int numberDomains;
+    /*
+     *      FAMILIAR util functions
+     */
 
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public static boolean isFamiliarSameAsSelected(Context context, long rowIndex, long familiarId) {
+        long chosenFamiliar = getInProgressValue(context, rowIndex, InProgressUtil.COL_CHARACTER_FAMILIAR);
 
-        try {
-            String query = "SELECT * FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-
-            numberDomains = cursor.getCount();
-            cursor.close();
-        } finally {
-            db.close();
+        if (familiarId == chosenFamiliar) {
+            return true;
         }
+        return false;
+    }
 
-        return numberDomains;
+    public static void changeFamiliarSelection(Context context, long rowIndex, long familiarId) {
+        ContentValues values = getInProgressRow(context, rowIndex);
+        values.put(InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID, familiarId);
+        updateInProgressTable(context, InProgressContract.CharacterEntry.TABLE_NAME, values, rowIndex);
     }
 
     private static boolean isFamiliarSelected(ContentValues values) {
         return isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID);
     }
 
-    private static int numberSpellsSelected(Context context, ContentValues values) {
-        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
-        int numberSpells;
+    /*
+     *      DOMAIN util functions
+     */
+
+    private static void removeAllCharacterDomains(Context context, long rowIndex) {
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + InProgressContract.SpellEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.SpellEntry.COLUMN_CHARACTER_ID + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-
-            numberSpells = cursor.getCount();
-            cursor.close();
+            String query = "DELETE FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
         } finally {
             db.close();
         }
-
-        return numberSpells;
-    }
-
-    private static boolean isOptionSelected(ContentValues values, String column) {
-        int inProgressValue = values.getAsInteger(column);
-        return (inProgressValue > 0);
-    }
-
-    private static boolean isIntegerSet(ContentValues values, String column) {
-        int inProgressValue = values.getAsInteger(column);
-        return (inProgressValue != -1);
-    }
-
-    private static boolean isStringSet(ContentValues values, String column) {
-        String inProgressValue = values.getAsString(column);
-        return (!inProgressValue.equals(""));
     }
 
     public void removeDomainSelection(Context context, long rowIndex, int domainId) {
@@ -483,6 +503,45 @@ public class InProgressUtil {
             db.close();
         }
         return numDomains;
+    }
+
+    private static int numberDomainsSelected(Context context, ContentValues values) {
+        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
+        int numberDomains;
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            numberDomains = cursor.getCount();
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return numberDomains;
+    }
+
+    /*
+     *      SPELL util functions
+     */
+
+    private static void removeAllCharacterSpells(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.SpellEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.SpellEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
     }
 
     public void removeSpellSelection(Context context, long rowIndex, int spellId) {
@@ -556,69 +615,30 @@ public class InProgressUtil {
         return numSpells;
     }
 
-    public static boolean isFamiliarSameAsSelected(Context context, long rowIndex, long familiarId) {
-        long chosenFamiliar = getInProgressValue(context, rowIndex, InProgressUtil.COL_CHARACTER_FAMILIAR);
-
-        if (familiarId == chosenFamiliar) {
-            return true;
-        }
-        return false;
-    }
-
-    public static void changeFamiliarSelection(Context context, long rowIndex, long familiarId) {
-        ContentValues values = getInProgressRow(context, rowIndex);
-        values.put(InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID, familiarId);
-        updateInProgressTable(context, InProgressContract.CharacterEntry.TABLE_NAME, values, rowIndex);
-    }
-
-    //TODO for all final tables
-    public static void removeAllCharacterData(Context context, long rowIndex) {
-        removeAllCharacterStats(context, rowIndex);
-        removeAllCharacterDomains(context, rowIndex);
-        removeAllCharacterSpells(context, rowIndex);
-    }
-
-    private static void removeAllCharacterStats(Context context, long rowIndex) {
+    private static int numberSpellsSelected(Context context, ContentValues values) {
+        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
+        int numberSpells;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "DELETE FROM " + InProgressContract.CharacterEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.CharacterEntry._ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-        } finally {
-            db.close();
-        }
-    }
-
-    private static void removeAllCharacterDomains(Context context, long rowIndex) {
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "DELETE FROM " + InProgressContract.ClericDomainEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-        } finally {
-            db.close();
-        }
-    }
-
-    private static void removeAllCharacterSpells(Context context, long rowIndex) {
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "DELETE FROM " + InProgressContract.SpellEntry.TABLE_NAME
+            String query = "SELECT * FROM " + InProgressContract.SpellEntry.TABLE_NAME
                     + " WHERE " + InProgressContract.SpellEntry.COLUMN_CHARACTER_ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            numberSpells = cursor.getCount();
+            cursor.close();
         } finally {
             db.close();
         }
+
+        return numberSpells;
     }
+
+    /*
+     *      ABILITY util functions
+     */
 
     private static int getTotalAbilityScore(Context context, long rowIndex,
                                      String inProgressAbilityColumn, String raceAbilityColumn) {
@@ -671,6 +691,45 @@ public class InProgressUtil {
                 InProgressContract.CharacterEntry.COLUMN_CHA,
                 RulesContract.RaceEntry.COLUMN_CHA);
     }
+
+    private static boolean areAbilitiesFilled(ContentValues values) {
+        boolean isFilled = isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_STR);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_DEX);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CON);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_INT);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_WIS);
+        isFilled &= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CHA);
+        return isFilled;
+    }
+
+    private static boolean areAbilitiesPartiallyFilled(ContentValues values) {
+        boolean isPartiallyFilled = isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_STR);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_DEX);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CON);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_INT);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_WIS);
+        isPartiallyFilled |= isIntegerSet(values, InProgressContract.CharacterEntry.COLUMN_CHA);
+        return isPartiallyFilled;
+    }
+
+    private static int generateAbilityScore(Random rand) {
+        int sum = 0;
+        int minimum = -1;
+
+        for (int i = 0; i < 4; i++) {
+            int dieValue = rand.nextInt(6) + 1;
+            if (minimum == -1 || minimum > dieValue) {
+                minimum = dieValue;
+            }
+            sum += dieValue;
+        }
+
+        return sum - minimum;
+    }
+
+    /*
+     *      FEAT util functions
+     */
 
     public static int getNumberFeatsSelected(Context context, long rowIndex) {
         int numDomains = 0;
@@ -739,6 +798,11 @@ public class InProgressUtil {
             db.close();
         }
     }
+
+
+    /*
+     *      SKILL util functions
+     */
 
     public static boolean isSkillListed(Context context, long rowIndex, long skillId) {
         boolean isSelected = false;
@@ -826,7 +890,7 @@ public class InProgressUtil {
         }
     }
 
-    public static void addOrUpdateSkillSelecetion(Context context, long rowIndex, long skillId, int newRank) {
+    public static void addOrUpdateSkillSelection(Context context, long rowIndex, long skillId, int newRank) {
         if (isSkillListed(context, rowIndex, skillId)) {
             updateSkillSelection(context, rowIndex, skillId, newRank);
         } else {
@@ -858,6 +922,300 @@ public class InProgressUtil {
         }
 
         return skillPointsSpent;
+    }
+
+    /*
+     *      ARMOR util functions
+     */
+
+    public static boolean isArmorListed(Context context, long rowIndex, long armorId) {
+        boolean isSelected = false;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.ArmorEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.ArmorEntry.COLUMN_ARMOR_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(armorId)});
+            if (cursor.getCount() > 0) {
+                isSelected = true;
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return isSelected;
+    }
+
+    public static int getArmorCount(Context context, long rowIndex, long armorId) {
+        int count = 0;
+        if (isArmorListed(context, rowIndex, armorId)) {
+            InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            try {
+                String query = "SELECT * FROM " + InProgressContract.ArmorEntry.TABLE_NAME
+                        + " WHERE " + InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                        InProgressContract.ArmorEntry.COLUMN_ARMOR_ID + " = ?";
+                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(armorId)});
+                cursor.moveToFirst();
+                count = cursor.getInt(COL_ARMOR_COUNT);
+                cursor.close();
+            } finally {
+                db.close();
+            }
+        }
+        return count;
+    }
+
+    public static void addArmorSelection(Context context, long rowIndex, long armorId, int count) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.ArmorEntry.COLUMN_ARMOR_ID, armorId);
+        values.put(InProgressContract.ArmorEntry.COLUMN_COUNT, count);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(InProgressContract.ArmorEntry.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void updateArmorSelection(Context context, long rowIndex, long armorId, int count) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.ArmorEntry.COLUMN_ARMOR_ID, armorId);
+        values.put(InProgressContract.ArmorEntry.COLUMN_COUNT, count);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String charIndex = ARMOR_COLUMNS[COL_ARMOR_CHARACTER_ID];
+            String armorIndex = ARMOR_COLUMNS[COL_ARMOR_ARMOR_ID];
+
+            String query = "SELECT * FROM " + InProgressContract.ArmorEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.ArmorEntry.COLUMN_ARMOR_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(armorId)});
+            try {
+                cursor.moveToFirst();
+                db.update(InProgressContract.ArmorEntry.TABLE_NAME, values, charIndex + " = ? AND " + armorIndex + " = ?",
+                        new String[]{Long.toString(rowIndex), Long.toString(armorId)});
+            } finally {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void addOrUpdateArmorSelection(Context context, long rowIndex, long armorId, int count) {
+        if (isArmorListed(context, rowIndex, armorId)) {
+            updateArmorSelection(context, rowIndex, armorId, count);
+        } else {
+            addArmorSelection(context, rowIndex, armorId, count);
+        }
+    }
+
+    /*
+     *      WEAPONS util functions
+     */
+
+    public static boolean isWeaponListed(Context context, long rowIndex, long weaponId) {
+        boolean isSelected = false;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.WeaponEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.WeaponEntry.COLUMN_WEAPON_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(weaponId)});
+            if (cursor.getCount() > 0) {
+                isSelected = true;
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return isSelected;
+    }
+
+    public static int getWeaponCount(Context context, long rowIndex, long weaponId) {
+        int count = 0;
+        if (isWeaponListed(context, rowIndex, weaponId)) {
+            InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            try {
+                String query = "SELECT * FROM " + InProgressContract.WeaponEntry.TABLE_NAME
+                        + " WHERE " + InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                        InProgressContract.WeaponEntry.COLUMN_WEAPON_ID + " = ?";
+                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(weaponId)});
+                cursor.moveToFirst();
+                count = cursor.getInt(COL_WEAPON_COUNT);
+                cursor.close();
+            } finally {
+                db.close();
+            }
+        }
+        return count;
+    }
+
+    public static void addWeaponSelection(Context context, long rowIndex, long weaponId, int count) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.WeaponEntry.COLUMN_WEAPON_ID, weaponId);
+        values.put(InProgressContract.WeaponEntry.COLUMN_COUNT, count);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(InProgressContract.WeaponEntry.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void updateWeaponSelection(Context context, long rowIndex, long weaponId, int count) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.WeaponEntry.COLUMN_WEAPON_ID, weaponId);
+        values.put(InProgressContract.WeaponEntry.COLUMN_COUNT, count);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String charIndex = WEAPON_COLUMNS[COL_WEAPON_CHARACTER_ID];
+            String skillIndex = WEAPON_COLUMNS[COL_WEAPON_WEAPON_ID];
+
+            String query = "SELECT * FROM " + InProgressContract.WeaponEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.WeaponEntry.COLUMN_WEAPON_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(weaponId)});
+            try {
+                cursor.moveToFirst();
+                db.update(InProgressContract.WeaponEntry.TABLE_NAME, values, charIndex + " = ? AND " + skillIndex + " = ?",
+                        new String[]{Long.toString(rowIndex), Long.toString(weaponId)});
+            } finally {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void addOrUpdateWeaponSelection(Context context, long rowIndex, long skillId, int newRank) {
+        if (isWeaponListed(context, rowIndex, skillId)) {
+            updateWeaponSelection(context, rowIndex, skillId, newRank);
+        } else {
+            addWeaponSelection(context, rowIndex, skillId, newRank);
+        }
+    }
+
+    /*
+     *      ITEMS util functions
+     */
+
+    public static boolean isItemListed(Context context, long rowIndex, long itemId) {
+        boolean isSelected = false;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.ItemEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ItemEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.ItemEntry.COLUMN_ITEM_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(itemId)});
+            if (cursor.getCount() > 0) {
+                isSelected = true;
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return isSelected;
+    }
+
+    public static int getItemCount(Context context, long rowIndex, long itemId) {
+        int count = 0;
+        if (isItemListed(context, rowIndex, itemId)) {
+            InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            try {
+                String query = "SELECT * FROM " + InProgressContract.ItemEntry.TABLE_NAME
+                        + " WHERE " + InProgressContract.ItemEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                        InProgressContract.ItemEntry.COLUMN_ITEM_ID + " = ?";
+                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(itemId)});
+                cursor.moveToFirst();
+                count = cursor.getInt(COL_ITEM_COUNT);
+                cursor.close();
+            } finally {
+                db.close();
+            }
+        }
+        return count;
+    }
+
+    public static void addItemSelection(Context context, long rowIndex, long itemId, int count) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.ItemEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.ItemEntry.COLUMN_ITEM_ID, itemId);
+        values.put(InProgressContract.ItemEntry.COLUMN_COUNT, count);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(InProgressContract.ItemEntry.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void updateItemSelection(Context context, long rowIndex, long itemId, int count) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.ItemEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.ItemEntry.COLUMN_ITEM_ID, itemId);
+        values.put(InProgressContract.ItemEntry.COLUMN_COUNT, count);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String charIndex = ITEM_COLUMNS[COL_ITEM_CHARACTER_ID];
+            String itemIndex = ITEM_COLUMNS[COL_ITEM_ITEM_ID];
+
+            String query = "SELECT * FROM " + InProgressContract.ItemEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ItemEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.ItemEntry.COLUMN_ITEM_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(itemId)});
+            try {
+                cursor.moveToFirst();
+                db.update(InProgressContract.ItemEntry.TABLE_NAME, values, charIndex + " = ? AND " + itemIndex + " = ?",
+                        new String[]{Long.toString(rowIndex), Long.toString(itemId)});
+            } finally {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void addOrUpdateItemSelection(Context context, long rowIndex, long itemId, int count) {
+        if (isItemListed(context, rowIndex, itemId)) {
+            updateItemSelection(context, rowIndex, itemId, count);
+        } else {
+            addItemSelection(context, rowIndex, itemId, count);
+        }
     }
 
 }

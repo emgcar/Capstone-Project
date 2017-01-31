@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
 /**
@@ -27,7 +26,13 @@ public class SkillAdapter extends CursorAdapter {
     private static int maxRanks;
     private long mRowIndex;
 
-    public SkillAdapter(Context context, Cursor c, int flags, long rowIndex) {
+    private int mType;
+    public final static int TYPE_SKILLS = 0;
+    public final static int TYPE_ARMOR = 1;
+    public final static int TYPE_WEAPONS = 2;
+    public final static int TYPE_ITEMS = 3;
+
+    public SkillAdapter(Context context, Cursor c, int flags, long rowIndex, int type) {
         super(context, c, flags);
         mContext = context;
         mRowIndex = rowIndex;
@@ -40,6 +45,8 @@ public class SkillAdapter extends CursorAdapter {
 
         //TODO change for cross-class
         maxRanks = 4;
+
+        mType = type;
     }
 
     @Override
@@ -52,11 +59,39 @@ public class SkillAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final View rootView = view;
 
+        long id;
+        int nameIndex;
+        int ranks;
+
+        switch (mType) {
+            case TYPE_SKILLS:
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry._ID));
+                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry.COLUMN_NAME);
+                ranks = InProgressUtil.getSkillRanks(context, mRowIndex, id);
+                break;
+            case TYPE_ARMOR:
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.ArmorEntry._ID));
+                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.ArmorEntry.COLUMN_NAME);
+                ranks = InProgressUtil.getArmorCount(context, mRowIndex, id);
+                break;
+            case TYPE_WEAPONS:
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.WeaponEntry._ID));
+                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.WeaponEntry.COLUMN_NAME);
+                ranks = InProgressUtil.getWeaponCount(context, mRowIndex, id);
+                break;
+            case TYPE_ITEMS:
+                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.ItemEntry._ID));
+                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.ItemEntry.COLUMN_NAME);
+                ranks = InProgressUtil.getItemCount(context, mRowIndex, id);
+                break;
+            default:
+                return;
+        }
+
         TextView tvBody = (TextView) view.findViewById(R.id.skill_name);
-        String body = cursor.getString(cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry.COLUMN_NAME));
+        String body = cursor.getString(nameIndex);
         tvBody.setText(body);
-        long skillId = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry._ID));
-        tvBody.setTag(R.string.skills, skillId);
+        tvBody.setTag(R.string.skills, id);
 
         Button minusButton = (Button) view.findViewById(R.id.minus_button);
         minusButton.setEnabled(false);
@@ -68,8 +103,6 @@ public class SkillAdapter extends CursorAdapter {
         });
 
         TextView rankText = (TextView) view.findViewById(R.id.skill_ranks);
-        //TODO set saved skill values
-        int ranks = InProgressUtil.getSkillRanks(context, mRowIndex, skillId);
         rankText.setText(Integer.toString(ranks));
 
         Button plusButton = (Button) view.findViewById(R.id.plus_button);
@@ -94,7 +127,7 @@ public class SkillAdapter extends CursorAdapter {
         skillRanksSpent--;
 
         long skillId = (long)tvBody.getTag(R.string.skills);
-        InProgressUtil.addOrUpdateSkillSelecetion(mContext, mRowIndex, skillId, ranks);
+        updateTable(skillId, ranks);
 
         if (ranks == 0) {
             minusButton.setEnabled(false);
@@ -110,24 +143,45 @@ public class SkillAdapter extends CursorAdapter {
         Button plusButton = (Button) rootView.findViewById(R.id.plus_button);
 
         int ranks = Integer.parseInt((String)rankText.getText());
-        if (skillRanksSpent == maximumSkillPoints) return;
-        if (ranks == maxRanks) return;
+        if (mType == TYPE_SKILLS) {
+            if (skillRanksSpent == maximumSkillPoints) return;
+            if (ranks == maxRanks) return;
+        }
 
         ranks++;
         skillRanksSpent++;
 
         long skillId = (long)tvBody.getTag(R.string.skills);
-        InProgressUtil.addOrUpdateSkillSelecetion(mContext, mRowIndex, skillId, ranks);
+        updateTable(skillId, ranks);
 
-        if (skillRanksSpent == maximumSkillPoints) {
-            //TODO set all buttons disabled when no more skill points
-            //plusButton.setEnabled(false);
-        }
-        if (ranks == maxRanks) {
-            plusButton.setEnabled(false);
+        if (mType == TYPE_SKILLS) {
+            if (skillRanksSpent == maximumSkillPoints) {
+                //TODO set all buttons disabled when no more skill points
+                //plusButton.setEnabled(false);
+            }
+            if (ranks == maxRanks) {
+                plusButton.setEnabled(false);
+            }
         }
         minusButton.setEnabled(true);
         rankText.setText(Integer.toString(ranks));
+    }
+
+    private void updateTable(long skillId, int count) {
+        switch(mType) {
+            case TYPE_SKILLS:
+                InProgressUtil.addOrUpdateSkillSelection(mContext, mRowIndex, skillId, count);
+                break;
+            case TYPE_ARMOR:
+                InProgressUtil.addOrUpdateArmorSelection(mContext, mRowIndex, skillId, count);
+                break;
+            case TYPE_WEAPONS:
+                InProgressUtil.addOrUpdateWeaponSelection(mContext, mRowIndex, skillId, count);
+                break;
+            case TYPE_ITEMS:
+                InProgressUtil.addOrUpdateItemSelection(mContext, mRowIndex, skillId, count);
+                break;
+        }
     }
 
     //TODO

@@ -21,6 +21,9 @@ public class InProgressProvider extends ContentProvider {
     public static final int INPROGRESS_SPELLS = 102;
     public static final int INPROGRESS_SKILLS = 103;
     public static final int INPROGRESS_FEATS = 104;
+    public static final int INPROGRESS_ARMOR = 105;
+    public static final int INPROGRESS_WEAPONS = 106;
+    public static final int INPROGRESS_ITEMS = 107;
 
 
     @Override
@@ -50,6 +53,15 @@ public class InProgressProvider extends ContentProvider {
                 break;
             case INPROGRESS_FEATS:
                 tableName = InProgressContract.FeatEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_ARMOR:
+                tableName = InProgressContract.ArmorEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_WEAPONS:
+                tableName = InProgressContract.WeaponEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_ITEMS:
+                tableName = InProgressContract.ItemEntry.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -83,6 +95,12 @@ public class InProgressProvider extends ContentProvider {
                 return InProgressContract.SkillEntry.CONTENT_TYPE;
             case INPROGRESS_FEATS:
                 return InProgressContract.FeatEntry.CONTENT_TYPE;
+            case INPROGRESS_ARMOR:
+                return InProgressContract.ArmorEntry.CONTENT_TYPE;
+            case INPROGRESS_WEAPONS:
+                return InProgressContract.WeaponEntry.CONTENT_TYPE;
+            case INPROGRESS_ITEMS:
+                return InProgressContract.ItemEntry.CONTENT_TYPE;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -135,6 +153,30 @@ public class InProgressProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
             }
+            case INPROGRESS_ARMOR: {
+                long _id = db.insert(InProgressContract.ArmorEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.ArmorEntry.buildArmorUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case INPROGRESS_WEAPONS: {
+                long _id = db.insert(InProgressContract.WeaponEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.WeaponEntry.buildWeaponUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
+            case INPROGRESS_ITEMS: {
+                long _id = db.insert(InProgressContract.ItemEntry.TABLE_NAME, null, values);
+                if ( _id > 0 )
+                    returnUri = InProgressContract.ItemEntry.buildItemUri(_id);
+                else
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                break;
+            }
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -165,6 +207,15 @@ public class InProgressProvider extends ContentProvider {
                 break;
             case INPROGRESS_FEATS:
                 tableName = InProgressContract.FeatEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_ARMOR:
+                tableName = InProgressContract.ArmorEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_WEAPONS:
+                tableName = InProgressContract.WeaponEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_ITEMS:
+                tableName = InProgressContract.ItemEntry.TABLE_NAME;
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -202,6 +253,15 @@ public class InProgressProvider extends ContentProvider {
             case INPROGRESS_FEATS:
                 tableName = InProgressContract.FeatEntry.TABLE_NAME;
                 break;
+            case INPROGRESS_ARMOR:
+                tableName = InProgressContract.ArmorEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_WEAPONS:
+                tableName = InProgressContract.WeaponEntry.TABLE_NAME;
+                break;
+            case INPROGRESS_ITEMS:
+                tableName = InProgressContract.ItemEntry.TABLE_NAME;
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -229,6 +289,9 @@ public class InProgressProvider extends ContentProvider {
         matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_SPELL, INPROGRESS_SPELLS);
         matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_SKILL, INPROGRESS_SKILLS);
         matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_FEAT, INPROGRESS_FEATS);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_ARMOR, INPROGRESS_ARMOR);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_WEAPON, INPROGRESS_WEAPONS);
+        matcher.addURI(authority, InProgressContract.PATH_INPROGRESS_ITEM, INPROGRESS_ITEMS);
 
         return matcher;
     }

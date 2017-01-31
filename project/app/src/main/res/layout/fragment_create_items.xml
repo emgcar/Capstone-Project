@@ -15,19 +15,28 @@
         android:orientation="vertical"
         android:layout_gravity="center">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/armor_class"
+            android:text="AC = 26"/>
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="launchArmorSelector"
             android:text="Armor" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="launchWeaponSelector"
             android:text="Weapons" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:onClick="launchItemSelector"
             android:text="Items" />
 
     </LinearLayout>

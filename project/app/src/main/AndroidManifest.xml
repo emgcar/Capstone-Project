@@ -89,6 +89,30 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
+        <activity
+            android:name=".create.inventory.WeaponActivity"
+            android:label="@string/title_activity_weapon"
+            android:parentActivityName=".create.CreateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
+        </activity>
+        <activity
+            android:name=".create.inventory.ArmorActivity"
+            android:label="@string/title_activity_armor"
+            android:parentActivityName=".create.CreateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
+        </activity>
+        <activity
+            android:name=".create.inventory.ItemActivity"
+            android:label="@string/title_activity_item"
+            android:parentActivityName=".create.CreateActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
+        </activity>
     </application>
 
 </manifest>

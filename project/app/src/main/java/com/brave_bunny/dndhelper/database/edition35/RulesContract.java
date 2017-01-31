@@ -25,6 +25,9 @@ public class RulesContract {
     public static final String PATH_WIZARD = "wizard";
     public static final String PATH_SPELLS = "spells";
     public static final String PATH_FAMILIARS = "familiars";
+    public static final String PATH_ARMOR = "armor";
+    public static final String PATH_WEAPONS = "weapons";
+    public static final String PATH_ITEMS = "items";
 
     public static final class SkillsEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -270,6 +273,60 @@ public class RulesContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILIARS;
 
         public static Uri buildFamiliarUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ArmorEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ARMOR).build();
+
+        public static final String TABLE_NAME = "armor";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_ARMOR_WEIGHT = "armor_weight";
+        public static final String COLUMN_ARMOR_COST = "armor_cost";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ARMOR;
+
+        public static Uri buildArmorUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class WeaponEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEAPONS).build();
+
+        public static final String TABLE_NAME = "weapons";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_WEAPON_WEIGHT = "weapon_weight";
+        public static final String COLUMN_WEAPON_COST = "weapon_cost";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WEAPONS;
+
+        public static Uri buildWeaponUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ItemEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_ITEMS).build();
+
+        public static final String TABLE_NAME = "items";
+
+        public static final String COLUMN_NAME = "name";
+        public static final String COLUMN_ITEM_WEIGHT = "item_weight";
+        public static final String COLUMN_ITEM_COST = "item_cost";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ITEMS;
+
+        public static Uri buildItemUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

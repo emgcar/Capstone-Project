@@ -21,6 +21,9 @@ public class InProgressContract {
     public static final String PATH_INPROGRESS_SPELL = "spell";
     public static final String PATH_INPROGRESS_SKILL = "skill";
     public static final String PATH_INPROGRESS_FEAT = "feat";
+    public static final String PATH_INPROGRESS_ARMOR = "armor";
+    public static final String PATH_INPROGRESS_WEAPON = "weapon";
+    public static final String PATH_INPROGRESS_ITEM = "item";
 
     public static final class CharacterEntry implements BaseColumns {
         public static final Uri CONTENT_URI =
@@ -130,6 +133,57 @@ public class InProgressContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_FEAT;
 
         public static Uri buildFeatUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ArmorEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_ARMOR).build();
+        public static final String TABLE_NAME = "inprogress_armor";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_ARMOR_ID = "armor_id";
+        public static final String COLUMN_COUNT = "count";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_ARMOR;
+
+        public static Uri buildArmorUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class WeaponEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_WEAPON).build();
+        public static final String TABLE_NAME = "inprogress_weapon";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_WEAPON_ID = "weapon_id";
+        public static final String COLUMN_COUNT = "count";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_WEAPON;
+
+        public static Uri buildWeaponUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ItemEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_INPROGRESS_ITEM).build();
+        public static final String TABLE_NAME = "inprogress_item";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_ITEM_ID = "item_id";
+        public static final String COLUMN_COUNT = "count";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_INPROGRESS_ITEM;
+
+        public static Uri buildItemUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

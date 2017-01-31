@@ -135,6 +135,7 @@ public class RulesUtils {
         RulesDbHelper dbHelper = new RulesDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String classColumn = getSkillClassColumn(classIndex);
+        if (classColumn.equals("")) return null;
 
         try {
             String query = "SELECT * FROM " + RulesContract.SkillsEntry.TABLE_NAME +
@@ -270,5 +271,59 @@ public class RulesUtils {
         }
 
         return values;
+    }
+
+    public static Cursor getArmor(Context context) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.ArmorEntry.TABLE_NAME;
+            cursor = db.rawQuery(query, null);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
+    }
+
+    public static Cursor getWeapons(Context context) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.WeaponEntry.TABLE_NAME;
+            cursor = db.rawQuery(query, null);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
+    }
+
+    public static Cursor getItems(Context context) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.ItemEntry.TABLE_NAME;
+            cursor = db.rawQuery(query, null);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
     }
 }

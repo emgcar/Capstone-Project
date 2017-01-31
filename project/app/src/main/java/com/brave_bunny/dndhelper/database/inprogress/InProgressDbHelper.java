@@ -26,6 +26,10 @@ public class InProgressDbHelper extends SQLiteOpenHelper{
         addSpellTable(sqLiteDatabase);
         addSkillTable(sqLiteDatabase);
         addFeatTable(sqLiteDatabase);
+
+        addArmorTable(sqLiteDatabase);
+        addWeaponTable(sqLiteDatabase);
+        addItemTable(sqLiteDatabase);
     }
 
     private void addCharacterTable(SQLiteDatabase sqLiteDatabase) {
@@ -110,6 +114,39 @@ public class InProgressDbHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL(SQL_CREATE_INPROGRESS_FEAT_TABLE);
     }
 
+    public void addArmorTable(SQLiteDatabase sqLiteDatabase) {
+        final String SQL_CREATE_INPROGRESS_ARMOR_TABLE = "CREATE TABLE " +
+                InProgressContract.ArmorEntry.TABLE_NAME + " (" +
+                InProgressContract.ArmorEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
+                InProgressContract.ArmorEntry.COLUMN_ARMOR_ID + " INTEGER NOT NULL," +
+                InProgressContract.ArmorEntry.COLUMN_COUNT + " INTEGER NOT NULL )";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_INPROGRESS_ARMOR_TABLE);
+    }
+
+    public void addWeaponTable(SQLiteDatabase sqLiteDatabase) {
+        final String SQL_CREATE_INPROGRESS_WEAPON_TABLE = "CREATE TABLE " +
+                InProgressContract.WeaponEntry.TABLE_NAME + " (" +
+                InProgressContract.WeaponEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
+                InProgressContract.WeaponEntry.COLUMN_WEAPON_ID + " INTEGER NOT NULL," +
+                InProgressContract.WeaponEntry.COLUMN_COUNT + " INTEGER NOT NULL )";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_INPROGRESS_WEAPON_TABLE);
+    }
+
+    public void addItemTable(SQLiteDatabase sqLiteDatabase) {
+        final String SQL_CREATE_INPROGRESS_ITEM_TABLE = "CREATE TABLE " +
+                InProgressContract.ItemEntry.TABLE_NAME + " (" +
+                InProgressContract.ItemEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                InProgressContract.ItemEntry.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
+                InProgressContract.ItemEntry.COLUMN_ITEM_ID + " INTEGER NOT NULL," +
+                InProgressContract.ItemEntry.COLUMN_COUNT + " INTEGER NOT NULL )";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_INPROGRESS_ITEM_TABLE);
+    }
+
 
 
     @Override
@@ -118,6 +155,8 @@ public class InProgressDbHelper extends SQLiteOpenHelper{
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.ClericDomainEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.SpellEntry.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.SkillEntry.TABLE_NAME);
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.FeatEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.ArmorEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.WeaponEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + InProgressContract.ItemEntry.TABLE_NAME);
     }
 }
