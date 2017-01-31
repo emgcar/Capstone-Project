@@ -166,14 +166,15 @@ public class RulesDbHelper extends SQLiteOpenHelper {
                 RulesContract.ClassEntry.TABLE_NAME + " (" +
                 RulesContract.ClassEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 RulesContract.ClassEntry.COLUMN_NAME + " STRING NOT NULL," +
-                RulesContract.ClassEntry.COLUMN_HIT_DIE + " INTEGER NOT NULL )";
+                RulesContract.ClassEntry.COLUMN_HIT_DIE + " INTEGER NOT NULL," +
+                RulesContract.ClassEntry.COLUMN_STARTING_GOLD + " INTEGER NOT NULL )";
 
         mDatabase.execSQL(SQL_CREATE_CLASS_TABLE);
 
-        insertInClassTable("1, 'Cleric', 8");
-        insertInClassTable("2, 'Fighter', 10");
-        insertInClassTable("3, 'Rogue', 6");
-        insertInClassTable("4, 'Wizard', 4");
+        insertInClassTable("1, 'Cleric', 8, 125");
+        insertInClassTable("2, 'Fighter', 10, 150");
+        insertInClassTable("3, 'Rogue', 6, 125");
+        insertInClassTable("4, 'Wizard', 4, 75");
     }
 
     public void insertInClassTable(String string) {

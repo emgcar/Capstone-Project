@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
@@ -252,17 +253,57 @@ public class CharacterUtil {
         int chaTotal = InProgressUtil.getTotalCharismaScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_CHA, chaTotal);
 
-        //TODO get base attack, fort, reflex, and will
+        // adding character base attack bonus, fortitude, reflex, and will
+        int classChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+        ContentValues classLevelOneStats = RulesUtils.getFirstLevelStats(context, classChoice);
+
+        int baseAttack = 0;
+        int fortitude = Utility.scoreToModifier(conTotal);
+        int reflex = Utility.scoreToModifier(dexTotal);
+        int will = Utility.scoreToModifier(wisTotal);
+
+        switch (classChoice) {
+            case RulesUtils.CLASS_CLERIC:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_WILL);
+                break;
+            case RulesUtils.CLASS_FIGHTER:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_WILL);
+                break;
+            case RulesUtils.CLASS_ROGUE:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_WILL);
+                break;
+            case RulesUtils.CLASS_WIZARD:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_WILL);
+                break;
+        }
         // adding character base attack bonus
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_BASE_ATTACK, baseAttack);
 
         // adding character fortitude
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_FORT, fortitude);
 
         // adding character reflex
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_REF, reflex);
 
         // adding character will
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WILL, will);
 
         //TODO get money and load levels
         // adding character money
+        int money = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_MONEY);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_MONEY, money);
 
         // adding character light load
 
@@ -270,12 +311,23 @@ public class CharacterUtil {
 
         // adding character heavy load
 
-        //TODO get ac, hp max, and hp current
+        //TODO: add armor bonus, shield bonus, and size modifier
         // adding character AC
+        int armor_class = 10 + Utility.scoreToModifier(dexTotal);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_AC, armor_class);
 
-        // adding character HP max
+        // adding character HP
+        ContentValues classStats = RulesUtils.getClassStats(context, classChoice);
+        int hpDie = classStats.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
+        hpDie += Utility.scoreToModifier(conTotal);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_CURR, hpDie);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_MAX, hpDie);
 
-        // adding character HP current
+        //TODO: check for Improved Initiative feat
+        // adding character initiative
+        int initiative = Utility.scoreToModifier(dexTotal);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_INITIATIVE, initiative);
+
 
         // adding character in battle
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_IN_BATTLE, FALSE);

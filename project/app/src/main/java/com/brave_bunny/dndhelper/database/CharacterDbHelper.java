@@ -65,6 +65,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.COLUMN_AC + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_HP_MAX + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_HP_CURR + " INTEGER NOT NULL," +
+                CharacterContract.CharacterEntry.COLUMN_INITIATIVE + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_IN_BATTLE + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_TABLE);
@@ -170,7 +171,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 " 10, 11, 12, 13, 14, 15," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 " 134, 32, 56, 89," + //money, light load, med load, heavy load
-                " 18, 6, 3, 0" + //ac, max hp, curr hp, in battle
+                " 18, 6, 3, 1, 0" + //ac, max hp, curr hp, initiative, in battle
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
@@ -184,7 +185,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 " 10, 11, 12, 13, 14, 15," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 " 134, 32, 56, 89," + //money, light load, med load, heavy load
-                " 18, 6, 3, 1" + //ac, max hp, curr hp, in battle
+                " 18, 6, 3, 3, 1" + //ac, max hp, curr hp, initiative, in battle
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
@@ -198,7 +199,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 " 12, 13, 14, 15, 16, 17," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 "134, 32, 56, 89," + //money, light load, med load, heavy load
-                "18, 6, 3, 0" + //ac, max hp, curr hp, in battle
+                "18, 6, 3, 0, 0" + //ac, max hp, curr hp, initiative, in battle
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
@@ -213,7 +214,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 " 13, 14, 15, 16, 17, 18," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 "134, 32, 56, 89," + //money, light load, med load, heavy load
-                "18, 6, 3, 1" + //ac, max hp, curr hp, in battle
+                "18, 6, 3, 4, 1" + //ac, max hp, curr hp, initiative, in battle
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);

@@ -172,6 +172,11 @@ public class InProgressUtil {
         removeAllCharacterStats(context, rowIndex);
         removeAllCharacterDomains(context, rowIndex);
         removeAllCharacterSpells(context, rowIndex);
+        removeAllCharacterSkills(context, rowIndex);
+        removeAllCharacterFeats(context, rowIndex);
+        removeAllCharacterArmor(context, rowIndex);
+        removeAllCharacterWeapons(context, rowIndex);
+        removeAllCharacterItems(context, rowIndex);
     }
 
     private static void removeAllCharacterStats(Context context, long rowIndex) {
@@ -394,6 +399,24 @@ public class InProgressUtil {
                 break;
         }
         return isFilled;
+    }
+
+    public static void updateClassValues(Context context, long rowIndex, int classSelection) {
+        ContentValues values = getInProgressRow(context, rowIndex);
+        long previousClass = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+
+        ContentValues prevClassValues = RulesUtils.getClassStats(context, previousClass);
+        long prevMaxMoney = prevClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
+        long prevMoney = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_MONEY);
+        long prevMoneyDiff = prevMaxMoney - prevMoney;
+
+        ContentValues currClassValues = RulesUtils.getClassStats(context, classSelection);
+        long currMaxMoney = currClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
+        long currMoney = currMaxMoney - prevMoneyDiff;
+
+        values.put(InProgressContract.CharacterEntry.COLUMN_MONEY, currMoney);
+
+        updateInProgressTable(context, InProgressContract.CharacterEntry.TABLE_NAME, values, rowIndex);
     }
 
     /*
@@ -799,6 +822,20 @@ public class InProgressUtil {
         }
     }
 
+    private static void removeAllCharacterFeats(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.FeatEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.FeatEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
 
     /*
      *      SKILL util functions
@@ -924,6 +961,20 @@ public class InProgressUtil {
         return skillPointsSpent;
     }
 
+    private static void removeAllCharacterSkills(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.SkillEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.SkillEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
     /*
      *      ARMOR util functions
      */
@@ -1019,6 +1070,20 @@ public class InProgressUtil {
             updateArmorSelection(context, rowIndex, armorId, count);
         } else {
             addArmorSelection(context, rowIndex, armorId, count);
+        }
+    }
+
+    private static void removeAllCharacterArmor(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.ArmorEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ArmorEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
         }
     }
 
@@ -1120,6 +1185,20 @@ public class InProgressUtil {
         }
     }
 
+    private static void removeAllCharacterWeapons(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.WeaponEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.WeaponEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+    }
+
     /*
      *      ITEMS util functions
      */
@@ -1215,6 +1294,20 @@ public class InProgressUtil {
             updateItemSelection(context, rowIndex, itemId, count);
         } else {
             addItemSelection(context, rowIndex, itemId, count);
+        }
+    }
+
+    private static void removeAllCharacterItems(Context context, long rowIndex) {
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "DELETE FROM " + InProgressContract.ItemEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.ItemEntry.COLUMN_CHARACTER_ID + " = ?";
+            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
         }
     }
 

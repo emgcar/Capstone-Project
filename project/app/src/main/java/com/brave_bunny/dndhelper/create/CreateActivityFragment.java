@@ -155,6 +155,7 @@ public class CreateActivityFragment extends Fragment {
         baseViewHolder.mClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                InProgressUtil.updateClassValues(getContext(), index, i);
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, i);
                 mClassCallback.onClassSelected(i);
             }
@@ -267,6 +268,8 @@ public class CreateActivityFragment extends Fragment {
     }
 
     //TODO: add stat buffs to ref, fort, will
+    //TODO: enable skill button on class selection
+    //TODO: enable inventory buttons on class selection
     public void update_class(int classSelection) {
         Bundle args = getArguments();
         int pageNumber = args.getInt(PAGE_NUMBER);

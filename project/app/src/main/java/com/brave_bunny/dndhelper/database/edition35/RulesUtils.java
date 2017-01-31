@@ -251,6 +251,28 @@ public class RulesUtils {
         return values;
     }
 
+    public static ContentValues getClassStats(Context context, long selectedClass) {
+        ContentValues values;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.ClassEntry.TABLE_NAME + " WHERE "
+                    + RulesContract.ClassEntry._ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(selectedClass)});
+
+            cursor.moveToFirst();
+
+            values = Utility.cursorRowToContentValues(cursor);
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return values;
+    }
+
     public static ContentValues getRaceStats(Context context, int selectedRace) {
         ContentValues values;
 

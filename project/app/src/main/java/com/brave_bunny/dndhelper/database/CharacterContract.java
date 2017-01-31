@@ -63,6 +63,7 @@ public class CharacterContract {
         public static final String COLUMN_AC = "armor_class";
         public static final String COLUMN_HP_MAX = "hit_points_maximum";
         public static final String COLUMN_HP_CURR = "hit_points_current";
+        public static final String COLUMN_INITIATIVE = "initiative_modifier";
         public static final String COLUMN_IN_BATTLE = "in_battle";
 
         public static final String CONTENT_TYPE =

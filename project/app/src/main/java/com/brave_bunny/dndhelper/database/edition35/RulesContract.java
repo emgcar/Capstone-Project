@@ -100,6 +100,7 @@ public class RulesContract {
 
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_HIT_DIE = "hit_die";
+        public static final String COLUMN_STARTING_GOLD = "starting_gold";
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CLASSES;

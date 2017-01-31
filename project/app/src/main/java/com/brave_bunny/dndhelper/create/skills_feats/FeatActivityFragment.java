@@ -103,7 +103,7 @@ public class FeatActivityFragment extends Fragment {
 
     public int getNumberFeats() {
         //TODO find number feats
-        return 2;
+        return 1;
     }
 
     public void updateNumberSelected(DnDListAdapter adapter) {
