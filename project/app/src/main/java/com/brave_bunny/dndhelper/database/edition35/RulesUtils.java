@@ -129,6 +129,45 @@ public class RulesUtils {
             return cursor;
     }
 
+    public static Cursor getClassSkills(Context context, int classIndex) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String classColumn = getSkillClassColumn(classIndex);
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.SkillsEntry.TABLE_NAME +
+                    " WHERE " + classColumn + " = ?";
+            cursor = db.rawQuery(query, new String[]{"1"});
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
+    }
+
+    private static String getSkillClassColumn(int classIndex) {
+        String classColumn = "";
+        switch (classIndex) {
+            case CLASS_CLERIC:
+                classColumn = RulesContract.SkillsEntry.COLUMN_CLERIC;
+                break;
+            case CLASS_FIGHTER:
+                classColumn = RulesContract.SkillsEntry.COLUMN_FIGHTER;
+                break;
+            case CLASS_ROGUE:
+                classColumn = RulesContract.SkillsEntry.COLUMN_ROGUE;
+                break;
+            case CLASS_WIZARD:
+                classColumn = RulesContract.SkillsEntry.COLUMN_WIZARD;
+                break;
+        }
+        return classColumn;
+    }
+
     public static ContentValues getFirstLevelStats(Context context, int selectedClass) {
         String tableName = getTableName(selectedClass);
         if (tableName == "") return null;

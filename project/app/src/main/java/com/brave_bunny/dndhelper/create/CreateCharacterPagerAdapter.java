@@ -15,6 +15,7 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
     private long index;
 
     private CreateActivityFragment classFragment;
+    private CreateActivityFragment skillFragment;
 
     public CreateCharacterPagerAdapter(FragmentManager fm, long id) {
         super(fm);
@@ -31,6 +32,8 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
 
         if ((position + 1) == CreateActivityFragment.PAGE_CLASS) {
             classFragment = fragment;
+        } else if ((position + 1) == CreateActivityFragment.PAGE_SKILL) {
+            skillFragment = fragment;
         }
 
         return fragment;
@@ -44,6 +47,10 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
     public void updateClass(int position) {
         if (classFragment != null) {
             classFragment.create_class(position);
+        }
+        //TODO don't let skills be chosen when class is not chosen
+        if( skillFragment != null) {
+            skillFragment.updateSkillPage(position);
         }
     }
 

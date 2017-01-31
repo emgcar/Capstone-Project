@@ -19,12 +19,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/select_skills"
+            android:id="@+id/skill_button"
             android:onClick="launchSkillSelector"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/select_feats"
+            android:id="@+id/feat_button"
             android:onClick="launchFeatSelector"/>
 
     </LinearLayout>

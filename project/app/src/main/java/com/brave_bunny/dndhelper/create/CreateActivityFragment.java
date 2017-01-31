@@ -48,6 +48,7 @@ public class CreateActivityFragment extends Fragment {
 
     CreateBaseViewHolder baseViewHolder;
     CreateClassViewHolder classViewHolder;
+    CreateSkillFeatViewHolder skillViewHolder;
     CreateDetailViewHolder detailViewHolder;
 
     public interface OnClassSelectedListener {
@@ -100,6 +101,8 @@ public class CreateActivityFragment extends Fragment {
                 break;
             case PAGE_SKILL:
                 rootView = inflater.inflate(R.layout.fragment_create_skills, container, false);
+                skillViewHolder = new CreateSkillFeatViewHolder(rootView);
+                create_class();
                 break;
             case PAGE_ITEMS:
                 rootView = inflater.inflate(R.layout.fragment_create_items, container, false);
@@ -448,6 +451,16 @@ public class CreateActivityFragment extends Fragment {
                 InProgressContract.CharacterEntry.TABLE_NAME, values, index);
     }
 
+    public void updateSkillPage(int classChoice) {
+        if (skillViewHolder == null) return;
+
+        if (classChoice == 0) {
+            skillViewHolder.mSkillButton.setEnabled(false);
+        } else {
+            skillViewHolder.mSkillButton.setEnabled(true);
+        }
+    }
+
     public static class CreateBaseViewHolder extends RecyclerView.ViewHolder {
         public EditText mNameText;
         public ToggleButton mGenderToggle;
@@ -507,6 +520,18 @@ public class CreateActivityFragment extends Fragment {
             mFortText = (TextView) view.findViewById(R.id.fort_save);
             mRefText = (TextView) view.findViewById(R.id.ref_save);
             mWillText = (TextView) view.findViewById(R.id.will_save);
+        }
+    }
+
+    public static class CreateSkillFeatViewHolder extends RecyclerView.ViewHolder {
+        public Button mSkillButton;
+        public Button mFeatButton;
+
+        public CreateSkillFeatViewHolder(View view) {
+            super(view);
+
+            mSkillButton = (Button) view.findViewById(R.id.skill_button);
+            mFeatButton = (Button) view.findViewById(R.id.feat_button);
         }
     }
 

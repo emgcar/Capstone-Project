@@ -119,7 +119,7 @@ public class InProgressUtil {
     }
 
 
-    private static int getInProgressValue(Context context, long rowIndex, int colIndex) {
+    public static int getInProgressValue(Context context, long rowIndex, int colIndex) {
         int value;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
