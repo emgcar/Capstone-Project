@@ -96,6 +96,18 @@ public class InProgressUtil {
 
     private static final int COL_CHARACTER_FAMILIAR = 28;
 
+    private static final String[] SKILL_COLUMNS = {
+            InProgressContract.SkillEntry.TABLE_NAME + "." + InProgressContract.SkillEntry._ID,
+            InProgressContract.SkillEntry.COLUMN_CHARACTER_ID,
+            InProgressContract.SkillEntry.COLUMN_SKILL_ID,
+            InProgressContract.SkillEntry.COLUMN_RANKS
+    };
+
+    public static final int COL_SKILL_INPUT_ID = 0;
+    public static final int COL_SKILL_CHARACTER_ID = 1;
+    public static final int COL_SKILL_SKILL_ID = 2;
+    public static final int COL_SKILL_RANKS = 3;
+
     public static ContentValues getInProgressRow(Context context, long rowIndex) {
         ContentValues values;
 
@@ -726,6 +738,126 @@ public class InProgressUtil {
         } finally {
             db.close();
         }
+    }
+
+    public static boolean isSkillListed(Context context, long rowIndex, long skillId) {
+        boolean isSelected = false;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.SkillEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.SkillEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.SkillEntry.COLUMN_SKILL_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(skillId)});
+            if (cursor.getCount() > 0) {
+                isSelected = true;
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return isSelected;
+    }
+
+    public static int getSkillRanks(Context context, long rowIndex, long skillId) {
+        int ranks = 0;
+        if (isSkillListed(context, rowIndex, skillId)) {
+            InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+            try {
+                String query = "SELECT * FROM " + InProgressContract.SkillEntry.TABLE_NAME
+                        + " WHERE " + InProgressContract.SkillEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                        InProgressContract.SkillEntry.COLUMN_SKILL_ID + " = ?";
+                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(skillId)});
+                cursor.moveToFirst();
+                ranks = cursor.getInt(COL_SKILL_RANKS);
+                cursor.close();
+            } finally {
+                db.close();
+            }
+        }
+        return ranks;
+    }
+
+    public static void addSkillSelection(Context context, long rowIndex, long skillId, int rank) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.SkillEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.SkillEntry.COLUMN_SKILL_ID, skillId);
+        values.put(InProgressContract.SkillEntry.COLUMN_RANKS, rank);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(InProgressContract.SkillEntry.TABLE_NAME, null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void updateSkillSelection(Context context, long rowIndex, long skillId, int newRank) {
+        ContentValues values = new ContentValues();
+        values.put(InProgressContract.SkillEntry.COLUMN_CHARACTER_ID, rowIndex);
+        values.put(InProgressContract.SkillEntry.COLUMN_SKILL_ID, skillId);
+        values.put(InProgressContract.SkillEntry.COLUMN_RANKS, newRank);
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String charIndex = SKILL_COLUMNS[COL_SKILL_CHARACTER_ID];
+            String skillIndex = SKILL_COLUMNS[COL_SKILL_SKILL_ID];
+
+            String query = "SELECT * FROM " + InProgressContract.SkillEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.SkillEntry.COLUMN_CHARACTER_ID + " = ? AND " +
+                    InProgressContract.SkillEntry.COLUMN_SKILL_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(skillId)});
+            try {
+                cursor.moveToFirst();
+                db.update(InProgressContract.SkillEntry.TABLE_NAME, values, charIndex + " = ? AND " + skillIndex + " = ?",
+                        new String[]{Long.toString(rowIndex), Long.toString(skillId)});
+            } finally {
+                cursor.close();
+            }
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void addOrUpdateSkillSelecetion(Context context, long rowIndex, long skillId, int newRank) {
+        if (isSkillListed(context, rowIndex, skillId)) {
+            updateSkillSelection(context, rowIndex, skillId, newRank);
+        } else {
+            addSkillSelection(context, rowIndex, skillId, newRank);
+        }
+    }
+
+    //TODO need to update for cross class
+    public static int numberSkillPointsSpent(Context context, long rowIndex) {
+        int skillPointsSpent = 0;
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + InProgressContract.SkillEntry.TABLE_NAME
+                    + " WHERE " + InProgressContract.SkillEntry.COLUMN_CHARACTER_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            cursor.moveToFirst();
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                skillPointsSpent += cursor.getInt(COL_SKILL_RANKS);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return skillPointsSpent;
     }
 
 }

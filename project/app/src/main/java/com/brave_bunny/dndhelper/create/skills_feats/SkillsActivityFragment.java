@@ -44,7 +44,7 @@ public class SkillsActivityFragment extends Fragment {
         mCursor = RulesUtils.getClassSkills(getContext(), classId);
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
 
-        SkillAdapter adapter = new SkillAdapter(getContext(), mCursor, 0);
+        SkillAdapter adapter = new SkillAdapter(getContext(), mCursor, 0, rowIndex);
         listView.setAdapter(adapter);
 
 
