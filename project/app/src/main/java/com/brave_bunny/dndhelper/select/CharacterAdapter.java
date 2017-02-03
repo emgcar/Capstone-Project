@@ -31,11 +31,10 @@ public class CharacterAdapter extends CursorAdapter {
     private Cursor mCursor;
     private int mViewType;
 
-    public CharacterAdapter(Context context, Cursor c, int viewType, int flags) {
+    public CharacterAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
         mContext = context;
         mCursor = c;
-        mViewType = viewType;
     }
 
     @Override
@@ -58,7 +57,6 @@ public class CharacterAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-
         String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
         viewHolder.nameView.setText(name);
     }
@@ -71,6 +69,14 @@ public class CharacterAdapter extends CursorAdapter {
 
     @Override
     public int getItemViewType(int position) {
+        mCursor.moveToFirst();
+        mCursor.move(position);
+        String name = mCursor.getString(CharacterUtil.COL_CHARACTER_NAME);
+        if(CharacterUtil.isFinished(mContext, name)) {
+            mViewType = VIEW_TYPE_CHARACTER;
+        } else {
+            mViewType = VIEW_TYPE_INPROGRESS;
+        }
         return mViewType;
     }
 

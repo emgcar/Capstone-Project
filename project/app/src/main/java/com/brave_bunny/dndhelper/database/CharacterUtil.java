@@ -134,7 +134,7 @@ public class CharacterUtil {
 
 
     // need to make sure no name duplication somehow
-    public boolean isFinished(Context context, String name) {
+    public static boolean isFinished(Context context, String name) {
         boolean value;
 
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);

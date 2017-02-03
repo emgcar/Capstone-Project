@@ -3,7 +3,9 @@ package com.brave_bunny.dndhelper.select;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.CursorJoiner;
 import android.database.DatabaseUtils;
+import android.database.MergeCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -59,14 +61,19 @@ public class SelectActivityFragment extends Fragment {
         try {
             String query = "SELECT * FROM " + CharacterContract.CharacterEntry.TABLE_NAME;
 
-            Cursor cursor = characterDb.rawQuery(query, null);
+            Cursor[] cursors = new Cursor[2];
+            cursors[0] = characterDb.rawQuery(query, null);
+            String[] cursorHeaders = {
+                    CharacterContract.CharacterEntry._ID,
+                    CharacterContract.CharacterEntry.COLUMN_NAME
+            };
 
-            final CharacterAdapter adapter = new CharacterAdapter(getContext(), cursor,
-                    CharacterAdapter.VIEW_TYPE_CHARACTER, 0);
-            ListView listView = (ListView) rootView.findViewById(R.id.listview_characters);
-            listView.setAdapter(adapter);
+            //final CharacterAdapter adapter = new CharacterAdapter(getContext(), cursor,
+            //        CharacterAdapter.VIEW_TYPE_CHARACTER, 0);
+            //ListView listView = (ListView) rootView.findViewById(R.id.listview_characters);
+            //listView.setAdapter(adapter);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -88,15 +95,21 @@ public class SelectActivityFragment extends Fragment {
                         startActivity(selectActivity);
                     }
                 }
-            });
+            });*/
 
             String inProgressQuery = "SELECT * FROM " + InProgressContract.CharacterEntry.TABLE_NAME;
 
-            Cursor inProgressCursor = inprogressDb.rawQuery(inProgressQuery, null);
+            cursors[1] = inprogressDb.rawQuery(inProgressQuery, null);
+            String[] inProgressHeaders = {
+                    InProgressContract.CharacterEntry._ID,
+                    InProgressContract.CharacterEntry.COLUMN_NAME
+            };
 
-            final CharacterAdapter inProgress = new CharacterAdapter(getContext(), inProgressCursor,
-                    CharacterAdapter.VIEW_TYPE_INPROGRESS, 0);
-            listView = (ListView) rootView.findViewById(R.id.listview_inprogress);
+            MergeCursor joiner = new MergeCursor(cursors);
+            String[] names = joiner.getColumnNames();
+
+            final CharacterAdapter inProgress = new CharacterAdapter(getContext(), joiner, 0);
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_inprogress);
             listView.setAdapter(inProgress);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
