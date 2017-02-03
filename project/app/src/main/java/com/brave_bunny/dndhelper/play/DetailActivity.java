@@ -182,13 +182,13 @@ public class DetailActivity extends AppCompatActivity {
 
         private void setRace() {
             switch (race) {
-                case 0:
+                case RulesUtils.RACE_HUMAN:
                     mViewHolder.mRaceView.setText(R.string.human);
                     break;
-                case 1:
+                case RulesUtils.RACE_DWARF:
                     mViewHolder.mRaceView.setText(R.string.elf);
                     break;
-                default:
+                case RulesUtils.RACE_ELF:
                     mViewHolder.mRaceView.setText(R.string.dwarf);
                     break;
             }

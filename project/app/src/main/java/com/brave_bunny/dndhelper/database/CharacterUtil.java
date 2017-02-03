@@ -182,7 +182,7 @@ public class CharacterUtil {
         long index;
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        String tableName = InProgressContract.CharacterEntry.TABLE_NAME;
+        String tableName = CharacterContract.CharacterEntry.TABLE_NAME;
 
         try {
             index = db.insert(tableName, null, values);
@@ -300,16 +300,20 @@ public class CharacterUtil {
         // adding character will
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_WILL, will);
 
-        //TODO get money and load levels
         // adding character money
         int money = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_MONEY);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_MONEY, money);
 
+
+        //TODO get  load levels
         // adding character light load
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_LIGHT_LOAD, 0);
 
         // adding character medium load
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_MED_LOAD, 0);
 
         // adding character heavy load
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEAVY_LOAD, 0);
 
         //TODO: add armor bonus, shield bonus, and size modifier
         // adding character AC

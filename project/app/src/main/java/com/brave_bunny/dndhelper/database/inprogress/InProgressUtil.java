@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
@@ -185,9 +186,9 @@ public class InProgressUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "DELETE FROM " + InProgressContract.CharacterEntry.TABLE_NAME
-                    + " WHERE " + InProgressContract.CharacterEntry._ID + " = ?";
-            db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+            String id = INPROGRESS_COLUMNS[COL_CHARACTER_ID];
+            db.delete(InProgressContract.CharacterEntry.TABLE_NAME, id + " = ?",
+                    new String[]{Long.toString(rowIndex)});
         } finally {
             db.close();
         }
@@ -291,6 +292,7 @@ public class InProgressUtil {
         ContentValues characterValues = new ContentValues();
 
         characterValues.put(InProgressContract.CharacterEntry.COLUMN_NAME, "");
+        characterValues.put(InProgressContract.CharacterEntry.COLUMN_GENDER, CharacterContract.GENDER_MALE);
         characterValues.put(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, 0);
         characterValues.put(InProgressContract.CharacterEntry.COLUMN_RACE_ID, 0);
         characterValues.put(InProgressContract.CharacterEntry.COLUMN_ALIGN, 0);
@@ -393,7 +395,7 @@ public class InProgressUtil {
                 int numberSpells = numberSpellsSelected(context, values);
                 Object intScore = values.get(InProgressContract.CharacterEntry.COLUMN_INT);
                 if (intScore != null) {
-                    int intMod = scoreToModifier((int)intScore);
+                    long intMod = scoreToModifier((long)intScore);
                     isFilled &= (numberSpells == (3 + intMod));
                 }
                 break;
@@ -405,14 +407,20 @@ public class InProgressUtil {
         ContentValues values = getInProgressRow(context, rowIndex);
         long previousClass = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
 
+        long prevMoneyDiff = 0;
         ContentValues prevClassValues = RulesUtils.getClassStats(context, previousClass);
-        long prevMaxMoney = prevClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
-        long prevMoney = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_MONEY);
-        long prevMoneyDiff = prevMaxMoney - prevMoney;
+        if (prevClassValues != null) {
+            long prevMaxMoney = prevClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
+            long prevMoney = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_MONEY);
+            prevMoneyDiff = prevMaxMoney - prevMoney;
+        }
 
         ContentValues currClassValues = RulesUtils.getClassStats(context, classSelection);
-        long currMaxMoney = currClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
-        long currMoney = currMaxMoney - prevMoneyDiff;
+        long currMoney = 0;
+        if (currClassValues != null) {
+            long currMaxMoney = currClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
+            currMoney = currMaxMoney - prevMoneyDiff;
+        }
 
         values.put(InProgressContract.CharacterEntry.COLUMN_MONEY, currMoney);
 

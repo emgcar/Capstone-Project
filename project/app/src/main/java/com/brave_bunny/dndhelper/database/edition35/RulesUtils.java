@@ -252,7 +252,7 @@ public class RulesUtils {
     }
 
     public static ContentValues getClassStats(Context context, long selectedClass) {
-        ContentValues values;
+        ContentValues values = null;
 
         RulesDbHelper dbHelper = new RulesDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -264,7 +264,9 @@ public class RulesUtils {
 
             cursor.moveToFirst();
 
-            values = Utility.cursorRowToContentValues(cursor);
+            if(cursor.getCount() > 0) {
+                values = Utility.cursorRowToContentValues(cursor);
+            }
             cursor.close();
         } finally {
             db.close();
