@@ -10,10 +10,6 @@ import android.widget.TextView;
  */
 public class Utility {
 
-    public static TextView findTextView(View view, int id) {
-        return (TextView) view.findViewById(id);
-    }
-
     /* START code from http://stackoverflow.com/questions/7932420/android-sqlite-cursor-contentvalues */
     public static ContentValues cursorRowToContentValues(Cursor cursor) {
         ContentValues values = new ContentValues();
@@ -41,40 +37,4 @@ public class Utility {
         return values;
     }
     /* END code from http://stackoverflow.com/questions/7932420/android-sqlite-cursor-contentvalues */
-
-    public static String getStringFromCursor(Cursor cursor, String columnName) {
-        int index = cursor.getColumnIndex(columnName);
-        return cursor.getString(index);
-    }
-
-    public static int getIntFromCursor(Cursor cursor, String columnName) {
-        int index = cursor.getColumnIndex(columnName);
-        return cursor.getInt(index);
-    }
-
-    public static float getFloatFromCursor(Cursor cursor, String columnName) {
-        int index = cursor.getColumnIndex(columnName);
-        return cursor.getFloat(index);
-    }
-
-    public static void putInContentValue(ContentValues values,
-                                         String columnName, int val) {
-
-        values.put(columnName, val);
-    }
-
-    public static void putInContentValue(ContentValues values,
-                                         String columnName, float val) {
-
-        values.put(columnName, val);
-    }
-
-    public static int scoreToModifier(int score) {
-        return (score - 10)/2;
-    }
-
-
-    public static long scoreToModifier(long score) {
-        return (score - 10)/2;
-    }
 }

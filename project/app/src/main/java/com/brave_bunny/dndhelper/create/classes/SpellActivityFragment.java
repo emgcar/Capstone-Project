@@ -105,7 +105,7 @@ public class SpellActivityFragment extends Fragment {
         int numberSpells = 3;
 
         if (mIntScore != -1) {
-            numberSpells += Utility.scoreToModifier(mIntScore);
+            numberSpells += RulesUtils.scoreToModifier(mIntScore);
         }
         return numberSpells;
     }

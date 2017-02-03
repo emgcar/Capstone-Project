@@ -350,4 +350,13 @@ public class RulesUtils {
 
         return cursor;
     }
+
+    public static int scoreToModifier(int score) {
+        return (score - 10)/2;
+    }
+
+
+    public static long scoreToModifier(long score) {
+        return (score - 10)/2;
+    }
 }

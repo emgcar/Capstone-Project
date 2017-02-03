@@ -369,7 +369,7 @@ public class CreateActivityFragment extends Fragment {
         ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
         int conScore = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CON);
         if (conScore != -1) {
-            hitPoints += Utility.scoreToModifier(conScore);
+            hitPoints += RulesUtils.scoreToModifier(conScore);
         }
 
         String hitPointsString = Integer.toString(hitPoints);

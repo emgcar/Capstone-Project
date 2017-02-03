@@ -11,8 +11,6 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
 
-import static com.brave_bunny.dndhelper.Utility.getIntFromCursor;
-
 /**
  * Created by Jemma on 1/11/2017.
  */
@@ -110,7 +108,7 @@ public class CharacterUtil {
         return values;
     }
 
-    public int getCharacterValue(Context context, long rowIndex, int colIndex) {
+    public static int getCharacterValue(Context context, long rowIndex, int colIndex) {
         int value;
 
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
@@ -123,7 +121,7 @@ public class CharacterUtil {
 
             cursor.moveToFirst();
 
-            value = getIntFromCursor(cursor, CHARACTER_COLUMNS[colIndex]);
+            value = cursor.getInt(colIndex);
             cursor.close();
         } finally {
             db.close();
@@ -134,7 +132,7 @@ public class CharacterUtil {
 
 
     // need to make sure no name duplication somehow
-    public static boolean isFinished(Context context, String name) {
+    public static boolean isCompleteled(Context context, String name) {
         boolean value;
 
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
@@ -258,9 +256,9 @@ public class CharacterUtil {
         ContentValues classLevelOneStats = RulesUtils.getFirstLevelStats(context, classChoice);
 
         int baseAttack = 0;
-        int fortitude = Utility.scoreToModifier(conTotal);
-        int reflex = Utility.scoreToModifier(dexTotal);
-        int will = Utility.scoreToModifier(wisTotal);
+        int fortitude = RulesUtils.scoreToModifier(conTotal);
+        int reflex = RulesUtils.scoreToModifier(dexTotal);
+        int will = RulesUtils.scoreToModifier(wisTotal);
 
         switch (classChoice) {
             case RulesUtils.CLASS_CLERIC:
@@ -317,19 +315,19 @@ public class CharacterUtil {
 
         //TODO: add armor bonus, shield bonus, and size modifier
         // adding character AC
-        int armor_class = 10 + Utility.scoreToModifier(dexTotal);
+        int armor_class = 10 + RulesUtils.scoreToModifier(dexTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_AC, armor_class);
 
         // adding character HP
         ContentValues classStats = RulesUtils.getClassStats(context, classChoice);
         int hpDie = classStats.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
-        hpDie += Utility.scoreToModifier(conTotal);
+        hpDie += RulesUtils.scoreToModifier(conTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_CURR, hpDie);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_MAX, hpDie);
 
         //TODO: check for Improved Initiative feat
         // adding character initiative
-        int initiative = Utility.scoreToModifier(dexTotal);
+        int initiative = RulesUtils.scoreToModifier(dexTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_INITIATIVE, initiative);
 
 

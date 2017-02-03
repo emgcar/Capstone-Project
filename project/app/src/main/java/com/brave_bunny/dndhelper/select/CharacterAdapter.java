@@ -2,8 +2,6 @@ package com.brave_bunny.dndhelper.select;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +9,6 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
-import com.brave_bunny.dndhelper.database.CharacterContract;
-import com.brave_bunny.dndhelper.database.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
 
 /**
@@ -72,7 +67,7 @@ public class CharacterAdapter extends CursorAdapter {
         mCursor.moveToFirst();
         mCursor.move(position);
         String name = mCursor.getString(CharacterUtil.COL_CHARACTER_NAME);
-        if(CharacterUtil.isFinished(mContext, name)) {
+        if(CharacterUtil.isCompleteled(mContext, name)) {
             mViewType = VIEW_TYPE_CHARACTER;
         } else {
             mViewType = VIEW_TYPE_INPROGRESS;

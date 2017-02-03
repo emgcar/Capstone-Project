@@ -14,9 +14,6 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
 import java.util.Objects;
 import java.util.Random;
 
-import static com.brave_bunny.dndhelper.Utility.getIntFromCursor;
-import static com.brave_bunny.dndhelper.Utility.scoreToModifier;
-
 /**
  * Created by Jemma on 1/13/2017.
  */
@@ -195,7 +192,7 @@ public class InProgressUtil {
     }
 
     public static ContentValues getInProgressRow(Context context, long rowIndex) {
-        ContentValues values;
+        ContentValues values = null;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -207,7 +204,9 @@ public class InProgressUtil {
 
             cursor.moveToFirst();
 
-            values = Utility.cursorRowToContentValues(cursor);
+            if (cursor.getCount() > 0) {
+                values = Utility.cursorRowToContentValues(cursor);
+            }
             cursor.close();
         } finally {
             db.close();
@@ -229,7 +228,7 @@ public class InProgressUtil {
 
             cursor.moveToFirst();
 
-            value = getIntFromCursor(cursor, INPROGRESS_COLUMNS[colIndex]);
+            value = cursor.getInt(colIndex);
             cursor.close();
         } finally {
             db.close();
@@ -395,7 +394,7 @@ public class InProgressUtil {
                 int numberSpells = numberSpellsSelected(context, values);
                 Object intScore = values.get(InProgressContract.CharacterEntry.COLUMN_INT);
                 if (intScore != null) {
-                    long intMod = scoreToModifier((long)intScore);
+                    long intMod = RulesUtils.scoreToModifier((long)intScore);
                     isFilled &= (numberSpells == (3 + intMod));
                 }
                 break;
