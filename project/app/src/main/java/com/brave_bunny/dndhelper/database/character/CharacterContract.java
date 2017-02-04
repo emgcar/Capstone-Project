@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.database;
+package com.brave_bunny.dndhelper.database.character;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -173,7 +173,7 @@ public class CharacterContract {
 
         public static final String COLUMN_CHARACTER_ID = "character";
         public static final String COLUMN_ARMOR_ID = "armor";
-        public static final String COLUMN_EQUIPPED = "equipped";
+        public static final String COLUMN_COUNT = "armor_count";
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CHARACTER_ARMOR;

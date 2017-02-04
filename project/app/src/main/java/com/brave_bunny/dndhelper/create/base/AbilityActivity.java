@@ -23,7 +23,7 @@ public class AbilityActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ability);
+        setContentView(R.layout.activity_frame_layout);
         rootView = this.findViewById(android.R.id.content);
 
         Bundle extras = getIntent().getExtras();
@@ -34,7 +34,7 @@ public class AbilityActivity extends AppCompatActivity {
             abilityFragment.setArguments(extras);
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.ability_container, abilityFragment)
+                    .add(R.id.container, abilityFragment)
                     .commit();
         }
     }

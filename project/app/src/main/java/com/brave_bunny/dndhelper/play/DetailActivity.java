@@ -13,9 +13,8 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
-import com.brave_bunny.dndhelper.database.CharacterContract;
-import com.brave_bunny.dndhelper.database.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.character.CharacterContract;
+import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CG;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CN;

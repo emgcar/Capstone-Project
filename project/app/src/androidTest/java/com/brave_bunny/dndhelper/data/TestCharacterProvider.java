@@ -1,20 +1,6 @@
 package com.brave_bunny.dndhelper.data;
 
-import android.content.ComponentName;
-import android.content.ContentUris;
-import android.content.ContentValues;
-import android.content.pm.PackageManager;
-import android.content.pm.ProviderInfo;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Build;
 import android.test.AndroidTestCase;
-import android.util.Log;
-
-import com.brave_bunny.dndhelper.database.CharacterContract;
-import com.brave_bunny.dndhelper.database.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.CharacterProvider;
 
 /**
  * Created by Jemma on 8/7/2016.

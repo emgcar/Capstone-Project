@@ -17,10 +17,10 @@ public class ArmorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_armor);
+        setContentView(R.layout.activity_frame_layout);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.armor_container, new ArmorActivityFragment())
+                    .add(R.id.container, new ArmorActivityFragment())
                     .commit();
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

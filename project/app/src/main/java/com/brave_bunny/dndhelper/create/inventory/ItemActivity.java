@@ -17,10 +17,10 @@ public class ItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_armor);
+        setContentView(R.layout.activity_frame_layout);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.armor_container, new ItemActivityFragment())
+                    .add(R.id.container, new ItemActivityFragment())
                     .commit();
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

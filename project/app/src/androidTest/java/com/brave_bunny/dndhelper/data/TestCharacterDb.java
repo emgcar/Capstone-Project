@@ -4,8 +4,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
 
-import com.brave_bunny.dndhelper.database.CharacterContract;
-import com.brave_bunny.dndhelper.database.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.character.CharacterContract;
+import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 
 import java.util.HashSet;
 

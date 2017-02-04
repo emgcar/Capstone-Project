@@ -51,7 +51,6 @@
         <activity
             android:name=".play.battle.BattleActivity"
             android:label="@string/title_activity_battle"
-            android:parentActivityName=".play.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

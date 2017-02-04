@@ -9,10 +9,10 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.CharacterUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
-import static com.brave_bunny.dndhelper.database.CharacterUtil.isCompleted;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
 
 /**
  * Created by Jemma on 1/9/2017.

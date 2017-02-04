@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.addOrUpdateArmorSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.getArmorCount;

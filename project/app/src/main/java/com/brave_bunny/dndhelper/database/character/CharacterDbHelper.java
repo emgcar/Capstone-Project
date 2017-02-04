@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.database;
+package com.brave_bunny.dndhelper.database.character;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -139,7 +139,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
 
                 CharacterContract.CharacterArmor.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
                 CharacterContract.CharacterArmor.COLUMN_ARMOR_ID + " INTEGER NOT NULL," +
-                CharacterContract.CharacterArmor.COLUMN_EQUIPPED + " INTEGER NOT NULL )";
+                CharacterContract.CharacterArmor.COLUMN_COUNT + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_ARMOR_TABLE);
     }

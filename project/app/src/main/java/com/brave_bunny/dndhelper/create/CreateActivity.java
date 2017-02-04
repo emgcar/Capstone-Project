@@ -17,8 +17,7 @@ import com.brave_bunny.dndhelper.create.inventory.ItemActivity;
 import com.brave_bunny.dndhelper.create.inventory.WeaponActivity;
 import com.brave_bunny.dndhelper.create.skills_feats.FeatActivity;
 import com.brave_bunny.dndhelper.create.skills_feats.SkillsActivity;
-import com.brave_bunny.dndhelper.database.CharacterUtil;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 /**

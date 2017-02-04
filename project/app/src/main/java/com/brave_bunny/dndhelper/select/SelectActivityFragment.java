@@ -15,17 +15,17 @@ import android.widget.ListView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivity;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
-import com.brave_bunny.dndhelper.database.CharacterContract;
-import com.brave_bunny.dndhelper.database.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.CharacterUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterContract;
+import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.play.DetailActivity;
 import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 
-import static com.brave_bunny.dndhelper.database.CharacterUtil.COL_CHARACTER_IN_BATTLE;
-import static com.brave_bunny.dndhelper.database.CharacterUtil.getCharacterValue;
-import static com.brave_bunny.dndhelper.database.CharacterUtil.isCompleted;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.COL_CHARACTER_IN_BATTLE;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.getCharacterValue;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
 
 /**
  * A placeholder fragment containing a simple view.

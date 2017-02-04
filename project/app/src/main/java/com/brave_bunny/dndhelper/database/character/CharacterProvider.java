@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.database;
+package com.brave_bunny.dndhelper.database.character;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -6,10 +6,6 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.support.annotation.Nullable;
-
-import com.brave_bunny.dndhelper.database.CharacterContract;
-import com.brave_bunny.dndhelper.database.CharacterDbHelper;
 
 /**
  * Created by Jemma on 8/7/2016.

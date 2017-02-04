@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.CharacterContract;
+import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils;
