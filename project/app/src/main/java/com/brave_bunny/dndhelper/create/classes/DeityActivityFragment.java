@@ -18,9 +18,8 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CE;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CG;
@@ -32,6 +31,9 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomai
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NE;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NG;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.addDomainSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.isDomainSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.removeDomainSelection;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -42,7 +44,7 @@ public class DeityActivityFragment extends Fragment {
     static long rowIndex;
     View mRootView;
     private final int numberDomains = 2;
-    InProgressUtil mInProgressUtil;
+    InProgressCharacterUtil mInProgressCharacterUtil;
 
     public DeityActivityFragment() {
     }
@@ -51,7 +53,7 @@ public class DeityActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_deity, container, false);
-        mInProgressUtil = new InProgressUtil();
+        mInProgressCharacterUtil = new InProgressCharacterUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
         mValues = (ContentValues) extras.get(DeityActivity.inprogressValues);
@@ -140,14 +142,14 @@ public class DeityActivityFragment extends Fragment {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         int domainId = cursor.getInt(COL_DOMAIN_ID);
 
-                        if(InProgressUtil.isDomainSelected(getContext(), rowIndex, domainId)) {
+                        if(isDomainSelected(getContext(), rowIndex, domainId)) {
                             adapter.decreaseNumberSelected();
-                            mInProgressUtil.removeDomainSelection(getContext(), rowIndex, domainId);
+                            removeDomainSelection(getContext(), rowIndex, domainId);
                             itemView.setEnabled(false);
                         } else {
                             if (!adapter.atMaxSelected()) {
                                 adapter.increaseNumberSelected();
-                                mInProgressUtil.addDomainSelection(getContext(), rowIndex, domainId);
+                                addDomainSelection(getContext(), rowIndex, domainId);
                                 itemView.setEnabled(true);
                             }
                         }

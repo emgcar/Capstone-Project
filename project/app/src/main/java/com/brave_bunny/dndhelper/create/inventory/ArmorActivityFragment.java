@@ -10,8 +10,7 @@ import android.widget.ListView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.skills_feats.SkillAdapter;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesArmorUtils.getAllArmor;
 
@@ -36,8 +35,8 @@ public class ArmorActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_skills, container, false);
 
         //TODO implement options for viewing all and cross-class also
-        int moneyAmount = InProgressUtil.getInProgressValue(getContext(), rowIndex,
-                InProgressUtil.COL_CHARACTER_MONEY);
+        int moneyAmount = InProgressCharacterUtil.getInProgressValue(getContext(), rowIndex,
+                InProgressCharacterUtil.COL_CHARACTER_MONEY);
         mCursor = getAllArmor(getContext());
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
 

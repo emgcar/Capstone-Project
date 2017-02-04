@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.CharacterUtil;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.CharacterUtil.isCompleted;
 
@@ -52,7 +52,7 @@ class CharacterListAdapter extends CursorAdapter {
         String name = mCursor.getString(CharacterUtil.COL_CHARACTER_NAME);
         if (!isCompleted(context, name)) {
             mViewHolder.levelView.setText(R.string.in_progress);
-            name = mCursor.getString(InProgressUtil.COL_CHARACTER_NAME);
+            name = mCursor.getString(InProgressCharacterUtil.COL_CHARACTER_NAME);
         } else {
             // TODO implement level display
             mViewHolder.levelView.setText("Level 3");

@@ -24,7 +24,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getClassStats;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getFirstLevelStats;
@@ -158,7 +158,7 @@ public class CreateActivityFragment extends Fragment {
         baseViewHolder.mClassSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                InProgressUtil.updateClassValues(getContext(), index, i);
+                InProgressCharacterUtil.updateClassValues(getContext(), index, i);
                 inputSpinnerValue(InProgressContract.CharacterEntry.COLUMN_CLASS_ID, i);
                 mClassCallback.onClassSelected(i);
             }
@@ -208,8 +208,7 @@ public class CreateActivityFragment extends Fragment {
         String characterName = editable.toString();
         values.put(InProgressContract.CharacterEntry.COLUMN_NAME, characterName);
 
-        InProgressUtil.updateInProgressTable(getContext(),
-                InProgressContract.CharacterEntry.TABLE_NAME, values, index);
+        InProgressCharacterUtil.updateInProgressTable(getContext(), values, index);
     }
 
     private void inputSpinnerValue(String column, int classId) {
@@ -217,17 +216,16 @@ public class CreateActivityFragment extends Fragment {
         ContentValues values = new ContentValues();
         values.put(column, classId);
 
-        InProgressUtil.updateInProgressTable(getContext(),
-                InProgressContract.CharacterEntry.TABLE_NAME, values, index);
+        InProgressCharacterUtil.updateInProgressTable(getContext(), values, index);
     }
 
     public String getCharacterString(String column) {
-        ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
         return values.getAsString(column);
     }
 
     public int getSpinnerValue(String column) {
-        ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
         if (values.get(column) == null)
             return 0;
         return values.getAsInteger(column);
@@ -238,17 +236,17 @@ public class CreateActivityFragment extends Fragment {
     public void updateAbilityScores() {
         if (baseViewHolder != null) {
             setAbilityScore(baseViewHolder.mStrText,
-                    InProgressUtil.getTotalStrengthScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalStrengthScore(getContext(), index));
             setAbilityScore(baseViewHolder.mDexText,
-                    InProgressUtil.getTotalDexterityScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalDexterityScore(getContext(), index));
             setAbilityScore(baseViewHolder.mConText,
-                    InProgressUtil.getTotalConstitutionScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalConstitutionScore(getContext(), index));
             setAbilityScore(baseViewHolder.mIntText,
-                    InProgressUtil.getTotalIntelligenceScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), index));
             setAbilityScore(baseViewHolder.mWisText,
-                    InProgressUtil.getTotalWisdomScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalWisdomScore(getContext(), index));
             setAbilityScore(baseViewHolder.mChaText,
-                    InProgressUtil.getTotalCharismaScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalCharismaScore(getContext(), index));
         }
     }
 
@@ -369,7 +367,7 @@ public class CreateActivityFragment extends Fragment {
         ContentValues classValues = getClassStats(getContext(), classSelection);
         int hitPoints = classValues.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
 
-        ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
         int conScore = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CON);
         if (conScore != -1) {
             hitPoints += RulesCharacterUtils.scoreToModifier(conScore);
@@ -453,8 +451,7 @@ public class CreateActivityFragment extends Fragment {
         String characterName = editable.toString();
         values.put(column, characterName);
 
-        InProgressUtil.updateInProgressTable(getContext(),
-                InProgressContract.CharacterEntry.TABLE_NAME, values, index);
+        InProgressCharacterUtil.updateInProgressTable(getContext(), values, index);
     }
 
     public void updateSkillPage(int classChoice) {

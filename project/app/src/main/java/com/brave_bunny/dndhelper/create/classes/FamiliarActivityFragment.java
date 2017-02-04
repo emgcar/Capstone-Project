@@ -17,8 +17,7 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_ID;
 
@@ -80,12 +79,12 @@ public class FamiliarActivityFragment extends Fragment {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         long familiarId = cursor.getInt(COL_FAMILIAR_ID);
 
-                        if(InProgressUtil.isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
-                            InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, -1);
+                        if(InProgressCharacterUtil.isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
+                            InProgressCharacterUtil.changeFamiliarSelection(getContext(), rowIndex, -1);
                             itemView.setEnabled(false);
                             adapter.notifyDataSetChanged();
                         } else {
-                            InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, familiarId);
+                            InProgressCharacterUtil.changeFamiliarSelection(getContext(), rowIndex, familiarId);
                             itemView.setEnabled(true);
                             adapter.notifyDataSetChanged();
                         }

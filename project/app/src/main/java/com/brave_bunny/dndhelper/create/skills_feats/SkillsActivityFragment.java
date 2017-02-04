@@ -9,8 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.getClassSkills;
 
@@ -35,8 +34,8 @@ public class SkillsActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_skills, container, false);
 
         //TODO implement options for viewing all and cross-class also
-        int classId = InProgressUtil.getInProgressValue(getContext(), rowIndex,
-                InProgressUtil.COL_CHARACTER_CLASS_ID);
+        int classId = InProgressCharacterUtil.getInProgressValue(getContext(), rowIndex,
+                InProgressCharacterUtil.COL_CHARACTER_CLASS_ID);
         mCursor = getClassSkills(getContext(), classId);
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
 

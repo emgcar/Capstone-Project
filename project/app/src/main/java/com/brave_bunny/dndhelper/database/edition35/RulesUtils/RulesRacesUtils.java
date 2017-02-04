@@ -19,7 +19,7 @@ public class RulesRacesUtils {
     public final static int RACE_DWARF = 2;
     public final static int RACE_ELF = 3;
 
-    private static final String[] RACE_COLUMNS = {
+    public static final String[] RACE_COLUMNS = {
             RulesContract.RaceEntry.TABLE_NAME + "." + RulesContract.RaceEntry._ID,
             RulesContract.RaceEntry.COLUMN_NAME,
             RulesContract.RaceEntry.COLUMN_STR,

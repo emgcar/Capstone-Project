@@ -9,7 +9,7 @@ import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_FIGHTER;
@@ -199,7 +199,7 @@ public class CharacterUtil {
 
     //TODO add all chosen content to all tables (deity, spells, familiar, skills, feats, ...)
     public static long createNewCharacter(Context context, long inProgressIndex) {
-        ContentValues inProgressValues = InProgressUtil.getInProgressRow(context, inProgressIndex);
+        ContentValues inProgressValues = InProgressCharacterUtil.getInProgressRow(context, inProgressIndex);
         ContentValues characterValues = new ContentValues();
 
         // adding character name
@@ -235,27 +235,27 @@ public class CharacterUtil {
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
 
         // adding character strength
-        int strTotal = InProgressUtil.getTotalStrengthScore(context, inProgressIndex);
+        int strTotal = InProgressCharacterUtil.getTotalStrengthScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_STR, strTotal);
 
         // adding character dexterity
-        int dexTotal = InProgressUtil.getTotalDexterityScore(context, inProgressIndex);
+        int dexTotal = InProgressCharacterUtil.getTotalDexterityScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_DEX, dexTotal);
 
         // adding character constitution
-        int conTotal = InProgressUtil.getTotalConstitutionScore(context, inProgressIndex);
+        int conTotal = InProgressCharacterUtil.getTotalConstitutionScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_CON, conTotal);
 
         // adding character intelligence
-        int intTotal = InProgressUtil.getTotalIntelligenceScore(context, inProgressIndex);
+        int intTotal = InProgressCharacterUtil.getTotalIntelligenceScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_INT, intTotal);
 
         // adding character wisdom
-        int wisTotal = InProgressUtil.getTotalWisdomScore(context, inProgressIndex);
+        int wisTotal = InProgressCharacterUtil.getTotalWisdomScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_WIS, wisTotal);
 
         // adding character charisma
-        int chaTotal = InProgressUtil.getTotalCharismaScore(context, inProgressIndex);
+        int chaTotal = InProgressCharacterUtil.getTotalCharismaScore(context, inProgressIndex);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_CHA, chaTotal);
 
         // adding character base attack bonus, fortitude, reflex, and will

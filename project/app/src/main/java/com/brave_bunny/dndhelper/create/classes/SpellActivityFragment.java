@@ -18,9 +18,12 @@ import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.addSpellSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.isSpellSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.removeSpellSelection;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -30,7 +33,7 @@ public class SpellActivityFragment extends Fragment {
     private View mRootView;
     private int mIntScore;
     static long rowIndex;
-    InProgressUtil mInProgressUtil;
+    InProgressCharacterUtil mInProgressCharacterUtil;
 
     public SpellActivityFragment() {
     }
@@ -39,11 +42,11 @@ public class SpellActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_spell, container, false);
-        mInProgressUtil = new InProgressUtil();
+        mInProgressCharacterUtil = new InProgressCharacterUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
         rowIndex = (long) extras.get(DeityActivity.indexValue);
-        mIntScore = InProgressUtil.getTotalIntelligenceScore(getContext(), rowIndex);
+        mIntScore = InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), rowIndex);
 
         getSpells(getContext(), mRootView);
 
@@ -82,14 +85,14 @@ public class SpellActivityFragment extends Fragment {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         int spellId = cursor.getInt(COL_DOMAIN_ID);
 
-                        if(InProgressUtil.isSpellSelected(getContext(), rowIndex, spellId)) {
+                        if(isSpellSelected(getContext(), rowIndex, spellId)) {
                             adapter.decreaseNumberSelected();
-                            mInProgressUtil.removeSpellSelection(getContext(), rowIndex, spellId);
+                            removeSpellSelection(getContext(), rowIndex, spellId);
                             itemView.setEnabled(false);
                         } else {
                             if (!adapter.atMaxSelected()) {
                                 adapter.increaseNumberSelected();
-                                mInProgressUtil.addSpellSelection(getContext(), rowIndex, spellId);
+                                addSpellSelection(getContext(), rowIndex, spellId);
                                 itemView.setEnabled(true);
                             }
                         }

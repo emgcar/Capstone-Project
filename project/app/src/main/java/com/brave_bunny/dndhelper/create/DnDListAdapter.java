@@ -9,8 +9,7 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_NAME;
@@ -20,6 +19,12 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeats
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_NAME;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_NAME;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.getNumberDomainsSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.isDomainSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.getNumberFeatsSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.isFeatSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.getNumberSpellSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.isSpellSelected;
 
 /**
  * Created by Jemma on 1/30/2017.
@@ -57,15 +62,15 @@ public class DnDListAdapter extends CursorAdapter {
 
         switch (listType) {
             case LIST_TYPE_DEITY:
-                numberSelected = InProgressUtil.getNumberDomainsSelected(context, mRowIndex);
+                numberSelected = getNumberDomainsSelected(context, mRowIndex);
                 break;
             case LIST_TYPE_FAMILIAR:
                 break;
             case LIST_TYPE_SPELL:
-                numberSelected = InProgressUtil.getNumberSpellSelected(context, mRowIndex);
+                numberSelected = getNumberSpellSelected(context, mRowIndex);
                 break;
             case LIST_TYPE_FEAT:
-                numberSelected = InProgressUtil.getNumberFeatsSelected(context, mRowIndex);
+                numberSelected = getNumberFeatsSelected(context, mRowIndex);
                 break;
         }
         return mView;
@@ -109,25 +114,25 @@ public class DnDListAdapter extends CursorAdapter {
         switch (listType) {
             case LIST_TYPE_DEITY:
                 index = (long)view.getTag(R.string.select_domains);
-                if (InProgressUtil.isDomainSelected(mContext, mRowIndex, index)) {
+                if (isDomainSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;
             case LIST_TYPE_FAMILIAR:
                 index = (long)view.getTag(R.string.select_familiar);
-                if (InProgressUtil.isFamiliarSameAsSelected(mContext, mRowIndex, index)) {
+                if (InProgressCharacterUtil.isFamiliarSameAsSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;
             case LIST_TYPE_SPELL:
                 index = (long)view.getTag(R.string.select_spells);
-                if (InProgressUtil.isSpellSelected(mContext, mRowIndex, index)) {
+                if (isSpellSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;
             case LIST_TYPE_FEAT:
                 index = (long)view.getTag(R.string.select_feats);
-                if (InProgressUtil.isFeatSelected(mContext, mRowIndex, index)) {
+                if (isFeatSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;

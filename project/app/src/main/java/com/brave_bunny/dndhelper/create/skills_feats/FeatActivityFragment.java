@@ -18,10 +18,12 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_ID;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.addFeatSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.isFeatSelected;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.removeFeatSelection;
 
 /**
  * Created by Jemma on 1/22/2017.
@@ -31,7 +33,7 @@ public class FeatActivityFragment extends Fragment {
 
     private View mRootView;
     private ContentValues mValues;
-    InProgressUtil mInProgressUtil;
+    InProgressCharacterUtil mInProgressCharacterUtil;
     static long rowIndex;
 
     public FeatActivityFragment() {
@@ -41,7 +43,7 @@ public class FeatActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_feat, container, false);
-        mInProgressUtil = new InProgressUtil();
+        mInProgressCharacterUtil = new InProgressCharacterUtil();
 
         Bundle extras = getActivity().getIntent().getExtras();
         mValues = (ContentValues) extras.get(FeatActivity.inprogressValues);
@@ -83,14 +85,14 @@ public class FeatActivityFragment extends Fragment {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         int featId = cursor.getInt(COL_FEAT_ID);
 
-                        if(InProgressUtil.isFeatSelected(getContext(), rowIndex, featId)) {
+                        if(isFeatSelected(getContext(), rowIndex, featId)) {
                             adapter.decreaseNumberSelected();
-                            mInProgressUtil.removeFeatSelection(getContext(), rowIndex, featId);
+                            removeFeatSelection(getContext(), rowIndex, featId);
                             itemView.setEnabled(false);
                         } else {
                             if (!adapter.atMaxSelected()) {
                                 adapter.increaseNumberSelected();
-                                mInProgressUtil.addFeatSelection(getContext(), rowIndex, featId);
+                                addFeatSelection(getContext(), rowIndex, featId);
                                 itemView.setEnabled(true);
                             }
                         }

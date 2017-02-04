@@ -21,7 +21,7 @@ public class RulesClassesUtils {
     public final static int CLASS_ROGUE = 3;
     public final static int CLASS_WIZARD = 4;
 
-    private static final String[] CLASS_COLUMNS = {
+    public static final String[] CLASS_COLUMNS = {
             RulesContract.ClassEntry.TABLE_NAME + "." + RulesContract.ClassEntry._ID,
             RulesContract.ClassEntry.COLUMN_NAME,
             RulesContract.ClassEntry.COLUMN_HIT_DIE,

@@ -11,7 +11,17 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
+
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.addOrUpdateArmorSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.getArmorCount;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil.addOrUpdateItemSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil.getItemCount;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil.addOrUpdateSkillSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil.getSkillRanks;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil.numberSkillPointsSpent;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil.addOrUpdateWeaponSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil.getWeaponCount;
 
 /**
  * Created by Jemma on 1/30/2017.
@@ -38,7 +48,7 @@ public class SkillAdapter extends CursorAdapter {
         mRowIndex = rowIndex;
 
         //TODO find currently selected skills
-        skillRanksSpent = InProgressUtil.numberSkillPointsSpent(context, rowIndex);
+        skillRanksSpent = numberSkillPointsSpent(context, rowIndex);
 
         //TODO find maximum skill ranks to spend
         maximumSkillPoints = 13;
@@ -67,22 +77,22 @@ public class SkillAdapter extends CursorAdapter {
             case TYPE_SKILLS:
                 id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry._ID));
                 nameIndex = cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry.COLUMN_NAME);
-                ranks = InProgressUtil.getSkillRanks(context, mRowIndex, id);
+                ranks = getSkillRanks(context, mRowIndex, id);
                 break;
             case TYPE_ARMOR:
                 id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.ArmorEntry._ID));
                 nameIndex = cursor.getColumnIndexOrThrow(RulesContract.ArmorEntry.COLUMN_NAME);
-                ranks = InProgressUtil.getArmorCount(context, mRowIndex, id);
+                ranks = getArmorCount(context, mRowIndex, id);
                 break;
             case TYPE_WEAPONS:
                 id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.WeaponEntry._ID));
                 nameIndex = cursor.getColumnIndexOrThrow(RulesContract.WeaponEntry.COLUMN_NAME);
-                ranks = InProgressUtil.getWeaponCount(context, mRowIndex, id);
+                ranks = getWeaponCount(context, mRowIndex, id);
                 break;
             case TYPE_ITEMS:
                 id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.ItemEntry._ID));
                 nameIndex = cursor.getColumnIndexOrThrow(RulesContract.ItemEntry.COLUMN_NAME);
-                ranks = InProgressUtil.getItemCount(context, mRowIndex, id);
+                ranks = getItemCount(context, mRowIndex, id);
                 break;
             default:
                 return;
@@ -170,16 +180,16 @@ public class SkillAdapter extends CursorAdapter {
     private void updateTable(long skillId, int count) {
         switch(mType) {
             case TYPE_SKILLS:
-                InProgressUtil.addOrUpdateSkillSelection(mContext, mRowIndex, skillId, count);
+                addOrUpdateSkillSelection(mContext, mRowIndex, skillId, count);
                 break;
             case TYPE_ARMOR:
-                InProgressUtil.addOrUpdateArmorSelection(mContext, mRowIndex, skillId, count);
+                addOrUpdateArmorSelection(mContext, mRowIndex, skillId, count);
                 break;
             case TYPE_WEAPONS:
-                InProgressUtil.addOrUpdateWeaponSelection(mContext, mRowIndex, skillId, count);
+                addOrUpdateWeaponSelection(mContext, mRowIndex, skillId, count);
                 break;
             case TYPE_ITEMS:
-                InProgressUtil.addOrUpdateItemSelection(mContext, mRowIndex, skillId, count);
+                addOrUpdateItemSelection(mContext, mRowIndex, skillId, count);
                 break;
         }
     }

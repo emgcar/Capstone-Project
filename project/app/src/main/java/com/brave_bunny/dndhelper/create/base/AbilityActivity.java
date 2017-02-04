@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtil.updateInProgressTable;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.updateInProgressTable;
 
 public class AbilityActivity extends AppCompatActivity {
 
@@ -64,8 +64,7 @@ public class AbilityActivity extends AppCompatActivity {
         setChoiceToContentValue(abilityValues, R.id.ability_intelligence, InProgressContract.CharacterEntry.COLUMN_INT);
         setChoiceToContentValue(abilityValues, R.id.ability_charisma, InProgressContract.CharacterEntry.COLUMN_CHA);
 
-        updateInProgressTable(this, InProgressContract.CharacterEntry.TABLE_NAME,
-                abilityValues, index);
+        updateInProgressTable(this, abilityValues, index);
 
         this.finish();
     }
