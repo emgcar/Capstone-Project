@@ -1,5 +1,7 @@
 package com.brave_bunny.dndhelper.play;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
@@ -27,23 +30,48 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomai
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_DWARF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_ELF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
+import static com.brave_bunny.dndhelper.play.CastSpellActivityFragment.ROW_INDEX;
 
 public class DetailActivity extends AppCompatActivity {
+
+    private long index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
+            index = extras.getLong(CreateActivityFragment.ROW_INDEX);
             DetailActivityFragment detailFragment = new DetailActivityFragment();
             detailFragment.setArguments(extras);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.detail_container, detailFragment)
                     .commit();
         }
+    }
+
+    public void showSpells(View view) {
+        Intent spellActivity = new Intent(this, CastSpellActivity.class);
+        spellActivity.putExtra(CastSpellActivity.indexValue, index);
+        startActivity(spellActivity);
+    }
+
+    public void showDomains(View view) {
+
+    }
+
+    public void showSkills(View view) {
+
+    }
+
+    public void showFeats(View view) {
+
+    }
+
+    public void showFamiliar(View view) {
+
     }
 
 
@@ -93,7 +121,7 @@ public class DetailActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             Bundle args = getArguments();
-            index = args.getLong(CreateActivityFragment.ROW_INDEX);
+            index = args.getLong(ROW_INDEX);
 
             mRootView = inflater.inflate(R.layout.fragment_detail, container, false);
             mViewHolder = new ViewHolder(mRootView);
@@ -300,6 +328,7 @@ public class DetailActivity extends AppCompatActivity {
         public TextView mACView;
         public TextView mHPMaxView;
         public TextView mHPCurrentView;
+
 
         public ViewHolder(View view) {
             super(view);

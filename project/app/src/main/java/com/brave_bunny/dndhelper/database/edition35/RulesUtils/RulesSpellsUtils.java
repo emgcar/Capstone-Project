@@ -17,7 +17,7 @@ public class RulesSpellsUtils {
 
     public static final int numberSpellsUntilLevelOne = 19;
 
-    private static final String[] SPELL_COLUMNS = {
+    public static final String[] SPELL_COLUMNS = {
             RulesContract.SpellsEntry.TABLE_NAME + "." + RulesContract.SpellsEntry._ID,
             RulesContract.SpellsEntry.COLUMN_NAME,
             RulesContract.SpellsEntry.COLUMN_LEVEL
@@ -27,9 +27,9 @@ public class RulesSpellsUtils {
     public static final int COL_SPELL_NAME = 1;
     public static final int COL_SPELL_LEVEL = 2;
 
-    private static final String tableName = RulesContract.ClericDomainsEntry.TABLE_NAME;
+    private static final String tableName = RulesContract.SpellsEntry.TABLE_NAME;
 
-    private static ContentValues getSpell(Context context, int spellId) {
+    public static ContentValues getSpell(Context context, long spellId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + SPELL_COLUMNS[COL_SPELL_ID] + " = ?";
         return getStats(context, query, spellId);
     }

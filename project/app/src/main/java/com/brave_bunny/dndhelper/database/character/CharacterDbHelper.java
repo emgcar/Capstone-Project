@@ -189,6 +189,23 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 ");";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+
+        SQL_CREATE_CHARACTER = "INSERT INTO " +
+                CharacterContract.CharacterSpells.TABLE_NAME +
+                " VALUES ( 1, 2, 5 );"; //id, char id, spell id
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+
+        SQL_CREATE_CHARACTER = "INSERT INTO " +
+                CharacterContract.CharacterSpells.TABLE_NAME +
+                " VALUES ( 2, 2, 15 );"; //id, char id, spell id
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+
+        SQL_CREATE_CHARACTER = "INSERT INTO " +
+                CharacterContract.CharacterSpells.TABLE_NAME +
+                " VALUES ( 3, 2, 21 );"; //id, char id, spell id
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER);
+
+
     }
 
     private void createCharlie(SQLiteDatabase sqLiteDatabase) {

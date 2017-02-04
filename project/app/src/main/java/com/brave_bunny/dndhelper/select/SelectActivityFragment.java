@@ -20,6 +20,8 @@ import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
+import com.brave_bunny.dndhelper.play.CastSpellActivity;
+import com.brave_bunny.dndhelper.play.CastSpellActivityFragment;
 import com.brave_bunny.dndhelper.play.DetailActivity;
 import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 
@@ -84,8 +86,8 @@ public class SelectActivityFragment extends Fragment {
                             selectActivity = new Intent(getContext(), BattleActivity.class);
                         } else {
                             selectActivity = new Intent(getContext(), DetailActivity.class);
+                            selectActivity.putExtra(CastSpellActivityFragment.ROW_INDEX, index);
                         }
-                        selectActivity.putExtra(CreateActivityFragment.ROW_INDEX, index);
                     } else {
                         selectActivity = new Intent(getContext(), CreateActivity.class);
                         selectActivity.putExtra(CreateActivityFragment.ROW_INDEX, index);

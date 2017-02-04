@@ -49,10 +49,10 @@ class CharacterListAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
 
-        String name = mCursor.getString(CharacterUtil.COL_CHARACTER_NAME);
+        String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
         if (!isCompleted(context, name)) {
             mViewHolder.levelView.setText(R.string.in_progress);
-            name = mCursor.getString(InProgressCharacterUtil.COL_CHARACTER_NAME);
+            name = cursor.getString(InProgressCharacterUtil.COL_CHARACTER_NAME);
         } else {
             // TODO implement level display
             mViewHolder.levelView.setText("Level 3");

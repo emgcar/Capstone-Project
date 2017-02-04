@@ -13,6 +13,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUti
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.transferSpells;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_FIGHTER;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_ROGUE;
@@ -346,6 +347,8 @@ public class CharacterUtil {
         long characterIndex = insertValuesInCharacterTable(context, characterValues);
 
         //TODO transfer spells
+        transferSpells(context, inProgressIndex, characterIndex);
+
         //TODO transfer familiar
         //TODO transfer domains
         //TODO transfer skills

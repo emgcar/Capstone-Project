@@ -112,6 +112,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
+        <activity
+            android:name=".play.CastSpellActivity"
+            android:label="@string/title_activity_spell"
+            android:parentActivityName=".play.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -423,6 +423,36 @@
 
         </LinearLayout>
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showSpells"
+            android:text="Show Spells"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showDomains"
+            android:text="Show Domains"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showSkills"
+            android:text="Show Skills"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showFeats"
+            android:text="Show Feats"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="showFamiliar"
+            android:text="Show Familiar"/>
+
     </LinearLayout>
 
 </ScrollView>

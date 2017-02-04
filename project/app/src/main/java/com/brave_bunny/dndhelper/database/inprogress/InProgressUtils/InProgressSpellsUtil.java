@@ -9,6 +9,7 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.numberSpellsUntilLevelOne;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.COL_CHARACTER_ID;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.COL_CHARACTER_NAME;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.INPROGRESS_COLUMNS;
 
@@ -18,7 +19,7 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 
 public class InProgressSpellsUtil {
 
-    private static final String[] SPELL_COLUMNS = {
+    public static final String[] SPELL_COLUMNS = {
             InProgressContract.SpellEntry.TABLE_NAME + "." + InProgressContract.SpellEntry._ID,
             InProgressContract.SpellEntry.COLUMN_CHARACTER_ID,
             InProgressContract.SpellEntry.COLUMN_SPELL_ID
@@ -28,7 +29,7 @@ public class InProgressSpellsUtil {
     public static final int COL_INPROGRESS_SPELL_CHARACTER_ID = 1;
     public static final int COL_INPROGRESS_SPELL_SPELL_ID = 2;
 
-    private static final String tableName = InProgressContract.SpellEntry.TABLE_NAME;
+    public static final String tableName = InProgressContract.SpellEntry.TABLE_NAME;
 
     public static void removeAllInProgressSpells(Context context, long rowIndex) {
         String query = SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID] + " = ?";
@@ -110,7 +111,7 @@ public class InProgressSpellsUtil {
     }
 
     public static int numberSpellsSelected(Context context, ContentValues values) {
-        long rowIndex = values.getAsLong(INPROGRESS_COLUMNS[COL_CHARACTER_NAME]);
+        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
         int numberSpells;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
