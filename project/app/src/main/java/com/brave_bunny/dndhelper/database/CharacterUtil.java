@@ -7,9 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_FIGHTER;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_ROGUE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_WIZARD;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getClassStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getFirstLevelStats;
 
 /**
  * Created by Jemma on 1/11/2017.
@@ -132,7 +139,7 @@ public class CharacterUtil {
 
 
     // need to make sure no name duplication somehow
-    public static boolean isCompleteled(Context context, String name) {
+    public static boolean isCompleted(Context context, String name) {
         boolean value;
 
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
@@ -253,33 +260,33 @@ public class CharacterUtil {
 
         // adding character base attack bonus, fortitude, reflex, and will
         int classChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
-        ContentValues classLevelOneStats = RulesUtils.getFirstLevelStats(context, classChoice);
+        ContentValues classLevelOneStats = getFirstLevelStats(context, classChoice);
 
         int baseAttack = 0;
-        int fortitude = RulesUtils.scoreToModifier(conTotal);
-        int reflex = RulesUtils.scoreToModifier(dexTotal);
-        int will = RulesUtils.scoreToModifier(wisTotal);
+        int fortitude = RulesCharacterUtils.scoreToModifier(conTotal);
+        int reflex = RulesCharacterUtils.scoreToModifier(dexTotal);
+        int will = RulesCharacterUtils.scoreToModifier(wisTotal);
 
         switch (classChoice) {
-            case RulesUtils.CLASS_CLERIC:
+            case CLASS_CLERIC:
                 baseAttack = classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
                 fortitude += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_FORT);
                 reflex += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_REF);
                 will += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_WILL);
                 break;
-            case RulesUtils.CLASS_FIGHTER:
+            case CLASS_FIGHTER:
                 baseAttack = classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
                 fortitude += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_FORT);
                 reflex += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_REF);
                 will += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_WILL);
                 break;
-            case RulesUtils.CLASS_ROGUE:
+            case CLASS_ROGUE:
                 baseAttack = classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
                 fortitude += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_FORT);
                 reflex += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_REF);
                 will += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_WILL);
                 break;
-            case RulesUtils.CLASS_WIZARD:
+            case CLASS_WIZARD:
                 baseAttack = classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
                 fortitude += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_FORT);
                 reflex += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_REF);
@@ -315,19 +322,19 @@ public class CharacterUtil {
 
         //TODO: add armor bonus, shield bonus, and size modifier
         // adding character AC
-        int armor_class = 10 + RulesUtils.scoreToModifier(dexTotal);
+        int armor_class = 10 + RulesCharacterUtils.scoreToModifier(dexTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_AC, armor_class);
 
         // adding character HP
-        ContentValues classStats = RulesUtils.getClassStats(context, classChoice);
+        ContentValues classStats = getClassStats(context, classChoice);
         int hpDie = classStats.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
-        hpDie += RulesUtils.scoreToModifier(conTotal);
+        hpDie += RulesCharacterUtils.scoreToModifier(conTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_CURR, hpDie);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_MAX, hpDie);
 
         //TODO: check for Improved Initiative feat
         // adding character initiative
-        int initiative = RulesUtils.scoreToModifier(dexTotal);
+        int initiative = RulesCharacterUtils.scoreToModifier(dexTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_INITIATIVE, initiative);
 
 

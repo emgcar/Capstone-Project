@@ -18,8 +18,10 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_ID;
 
 /**
  * Created by Jemma on 1/22/2017.
@@ -79,7 +81,7 @@ public class FeatActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int featId = cursor.getInt(RulesUtils.COL_FEAT_ID);
+                        int featId = cursor.getInt(COL_FEAT_ID);
 
                         if(InProgressUtil.isFeatSelected(getContext(), rowIndex, featId)) {
                             adapter.decreaseNumberSelected();

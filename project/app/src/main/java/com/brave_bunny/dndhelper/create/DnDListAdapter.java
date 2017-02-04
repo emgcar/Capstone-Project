@@ -9,8 +9,17 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_NAME;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_ID;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_NAME;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_ID;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_NAME;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_NAME;
 
 /**
  * Created by Jemma on 1/30/2017.
@@ -70,20 +79,20 @@ public class DnDListAdapter extends CursorAdapter {
 
         switch (listType) {
             case LIST_TYPE_DEITY:
-                name = cursor.getString(RulesUtils.COL_DOMAIN_NAME);
-                view.setTag(R.string.select_domains, cursor.getLong(RulesUtils.COL_DOMAIN_ID));
+                name = cursor.getString(COL_DOMAIN_NAME);
+                view.setTag(R.string.select_domains, cursor.getLong(COL_DOMAIN_ID));
                 break;
             case LIST_TYPE_FAMILIAR:
-                name = cursor.getString(RulesUtils.COL_FAMILIAR_NAME);
-                view.setTag(R.string.select_familiar, cursor.getLong(RulesUtils.COL_FAMILIAR_ID));
+                name = cursor.getString(COL_FAMILIAR_NAME);
+                view.setTag(R.string.select_familiar, cursor.getLong(COL_FAMILIAR_ID));
                 break;
             case LIST_TYPE_SPELL:
-                name = cursor.getString(RulesUtils.COL_SPELL_NAME);
-                view.setTag(R.string.select_spells, cursor.getLong(RulesUtils.COL_SPELL_ID));
+                name = cursor.getString(COL_SPELL_NAME);
+                view.setTag(R.string.select_spells, cursor.getLong(COL_SPELL_ID));
                 break;
             case LIST_TYPE_FEAT:
-                name = cursor.getString(RulesUtils.COL_FEAT_NAME);
-                view.setTag(R.string.select_feats, cursor.getLong(RulesUtils.COL_FEAT_ID));
+                name = cursor.getString(COL_FEAT_NAME);
+                view.setTag(R.string.select_feats, cursor.getLong(COL_FEAT_ID));
                 break;
         }
 

@@ -14,12 +14,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -79,7 +80,7 @@ public class SpellActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int spellId = cursor.getInt(RulesUtils.COL_DOMAIN_ID);
+                        int spellId = cursor.getInt(COL_DOMAIN_ID);
 
                         if(InProgressUtil.isSpellSelected(getContext(), rowIndex, spellId)) {
                             adapter.decreaseNumberSelected();
@@ -105,7 +106,7 @@ public class SpellActivityFragment extends Fragment {
         int numberSpells = 3;
 
         if (mIntScore != -1) {
-            numberSpells += RulesUtils.scoreToModifier(mIntScore);
+            numberSpells += RulesCharacterUtils.scoreToModifier(mIntScore);
         }
         return numberSpells;
     }

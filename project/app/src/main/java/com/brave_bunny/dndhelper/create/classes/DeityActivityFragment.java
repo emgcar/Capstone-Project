@@ -18,9 +18,20 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CG;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CN;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LG;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LN;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_N;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NG;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -53,39 +64,39 @@ public class DeityActivityFragment extends Fragment {
 
         TextView alignView = (TextView) mRootView.findViewById(R.id.chosen_align);
         switch(align) {
-            case RulesUtils.ALIGN_LG:
+            case ALIGN_LG:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_GOOD;
                 alignView.setText(getString(R.string.lawful_good));
                 break;
-            case RulesUtils.ALIGN_LN:
+            case ALIGN_LN:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_NEUTRAL;
                 alignView.setText(getString(R.string.lawful_neutral));
                 break;
-            case RulesUtils.ALIGN_LE:
+            case ALIGN_LE:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_LAWFUL_EVIL;
                 alignView.setText(getString(R.string.lawful_evil));
                 break;
-            case RulesUtils.ALIGN_NG:
+            case ALIGN_NG:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL_GOOD;
                 alignView.setText(getString(R.string.neutral_good));
                 break;
-            case RulesUtils.ALIGN_N:
+            case ALIGN_N:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL;
                 alignView.setText(getString(R.string.neutral));
                 break;
-            case RulesUtils.ALIGN_NE:
+            case ALIGN_NE:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_NEUTRAL_EVIL;
                 alignView.setText(getString(R.string.neutral_evil));
                 break;
-            case RulesUtils.ALIGN_CG:
+            case ALIGN_CG:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_GOOD;
                 alignView.setText(getString(R.string.chaotic_good));
                 break;
-            case RulesUtils.ALIGN_CN:
+            case ALIGN_CN:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_NEUTRAL;
                 alignView.setText(getString(R.string.chaotic_neutral));
                 break;
-            case RulesUtils.ALIGN_CE:
+            case ALIGN_CE:
                 selectedAlignment = RulesContract.ClericDomainsEntry.COLUMN_CHAOTIC_EVIL;
                 alignView.setText(getString(R.string.chaotic_evil));
                 break;
@@ -127,7 +138,7 @@ public class DeityActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int domainId = cursor.getInt(RulesUtils.COL_DOMAIN_ID);
+                        int domainId = cursor.getInt(COL_DOMAIN_ID);
 
                         if(InProgressUtil.isDomainSelected(getContext(), rowIndex, domainId)) {
                             adapter.decreaseNumberSelected();

@@ -17,8 +17,10 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_ID;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -76,7 +78,7 @@ public class FamiliarActivityFragment extends Fragment {
 
                     if (cursor != null) {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        long familiarId = cursor.getInt(RulesUtils.COL_FAMILIAR_ID);
+                        long familiarId = cursor.getInt(COL_FAMILIAR_ID);
 
                         if(InProgressUtil.isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
                             InProgressUtil.changeFamiliarSelection(getContext(), rowIndex, -1);

@@ -25,7 +25,7 @@ import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 
 import static com.brave_bunny.dndhelper.database.CharacterUtil.COL_CHARACTER_IN_BATTLE;
 import static com.brave_bunny.dndhelper.database.CharacterUtil.getCharacterValue;
-import static com.brave_bunny.dndhelper.database.CharacterUtil.isCompleteled;
+import static com.brave_bunny.dndhelper.database.CharacterUtil.isCompleted;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -64,7 +64,7 @@ public class SelectActivityFragment extends Fragment {
 
             MergeCursor joiner = new MergeCursor(cursors);
 
-            final CharacterAdapter inProgress = new CharacterAdapter(getContext(), joiner, 0);
+            final CharacterListAdapter inProgress = new CharacterListAdapter(getContext(), joiner, 0);
             ListView listView = (ListView) rootView.findViewById(R.id.listview_inprogress);
             listView.setAdapter(inProgress);
 
@@ -102,7 +102,7 @@ public class SelectActivityFragment extends Fragment {
     }
 
     private boolean isFinished(String name) {
-        return isCompleteled(getContext(), name);
+        return isCompleted(getContext(), name);
     }
 
     private boolean isInBattle(long rowIndex) {

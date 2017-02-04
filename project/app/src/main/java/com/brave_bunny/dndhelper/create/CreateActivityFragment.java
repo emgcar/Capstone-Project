@@ -19,12 +19,15 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtil;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getClassStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getFirstLevelStats;
 
 /**
  * Created by Jemma on 1/17/2017.
@@ -280,7 +283,7 @@ public class CreateActivityFragment extends Fragment {
             classViewHolder.mSpellsButton.setVisibility(View.GONE);
             classViewHolder.mFamiliarButton.setVisibility(View.GONE);
 
-            ContentValues values = RulesUtils.getFirstLevelStats(getContext(), classSelection);
+            ContentValues values = getFirstLevelStats(getContext(), classSelection);
 
             int baseAttack;
             String baseAttackString;
@@ -295,7 +298,7 @@ public class CreateActivityFragment extends Fragment {
             String willSaveString;
 
             switch (classSelection) {
-                case RulesUtils.CLASS_CLERIC:
+                case RulesClassesUtils.CLASS_CLERIC:
                     classViewHolder.mClassText.setText(getString(R.string.cleric));
                     classViewHolder.mDeityButton.setVisibility(View.VISIBLE);
                     setHPText(classSelection);
@@ -308,7 +311,7 @@ public class CreateActivityFragment extends Fragment {
                     willSave = values.getAsInteger(RulesContract.ClericEntry.COLUMN_WILL);
                     willSaveString = Integer.toString(willSave);
                     break;
-                case RulesUtils.CLASS_FIGHTER:
+                case RulesClassesUtils.CLASS_FIGHTER:
                     classViewHolder.mClassText.setText(getString(R.string.fighter));
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
@@ -320,7 +323,7 @@ public class CreateActivityFragment extends Fragment {
                     willSave = values.getAsInteger(RulesContract.FighterEntry.COLUMN_WILL);
                     willSaveString = Integer.toString(willSave);
                     break;
-                case RulesUtils.CLASS_ROGUE:
+                case RulesClassesUtils.CLASS_ROGUE:
                     classViewHolder.mClassText.setText(getString(R.string.rogue));
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
@@ -332,7 +335,7 @@ public class CreateActivityFragment extends Fragment {
                     willSave = values.getAsInteger(RulesContract.RogueEntry.COLUMN_WILL);
                     willSaveString = Integer.toString(willSave);
                     break;
-                case RulesUtils.CLASS_WIZARD:
+                case RulesClassesUtils.CLASS_WIZARD:
                     classViewHolder.mClassText.setText(getString(R.string.wizard));
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
@@ -363,13 +366,13 @@ public class CreateActivityFragment extends Fragment {
 
     // TODO: update on ability score change
     public void setHPText(int classSelection) {
-        ContentValues classValues = RulesUtils.getFirstLevelClassStats(getContext(), classSelection);
+        ContentValues classValues = getClassStats(getContext(), classSelection);
         int hitPoints = classValues.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
 
         ContentValues values = InProgressUtil.getInProgressRow(getContext(), index);
         int conScore = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CON);
         if (conScore != -1) {
-            hitPoints += RulesUtils.scoreToModifier(conScore);
+            hitPoints += RulesCharacterUtils.scoreToModifier(conScore);
         }
 
         String hitPointsString = Integer.toString(hitPoints);

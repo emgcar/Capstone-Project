@@ -6,31 +6,31 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Created by Jemma on 1/10/2017.
+ * Creates the database following the rules of DnD edition 3.5.
  */
 
 public class RulesContract {
 
-    public static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper.3-5_rules";
-    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+    static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper.3-5_rules";
+    private static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_SKILLS = "skills";
-    public static final String PATH_FEATS = "feats";
-    public static final String PATH_RACES = "races";
-    public static final String PATH_CLASSES = "classes";
-    public static final String PATH_CLERIC = "cleric";
-    public static final String PATH_CLERIC_DOMAINS = "cleric_domains";
-    public static final String PATH_FIGHTER = "fighter";
-    public static final String PATH_ROGUE = "rogue";
-    public static final String PATH_WIZARD = "wizard";
-    public static final String PATH_SPELLS = "spells";
-    public static final String PATH_FAMILIARS = "familiars";
-    public static final String PATH_ARMOR = "armor";
-    public static final String PATH_WEAPONS = "weapons";
-    public static final String PATH_ITEMS = "items";
+    static final String PATH_SKILLS = "skills";
+    static final String PATH_FEATS = "feats";
+    static final String PATH_RACES = "races";
+    static final String PATH_CLASSES = "classes";
+    static final String PATH_CLERIC = "cleric";
+    static final String PATH_CLERIC_DOMAINS = "cleric_domains";
+    static final String PATH_FIGHTER = "fighter";
+    static final String PATH_ROGUE = "rogue";
+    static final String PATH_WIZARD = "wizard";
+    static final String PATH_SPELLS = "spells";
+    static final String PATH_FAMILIARS = "familiars";
+    static final String PATH_ARMOR = "armor";
+    static final String PATH_WEAPONS = "weapons";
+    static final String PATH_ITEMS = "items";
 
     public static final class SkillsEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SKILLS).build();
 
         public static final String TABLE_NAME = "skills";
@@ -45,7 +45,7 @@ public class RulesContract {
         public static final String COLUMN_ARMOR_PENALTY = "armor_penalty";
         public static final String COLUMN_DOUBLE_ARMOR_PENALTY = "double_armor_penalty";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SKILLS;
 
         public static Uri buildSkillUri(long id) {
@@ -54,7 +54,7 @@ public class RulesContract {
     }
 
     public static final class FeatEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FEATS).build();
 
         public static final String TABLE_NAME = "feats";
@@ -70,7 +70,7 @@ public class RulesContract {
     }
 
     public static final class RaceEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RACES).build();
 
         public static final String TABLE_NAME = "races";
@@ -84,7 +84,7 @@ public class RulesContract {
         public static final String COLUMN_WIS = "wisdom_mod";
         public static final String COLUMN_CHA = "charisma_mod";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RACES;
 
         public static Uri buildRaceUri(long id) {
@@ -92,8 +92,9 @@ public class RulesContract {
         }
     }
 
+    // on change, update RulesUtils/RulesClassesUtils.java
     public static final class ClassEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CLASSES).build();
 
         public static final String TABLE_NAME = "classes";
@@ -102,7 +103,7 @@ public class RulesContract {
         public static final String COLUMN_HIT_DIE = "hit_die";
         public static final String COLUMN_STARTING_GOLD = "starting_gold";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CLASSES;
 
         public static Uri buildClassUri(long id) {
@@ -110,13 +111,13 @@ public class RulesContract {
         }
     }
 
+    // on change, update RulesUtils/RulesClassesUtils.java
     public static final class ClericEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CLERIC).build();
 
         public static final String TABLE_NAME = "cleric";
 
-        public static final String COLUMN_LEVEL = "level";
         public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
         public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
         public static final String COLUMN_BASE_ATTACK_3 = "base_attack_third";
@@ -134,7 +135,7 @@ public class RulesContract {
         public static final String COLUMN_SPELLS_PER_DAY_L8 = "spells_per_day_8";
         public static final String COLUMN_SPELLS_PER_DAY_L9 = "spells_per_day_9";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CLERIC;
 
         public static Uri buildClericUri(long id) {
@@ -143,7 +144,7 @@ public class RulesContract {
     }
 
     public static final class ClericDomainsEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_CLERIC_DOMAINS).build();
 
         public static final String TABLE_NAME = "cleric_domains";
@@ -159,7 +160,7 @@ public class RulesContract {
         public static final String COLUMN_CHAOTIC_NEUTRAL = "chatic_neutral";
         public static final String COLUMN_CHAOTIC_EVIL = "chaotic_evil";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CLERIC_DOMAINS;
 
         public static Uri buildDomainUri(long id) {
@@ -167,13 +168,13 @@ public class RulesContract {
         }
     }
 
+    // on change, update RulesUtils/RulesClassesUtils.java
     public static final class FighterEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FIGHTER).build();
 
         public static final String TABLE_NAME = "fighter";
 
-        public static final String COLUMN_LEVEL = "level";
         public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
         public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
         public static final String COLUMN_BASE_ATTACK_3 = "base_attack_third";
@@ -182,7 +183,7 @@ public class RulesContract {
         public static final String COLUMN_REF = "reflex_save";
         public static final String COLUMN_WILL = "will_save";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FIGHTER;
 
         public static Uri buildFighterUri(long id) {
@@ -190,13 +191,13 @@ public class RulesContract {
         }
     }
 
+    // on change, update RulesUtils/RulesClassesUtils.java
     public static final class RogueEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ROGUE).build();
 
         public static final String TABLE_NAME = "rogue";
 
-        public static final String COLUMN_LEVEL = "level";
         public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
         public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
         public static final String COLUMN_BASE_ATTACK_3 = "base_attack_third";
@@ -204,7 +205,7 @@ public class RulesContract {
         public static final String COLUMN_REF = "reflex_save";
         public static final String COLUMN_WILL = "will_save";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ROGUE;
 
         public static Uri buildRogueUri(long id) {
@@ -212,13 +213,13 @@ public class RulesContract {
         }
     }
 
+    // on change, update RulesUtils/RulesClassesUtils.java
     public static final class WizardEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_WIZARD).build();
 
         public static final String TABLE_NAME = "wizard";
 
-        public static final String COLUMN_LEVEL = "level";
         public static final String COLUMN_BASE_ATTACK_1 = "base_attack_first";
         public static final String COLUMN_BASE_ATTACK_2 = "base_attack_second";
         public static final String COLUMN_FORT = "fortitude_save";
@@ -235,7 +236,7 @@ public class RulesContract {
         public static final String COLUMN_SPELLS_PER_DAY_L8 = "spells_per_day_8";
         public static final String COLUMN_SPELLS_PER_DAY_L9 = "spells_per_day_9";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WIZARD;
 
         public static Uri buildWizardUri(long id) {
@@ -244,7 +245,7 @@ public class RulesContract {
     }
 
     public static final class SpellsEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_SPELLS).build();
 
         public static final String TABLE_NAME = "spells";
@@ -252,7 +253,7 @@ public class RulesContract {
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_LEVEL = "level";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_SPELLS;
 
         public static Uri buildSpellsUri(long id) {
@@ -261,7 +262,7 @@ public class RulesContract {
     }
 
     public static final class FamiliarEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_FAMILIARS).build();
 
         public static final String TABLE_NAME = "familiars";
@@ -270,7 +271,7 @@ public class RulesContract {
         public static final String COLUMN_SKILL_ID = "skill_id";
         public static final String COLUMN_SKILL_BONUS = "skill_bonus_amount";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FAMILIARS;
 
         public static Uri buildFamiliarUri(long id) {
@@ -278,17 +279,18 @@ public class RulesContract {
         }
     }
 
+    // on change, update RulesUtils/RulesArmorUtils.java
     public static final class ArmorEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ARMOR).build();
 
         public static final String TABLE_NAME = "armor";
 
         public static final String COLUMN_NAME = "name";
-        public static final String COLUMN_ARMOR_WEIGHT = "armor_weight";
-        public static final String COLUMN_ARMOR_COST = "armor_cost";
+        static final String COLUMN_ARMOR_WEIGHT = "armor_weight";
+        static final String COLUMN_ARMOR_COST = "armor_cost";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ARMOR;
 
         public static Uri buildArmorUri(long id) {
@@ -297,7 +299,7 @@ public class RulesContract {
     }
 
     public static final class WeaponEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEAPONS).build();
 
         public static final String TABLE_NAME = "weapons";
@@ -306,7 +308,7 @@ public class RulesContract {
         public static final String COLUMN_WEAPON_WEIGHT = "weapon_weight";
         public static final String COLUMN_WEAPON_COST = "weapon_cost";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_WEAPONS;
 
         public static Uri buildWeaponUri(long id) {
@@ -315,7 +317,7 @@ public class RulesContract {
     }
 
     public static final class ItemEntry implements BaseColumns {
-        public static final Uri CONTENT_URI =
+        static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_ITEMS).build();
 
         public static final String TABLE_NAME = "items";
@@ -324,7 +326,7 @@ public class RulesContract {
         public static final String COLUMN_ITEM_WEIGHT = "item_weight";
         public static final String COLUMN_ITEM_COST = "item_cost";
 
-        public static final String CONTENT_TYPE =
+        static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ITEMS;
 
         public static Uri buildItemUri(long id) {

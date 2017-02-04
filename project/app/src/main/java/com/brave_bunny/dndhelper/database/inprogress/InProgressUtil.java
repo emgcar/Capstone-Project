@@ -8,11 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 
-import java.util.Objects;
 import java.util.Random;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_FIGHTER;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_ROGUE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_WIZARD;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getClassStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.getRaceStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.numberSpellsUntilLevelOne;
 
 /**
  * Created by Jemma on 1/13/2017.
@@ -345,15 +351,15 @@ public class InProgressUtil {
         boolean isPartiallyFilled = (classValue > 0);
 
         switch (classValue) {
-            case RulesUtils.CLASS_CLERIC:
+            case CLASS_CLERIC:
                 int numberDomain = numberDomainsSelected(context, values);
                 isPartiallyFilled |= (numberDomain > 0);
                 break;
-            case RulesUtils.CLASS_FIGHTER:
+            case CLASS_FIGHTER:
                 break;
-            case RulesUtils.CLASS_ROGUE:
+            case CLASS_ROGUE:
                 break;
-            case RulesUtils.CLASS_WIZARD:
+            case CLASS_WIZARD:
                 isPartiallyFilled |= isFamiliarSelected(values);
                 int numberSpells = numberSpellsSelected(context, values);
                 isPartiallyFilled |= (numberSpells > 0);
@@ -380,21 +386,21 @@ public class InProgressUtil {
         boolean isFilled = (classValue > 0);
 
         switch (classValue) {
-            case RulesUtils.CLASS_CLERIC:
+            case CLASS_CLERIC:
                 int numberDomain = numberDomainsSelected(context, values);
                 isFilled &= (numberDomain == 2);
                 break;
-            case RulesUtils.CLASS_FIGHTER:
+            case CLASS_FIGHTER:
                 break;
-            case RulesUtils.CLASS_ROGUE:
+            case CLASS_ROGUE:
                 break;
-            case RulesUtils.CLASS_WIZARD:
+            case CLASS_WIZARD:
                 isFilled &= isFamiliarSelected(values);
 
                 int numberSpells = numberSpellsSelected(context, values);
                 Object intScore = values.get(InProgressContract.CharacterEntry.COLUMN_INT);
                 if (intScore != null) {
-                    long intMod = RulesUtils.scoreToModifier((long)intScore);
+                    long intMod = RulesCharacterUtils.scoreToModifier((long)intScore);
                     isFilled &= (numberSpells == (3 + intMod));
                 }
                 break;
@@ -407,14 +413,14 @@ public class InProgressUtil {
         long previousClass = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
 
         long prevMoneyDiff = 0;
-        ContentValues prevClassValues = RulesUtils.getClassStats(context, previousClass);
+        ContentValues prevClassValues = getClassStats(context, previousClass);
         if (prevClassValues != null) {
             long prevMaxMoney = prevClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
             long prevMoney = values.getAsLong(InProgressContract.CharacterEntry.COLUMN_MONEY);
             prevMoneyDiff = prevMaxMoney - prevMoney;
         }
 
-        ContentValues currClassValues = RulesUtils.getClassStats(context, classSelection);
+        ContentValues currClassValues = getClassStats(context, classSelection);
         long currMoney = 0;
         if (currClassValues != null) {
             long currMaxMoney = currClassValues.getAsLong(RulesContract.ClassEntry.COLUMN_STARTING_GOLD);
@@ -575,7 +581,7 @@ public class InProgressUtil {
     }
 
     public void removeSpellSelection(Context context, long rowIndex, int spellId) {
-        spellId += RulesUtils.numberSpellsUntilLevelOne;
+        spellId += numberSpellsUntilLevelOne;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -591,7 +597,7 @@ public class InProgressUtil {
     }
 
     public void addSpellSelection(Context context, long rowIndex, int spellId) {
-        spellId += RulesUtils.numberSpellsUntilLevelOne;
+        spellId += numberSpellsUntilLevelOne;
         ContentValues values = new ContentValues();
         values.put(InProgressContract.SpellEntry.COLUMN_CHARACTER_ID, rowIndex);
         values.put(InProgressContract.SpellEntry.COLUMN_SPELL_ID, spellId);
@@ -607,7 +613,7 @@ public class InProgressUtil {
     }
 
     public static boolean isSpellSelected(Context context, long rowIndex, long spellId) {
-        spellId += RulesUtils.numberSpellsUntilLevelOne;
+        spellId += numberSpellsUntilLevelOne;
         boolean isSelected = false;
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -679,7 +685,7 @@ public class InProgressUtil {
 
         int raceId = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_RACE_ID);
         if (raceId != 0) {
-            ContentValues raceValues = RulesUtils.getRaceStats(context, raceId);
+            ContentValues raceValues = getRaceStats(context, raceId);
             baseScore += raceValues.getAsInteger(raceAbilityColumn);
         }
 

@@ -12,11 +12,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.CreateActivity;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.CharacterContract;
 import com.brave_bunny.dndhelper.database.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CG;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CN;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LG;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LN;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_N;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NG;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_DWARF;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_ELF;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -182,13 +193,13 @@ public class DetailActivity extends AppCompatActivity {
 
         private void setRace() {
             switch (race) {
-                case RulesUtils.RACE_HUMAN:
+                case RACE_HUMAN:
                     mViewHolder.mRaceView.setText(R.string.human);
                     break;
-                case RulesUtils.RACE_DWARF:
+                case RACE_DWARF:
                     mViewHolder.mRaceView.setText(R.string.elf);
                     break;
-                case RulesUtils.RACE_ELF:
+                case RACE_ELF:
                     mViewHolder.mRaceView.setText(R.string.dwarf);
                     break;
             }
@@ -196,28 +207,28 @@ public class DetailActivity extends AppCompatActivity {
 
         private void setAlignment() {
             switch (alignment) {
-                case RulesUtils.ALIGN_LG:
+                case ALIGN_LG:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_good);
                     break;
-                case RulesUtils.ALIGN_LN:
+                case ALIGN_LN:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_neutral);
                     break;
-                case RulesUtils.ALIGN_LE:
+                case ALIGN_LE:
                     mViewHolder.mAlignmentView.setText(R.string.lawful_evil);
                     break;
-                case RulesUtils.ALIGN_NG:
+                case ALIGN_NG:
                     mViewHolder.mAlignmentView.setText(R.string.neutral_good);
                     break;
-                case RulesUtils.ALIGN_N:
+                case ALIGN_N:
                     mViewHolder.mAlignmentView.setText(R.string.neutral);
                     break;
-                case RulesUtils.ALIGN_NE:
+                case ALIGN_NE:
                     mViewHolder.mAlignmentView.setText(R.string.neutral_evil);
                     break;
-                case RulesUtils.ALIGN_CG:
+                case ALIGN_CG:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_good);
                     break;
-                case RulesUtils.ALIGN_CN:
+                case ALIGN_CN:
                     mViewHolder.mAlignmentView.setText(R.string.chaotic_neutral);
                     break;
                 default:

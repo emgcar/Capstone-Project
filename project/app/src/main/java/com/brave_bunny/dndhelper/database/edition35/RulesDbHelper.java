@@ -187,7 +187,6 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_CLERIC_TABLE = "CREATE TABLE " +
                 RulesContract.ClericEntry.TABLE_NAME + " (" +
                 RulesContract.ClericEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                RulesContract.ClericEntry.COLUMN_LEVEL + " STRING NOT NULL," +
 
                 RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
                 RulesContract.ClericEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
@@ -210,26 +209,26 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_CLERIC_TABLE);
 
         //note that these are accumulative, so add row when add level
-        insertInClericTable("1, '1', 0, 0, 0, 2, 0, 2, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0");
-        insertInClericTable("2, '2', 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0");
-        insertInClericTable("3, '3', 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0");
-        insertInClericTable("4, '4', 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0");
-        insertInClericTable("5, '5', 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0");
-        insertInClericTable("6, '6', 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0");
-        insertInClericTable("7, '7', 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 0, 0");
-        insertInClericTable("8, '8', 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0");
-        insertInClericTable("9, '9', 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0");
-        insertInClericTable("10, '10', 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0");
-        insertInClericTable("11, '11', 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 0, 0, 0");
-        insertInClericTable("12, '12', 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0");
-        insertInClericTable("13, '13', 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 0, 0");
-        insertInClericTable("14, '14', 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0");
-        insertInClericTable("15, '15', 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 0");
-        insertInClericTable("16, '16', 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0");
-        insertInClericTable("17, '17', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2");
-        insertInClericTable("18, '18', 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
-        insertInClericTable("19, '19', 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1");
-        insertInClericTable("20, '20', 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
+        insertInClericTable("1, 0, 0, 0, 2, 0, 2, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0");
+        insertInClericTable("2, 1, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0");
+        insertInClericTable("3, 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0");
+        insertInClericTable("4, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0");
+        insertInClericTable("5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0");
+        insertInClericTable("6, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0");
+        insertInClericTable("7, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 0, 0, 0, 0, 0");
+        insertInClericTable("8, 1, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0");
+        insertInClericTable("9, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 0, 0, 0, 0");
+        insertInClericTable("10, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0");
+        insertInClericTable("11, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 0, 0, 0");
+        insertInClericTable("12, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0");
+        insertInClericTable("13, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 0, 0");
+        insertInClericTable("14, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0");
+        insertInClericTable("15, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2, 0");
+        insertInClericTable("16, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0");
+        insertInClericTable("17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 2");
+        insertInClericTable("18, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
+        insertInClericTable("19, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1");
+        insertInClericTable("20, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
 
     }
 
@@ -292,7 +291,6 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_FIGHTER_TABLE = "CREATE TABLE " +
                 RulesContract.FighterEntry.TABLE_NAME + " (" +
                 RulesContract.FighterEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                RulesContract.FighterEntry.COLUMN_LEVEL + " STRING NOT NULL," +
 
                 RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
                 RulesContract.FighterEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
@@ -305,26 +303,26 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_FIGHTER_TABLE);
 
         //note that these are accumulative, so add row when add level
-        insertInFighterTable("1, '1',   1, 0, 0, 0, 2, 0, 0");
-        insertInFighterTable("2, '2',   1, 0, 0, 0, 1, 0, 0");
-        insertInFighterTable("3, '3',   1, 0, 0, 0, 0, 1, 1");
-        insertInFighterTable("4, '4',   1, 0, 0, 0, 1, 0, 0");
-        insertInFighterTable("5, '5',   1, 0, 0, 0, 0, 0, 0");
-        insertInFighterTable("6, '6',   1, 1, 0, 0, 1, 1, 1");
-        insertInFighterTable("7, '7',   1, 1, 0, 0, 0, 0, 0");
-        insertInFighterTable("8, '8',   1, 1, 0, 0, 1, 0, 0");
-        insertInFighterTable("9, '9',   1, 1, 0, 0, 0, 1, 1");
-        insertInFighterTable("10, '10', 1, 1, 0, 0, 1, 0, 0");
-        insertInFighterTable("11, '11', 1, 1, 1, 0, 0, 0, 0");
-        insertInFighterTable("12, '12', 1, 1, 1, 0, 1, 1, 1");
-        insertInFighterTable("13, '13', 1, 1, 1, 0, 0, 0, 0");
-        insertInFighterTable("14, '14', 1, 1, 1, 0, 1, 0, 0");
-        insertInFighterTable("15, '15', 1, 1, 1, 0, 0, 1, 1");
-        insertInFighterTable("16, '16', 1, 1, 1, 1, 1, 0, 0");
-        insertInFighterTable("17, '17', 1, 1, 1, 1, 0, 0, 0");
-        insertInFighterTable("18, '18', 1, 1, 1, 1, 1, 1, 1");
-        insertInFighterTable("19, '19', 1, 1, 1, 1, 0, 0, 0");
-        insertInFighterTable("20, '20', 1, 1, 1, 1, 1, 0, 0");
+        insertInFighterTable("1,   1, 0, 0, 0, 2, 0, 0");
+        insertInFighterTable("2,   1, 0, 0, 0, 1, 0, 0");
+        insertInFighterTable("3,   1, 0, 0, 0, 0, 1, 1");
+        insertInFighterTable("4,   1, 0, 0, 0, 1, 0, 0");
+        insertInFighterTable("5,   1, 0, 0, 0, 0, 0, 0");
+        insertInFighterTable("6,   1, 1, 0, 0, 1, 1, 1");
+        insertInFighterTable("7,   1, 1, 0, 0, 0, 0, 0");
+        insertInFighterTable("8,   1, 1, 0, 0, 1, 0, 0");
+        insertInFighterTable("9,   1, 1, 0, 0, 0, 1, 1");
+        insertInFighterTable("10,  1, 1, 0, 0, 1, 0, 0");
+        insertInFighterTable("11,  1, 1, 1, 0, 0, 0, 0");
+        insertInFighterTable("12,  1, 1, 1, 0, 1, 1, 1");
+        insertInFighterTable("13,  1, 1, 1, 0, 0, 0, 0");
+        insertInFighterTable("14,  1, 1, 1, 0, 1, 0, 0");
+        insertInFighterTable("15,  1, 1, 1, 0, 0, 1, 1");
+        insertInFighterTable("16,  1, 1, 1, 1, 1, 0, 0");
+        insertInFighterTable("17,  1, 1, 1, 1, 0, 0, 0");
+        insertInFighterTable("18,  1, 1, 1, 1, 1, 1, 1");
+        insertInFighterTable("19,  1, 1, 1, 1, 0, 0, 0");
+        insertInFighterTable("20,  1, 1, 1, 1, 1, 0, 0");
 
     }
 
@@ -338,7 +336,6 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_ROGUE_TABLE = "CREATE TABLE " +
                 RulesContract.RogueEntry.TABLE_NAME + " (" +
                 RulesContract.RogueEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                RulesContract.RogueEntry.COLUMN_LEVEL + " STRING NOT NULL," +
 
                 RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
                 RulesContract.RogueEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
@@ -350,26 +347,26 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_ROGUE_TABLE);
 
         //note that these are accumulative, so add row when add level
-        insertInRogueTable("1, '1',   0, 0, 0, 0, 2, 0");
-        insertInRogueTable("2, '2',   1, 0, 0, 0, 1, 0");
-        insertInRogueTable("3, '3',   1, 0, 0, 1, 0, 1");
-        insertInRogueTable("4, '4',   1, 0, 0, 0, 1, 0");
-        insertInRogueTable("5, '5',   0, 0, 0, 0, 0, 0");
-        insertInRogueTable("6, '6',   1, 0, 0, 1, 1, 1");
-        insertInRogueTable("7, '7',   1, 0, 0, 0, 0, 0");
-        insertInRogueTable("8, '8',   1, 1, 0, 0, 1, 0");
-        insertInRogueTable("9, '9',   0, 0, 0, 1, 0, 1");
-        insertInRogueTable("10, '10', 1, 1, 0, 0, 1, 0");
-        insertInRogueTable("11, '11', 1, 1, 0, 0, 0, 0");
-        insertInRogueTable("12, '12', 1, 1, 0, 1, 1, 1");
-        insertInRogueTable("13, '13', 0, 0, 0, 0, 0, 0");
-        insertInRogueTable("14, '14', 1, 1, 0, 0, 1, 0");
-        insertInRogueTable("15, '15', 1, 1, 1, 1, 0, 1");
-        insertInRogueTable("16, '16', 1, 1, 1, 0, 1, 0");
-        insertInRogueTable("17, '17', 0, 0, 0, 0, 0, 0");
-        insertInRogueTable("18, '18', 1, 1, 1, 1, 1, 1");
-        insertInRogueTable("19, '19', 1, 1, 1, 0, 0, 0");
-        insertInRogueTable("20, '20', 1, 1, 1, 0, 1, 0");
+        insertInRogueTable("1,  0, 0, 0, 0, 2, 0");
+        insertInRogueTable("2,  1, 0, 0, 0, 1, 0");
+        insertInRogueTable("3,  1, 0, 0, 1, 0, 1");
+        insertInRogueTable("4,  1, 0, 0, 0, 1, 0");
+        insertInRogueTable("5,  0, 0, 0, 0, 0, 0");
+        insertInRogueTable("6,  1, 0, 0, 1, 1, 1");
+        insertInRogueTable("7,  1, 0, 0, 0, 0, 0");
+        insertInRogueTable("8,  1, 1, 0, 0, 1, 0");
+        insertInRogueTable("9,  0, 0, 0, 1, 0, 1");
+        insertInRogueTable("10, 1, 1, 0, 0, 1, 0");
+        insertInRogueTable("11, 1, 1, 0, 0, 0, 0");
+        insertInRogueTable("12, 1, 1, 0, 1, 1, 1");
+        insertInRogueTable("13, 0, 0, 0, 0, 0, 0");
+        insertInRogueTable("14, 1, 1, 0, 0, 1, 0");
+        insertInRogueTable("15, 1, 1, 1, 1, 0, 1");
+        insertInRogueTable("16, 1, 1, 1, 0, 1, 0");
+        insertInRogueTable("17, 0, 0, 0, 0, 0, 0");
+        insertInRogueTable("18, 1, 1, 1, 1, 1, 1");
+        insertInRogueTable("19, 1, 1, 1, 0, 0, 0");
+        insertInRogueTable("20, 1, 1, 1, 0, 1, 0");
 
     }
 
@@ -383,7 +380,6 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         final String SQL_CREATE_WIZARD_TABLE = "CREATE TABLE " +
                 RulesContract.WizardEntry.TABLE_NAME + " (" +
                 RulesContract.WizardEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                RulesContract.WizardEntry.COLUMN_LEVEL + " STRING NOT NULL," +
 
                 RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1 + " INTEGER NOT NULL," +
                 RulesContract.WizardEntry.COLUMN_BASE_ATTACK_2 + " INTEGER NOT NULL," +
@@ -405,26 +401,26 @@ public class RulesDbHelper extends SQLiteOpenHelper {
         mDatabase.execSQL(SQL_CREATE_WIZARD_TABLE);
 
         //note that these are accumulative, so add row when add level
-        insertInWizardTable("1, '1',   0, 0, 0, 0, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0");
-        insertInWizardTable("2, '2',   1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0");
-        insertInWizardTable("3, '3',   0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0");
-        insertInWizardTable("4, '4',   1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0");
-        insertInWizardTable("5, '5',   0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0");
-        insertInWizardTable("6, '6',   1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0");
-        insertInWizardTable("7, '7',   0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0");
-        insertInWizardTable("8, '8',   1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0");
-        insertInWizardTable("9, '9',   0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0");
-        insertInWizardTable("10, '10', 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0");
-        insertInWizardTable("11, '11', 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0");
-        insertInWizardTable("12, '12', 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0");
-        insertInWizardTable("13, '13', 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0");
-        insertInWizardTable("14, '14', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0");
-        insertInWizardTable("15, '15', 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0");
-        insertInWizardTable("16, '16', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0");
-        insertInWizardTable("17, '17', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1");
-        insertInWizardTable("18, '18', 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
-        insertInWizardTable("19, '19', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1");
-        insertInWizardTable("20, '20', 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
+        insertInWizardTable("1,  0, 0, 0, 0, 2, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("2,  1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("3,  0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("4,  1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("5,  0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("6,  1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0");
+        insertInWizardTable("7,  0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0");
+        insertInWizardTable("8,  1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0");
+        insertInWizardTable("9,  0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0");
+        insertInWizardTable("10, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0");
+        insertInWizardTable("11, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0");
+        insertInWizardTable("12, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0");
+        insertInWizardTable("13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0");
+        insertInWizardTable("14, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0");
+        insertInWizardTable("15, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0");
+        insertInWizardTable("16, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0");
+        insertInWizardTable("17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1");
+        insertInWizardTable("18, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
+        insertInWizardTable("19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1");
+        insertInWizardTable("20, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1");
 
     }
 
