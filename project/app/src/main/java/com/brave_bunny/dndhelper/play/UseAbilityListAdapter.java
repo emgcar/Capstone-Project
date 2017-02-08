@@ -66,10 +66,14 @@ public class UseAbilityListAdapter extends CursorAdapter {
         long itemId;
 
         ContentValues value;
+        String name;
         switch(listType) {
             case TYPE_SPELL:
                 itemId = cursor.getLong(COL_CHARACTER_SPELL_SPELL_ID);
                 value = getSpell(context, itemId);
+                if (value == null) return;
+                name = value.getAsString(SPELL_COLUMNS[COL_SPELL_NAME]);
+                nameText.setText(name);
                 view.setTag(R.string.select_spells, cursor.getLong(COL_SPELL_ID));
                 break;
             /*case TYPE_DOMAIN:
@@ -90,7 +94,6 @@ public class UseAbilityListAdapter extends CursorAdapter {
             default:
                 return;
         }
-        String name = value.getAsString(SPELL_COLUMNS[COL_SPELL_NAME]);
         nameText.setText(name);
     }
 }

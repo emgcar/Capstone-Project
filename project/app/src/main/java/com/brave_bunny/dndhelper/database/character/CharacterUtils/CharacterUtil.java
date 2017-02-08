@@ -164,6 +164,30 @@ public class CharacterUtil {
         return value;
     }
 
+    // need to make sure no name duplication somehow
+    public static boolean isInBattle(Context context, long index) {
+        boolean value;
+
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + CharacterContract.CharacterEntry.TABLE_NAME
+                    + " WHERE " + CharacterContract.CharacterEntry._ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(index)});
+
+            cursor.moveToFirst();
+            int isInBattle = cursor.getInt(COL_CHARACTER_IN_BATTLE);
+
+            value = (isInBattle == TRUE);
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return value;
+    }
+
     public static void updateCharacterTable(Context context, String tableName,
                                             ContentValues values, long index) {
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);

@@ -107,8 +107,8 @@ public class InProgressDomainsUtil {
     }
 
     public static int numberDomainsSelected(Context context, ContentValues values) {
-        long rowIndex = values.getAsLong(INPROGRESS_COLUMNS[COL_CHARACTER_ID]);
-        int numberDomains;
+        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
+        int numberSpells;
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -118,12 +118,12 @@ public class InProgressDomainsUtil {
                     + " WHERE " + DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID] + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
-            numberDomains = cursor.getCount();
+            numberSpells = cursor.getCount();
             cursor.close();
         } finally {
             db.close();
         }
 
-        return numberDomains;
+        return numberSpells;
     }
 }

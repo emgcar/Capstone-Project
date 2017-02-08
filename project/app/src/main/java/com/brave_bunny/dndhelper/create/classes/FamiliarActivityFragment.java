@@ -20,6 +20,8 @@ import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_ID;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.changeFamiliarSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.isFamiliarSameAsSelected;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -61,7 +63,7 @@ public class FamiliarActivityFragment extends Fragment {
             Cursor cursor = db.rawQuery(query, null);
 
             final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor,
-                    DnDListAdapter.LIST_TYPE_FAMILIAR, 0, rowIndex, 1);
+                    0, DnDListAdapter.LIST_TYPE_FAMILIAR, rowIndex, 1);
             final ListView listView = (ListView) view.findViewById(R.id.listview_familiars);
             listView.setAdapter(adapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -79,12 +81,12 @@ public class FamiliarActivityFragment extends Fragment {
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         long familiarId = cursor.getInt(COL_FAMILIAR_ID);
 
-                        if(InProgressCharacterUtil.isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
-                            InProgressCharacterUtil.changeFamiliarSelection(getContext(), rowIndex, -1);
+                        if(isFamiliarSameAsSelected(getContext(), rowIndex, familiarId)) {
+                            changeFamiliarSelection(getContext(), rowIndex, -1);
                             itemView.setEnabled(false);
                             adapter.notifyDataSetChanged();
                         } else {
-                            InProgressCharacterUtil.changeFamiliarSelection(getContext(), rowIndex, familiarId);
+                            changeFamiliarSelection(getContext(), rowIndex, familiarId);
                             itemView.setEnabled(true);
                             adapter.notifyDataSetChanged();
                         }

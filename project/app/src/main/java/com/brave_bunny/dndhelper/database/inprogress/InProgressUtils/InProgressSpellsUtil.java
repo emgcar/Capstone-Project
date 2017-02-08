@@ -56,7 +56,7 @@ public class InProgressSpellsUtil {
     }
 
     public static void addSpellSelection(Context context, long rowIndex, int spellId) {
-        spellId += numberSpellsUntilLevelOne;
+        //spellId += numberSpellsUntilLevelOne;
         ContentValues values = new ContentValues();
         values.put(SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID], rowIndex);
         values.put(SPELL_COLUMNS[COL_INPROGRESS_SPELL_SPELL_ID], spellId);
@@ -72,7 +72,7 @@ public class InProgressSpellsUtil {
     }
 
     public static boolean isSpellSelected(Context context, long rowIndex, long spellId) {
-        spellId += numberSpellsUntilLevelOne;
+        //spellId += numberSpellsUntilLevelOne;
         boolean isSelected = false;
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();

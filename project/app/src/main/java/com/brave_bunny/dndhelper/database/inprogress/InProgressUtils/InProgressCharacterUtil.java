@@ -29,6 +29,7 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRaces
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_COLUMNS;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.getRaceStats;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.removeAllInProgressArmor;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.getNumberDomainsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.numberDomainsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.removeAllInProgressDomains;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.removeAllInProgressFeats;

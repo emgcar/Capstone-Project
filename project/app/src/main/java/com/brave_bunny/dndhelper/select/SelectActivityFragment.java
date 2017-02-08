@@ -28,6 +28,7 @@ import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.COL_CHARACTER_IN_BATTLE;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.getCharacterValue;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isInBattle;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -81,13 +82,14 @@ public class SelectActivityFragment extends Fragment {
                     long index = cursor.getLong(CharacterUtil.COL_CHARACTER_ID);
                     Intent selectActivity;
 
-                    if (isFinished(name)) {
-                        if (isInBattle(index)) {
-                            selectActivity = new Intent(getContext(), BattleActivity.class);
-                        } else {
+                    if (isCompleted(getContext(), name)) {
+                        //TODO: go to battle screen when in battle
+                        //if (isInBattle(getContext(), index)) {
+                        //    selectActivity = new Intent(getContext(), BattleActivity.class);
+                        //} else {
                             selectActivity = new Intent(getContext(), DetailActivity.class);
                             selectActivity.putExtra(CastSpellActivityFragment.ROW_INDEX, index);
-                        }
+                        //}
                     } else {
                         selectActivity = new Intent(getContext(), CreateActivity.class);
                         selectActivity.putExtra(CreateActivityFragment.ROW_INDEX, index);
@@ -101,14 +103,5 @@ public class SelectActivityFragment extends Fragment {
         }
 
         return rootView;
-    }
-
-    private boolean isFinished(String name) {
-        return isCompleted(getContext(), name);
-    }
-
-    private boolean isInBattle(long rowIndex) {
-        int colIndex = COL_CHARACTER_IN_BATTLE;
-        return (getCharacterValue(getContext(), rowIndex, colIndex) == TRUE);
     }
 }
