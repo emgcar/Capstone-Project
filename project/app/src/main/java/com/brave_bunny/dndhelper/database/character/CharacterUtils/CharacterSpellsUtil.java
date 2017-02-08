@@ -20,7 +20,7 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 
 public class CharacterSpellsUtil {
 
-    private static final String[] SPELL_COLUMNS = {
+    public static final String[] SPELL_COLUMNS = {
             CharacterContract.CharacterSpells.TABLE_NAME + "." + CharacterContract.CharacterSpells._ID,
             CharacterContract.CharacterSpells.COLUMN_CHARACTER_ID,
             CharacterContract.CharacterSpells.COLUMN_SPELL_ID

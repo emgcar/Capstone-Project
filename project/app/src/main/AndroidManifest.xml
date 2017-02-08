@@ -19,7 +19,8 @@
         </activity>
         <activity
             android:name=".create.CreateActivity"
-            android:label="@string/create_character">
+            android:label="@string/create_character"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.MainActivity" />
@@ -35,7 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".play.DetailActivity">
+        <activity android:name=".play.DetailActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.select.SelectActivity" />
@@ -43,7 +45,7 @@
         <activity android:name=".create.base.AbilityActivity" />
         <activity
             android:name=".create.skills_feats.SkillsActivity"
-            android:label="Skiills">
+            android:label="Skills">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />

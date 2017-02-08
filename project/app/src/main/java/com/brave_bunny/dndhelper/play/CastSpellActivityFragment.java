@@ -1,6 +1,5 @@
 package com.brave_bunny.dndhelper.play;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,16 +12,13 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_NAME;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.SPELL_COLUMNS;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -59,24 +55,8 @@ public class CastSpellActivityFragment extends Fragment {
                     + " WHERE " + CharacterContract.CharacterSpells.COLUMN_CHARACTER_ID + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
-            final CursorAdapter adapter = new CursorAdapter(getContext(), cursor, 0) {
-                @Override
-                public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-                    int layoutId = R.layout.list_item_domain;
-                    View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
-                    return view;
-                }
-
-                @Override
-                public void bindView(View view, Context context, Cursor cursor) {
-                    TextView nameText = (TextView) view.findViewById(R.id.name_details);
-                    long spellId = cursor.getLong(COL_SPELL_ID);
-                    ContentValues spellValue = RulesSpellsUtils.getSpell(context, spellId);
-                    String name = spellValue.getAsString(SPELL_COLUMNS[COL_SPELL_NAME]);
-                    nameText.setText(name);
-                    view.setTag(R.string.select_spells, cursor.getLong(COL_SPELL_ID));
-                }
-            };
+            final UseAbilityListAdapter adapter = new UseAbilityListAdapter(context, cursor,
+                    0, TYPE_SPELL, rowIndex);
             final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
             listView.setAdapter(adapter);
 

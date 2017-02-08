@@ -14,7 +14,7 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
 public class InProgressFeatsUtil {
 
-    private static final String[] FEAT_COLUMNS = {
+    public static final String[] FEAT_COLUMNS = {
             InProgressContract.FeatEntry.TABLE_NAME + "." + InProgressContract.FeatEntry._ID,
             InProgressContract.FeatEntry.COLUMN_CHARACTER_ID,
             InProgressContract.FeatEntry.COLUMN_FEAT_ID
@@ -24,7 +24,7 @@ public class InProgressFeatsUtil {
     public static final int COL_INPROGRESS_FEAT_CHARACTER_ID = 1;
     public static final int COL_INPROGRESS_FEAT_FEAT_ID = 2;
 
-    private static final String tableName = InProgressContract.FeatEntry.TABLE_NAME;
+    public static final String tableName = InProgressContract.FeatEntry.TABLE_NAME;
 
     public static void removeAllInProgressFeats(Context context, long rowIndex) {
         String query = FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID] + " = ?";

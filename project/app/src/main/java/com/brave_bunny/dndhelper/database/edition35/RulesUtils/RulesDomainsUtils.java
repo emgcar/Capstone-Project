@@ -61,6 +61,11 @@ public class RulesDomainsUtils {
         return getStats(context, query, TRUE);
     }
 
+    public static ContentValues getDomain(Context context, long domainId) {
+        String query = "SELECT * FROM " + tableName + " WHERE " + CLERIC_DOMAIN_COLUMNS[COL_DOMAIN_ID] + " = ?";
+        return getStats(context, query, domainId);
+    }
+
     private static ContentValues getStats(Context context, String query, long index) {
         ContentValues values = null;
 

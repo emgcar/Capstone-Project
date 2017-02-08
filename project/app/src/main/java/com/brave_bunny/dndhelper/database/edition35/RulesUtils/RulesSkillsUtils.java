@@ -46,7 +46,7 @@ public class RulesSkillsUtils {
     public static final int COL_SKILL_ARMOR_PENALTY = 8;
     public static final int COL_SKILL_DOUBLE_ARMOR_PENALTY = 9;
 
-    private static ContentValues getSkill(Context context, int skillId) {
+    public static ContentValues getSkill(Context context, long skillId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + SKILL_COLUMNS[COL_SKILL_ID] + " = ?";
         return getStats(context, query, skillId);
     }

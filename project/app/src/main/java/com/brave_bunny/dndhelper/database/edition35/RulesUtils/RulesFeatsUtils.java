@@ -28,7 +28,7 @@ public class RulesFeatsUtils {
 
     private static final String tableName = RulesContract.FeatEntry.TABLE_NAME;
 
-    private static ContentValues getFeat(Context context, int index) {
+    public static ContentValues getFeat(Context context, long index) {
         String query = "SELECT * FROM " + tableName + " WHERE " + FEATS_COLUMNS[COL_FEAT_ID] + " = ?";
         return getStats(context, query, index);
     }
