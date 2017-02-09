@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.create.inventory;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -35,8 +36,8 @@ public class ArmorActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_skills, container, false);
 
         //TODO implement options for viewing all and cross-class also
-        int moneyAmount = InProgressCharacterUtil.getInProgressValue(getContext(), rowIndex,
-                InProgressCharacterUtil.COL_CHARACTER_MONEY);
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);
+        float moneyAmount = InProgressCharacterUtil.getCharacterMoney(values);
         mCursor = getAllArmor(getContext());
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
 

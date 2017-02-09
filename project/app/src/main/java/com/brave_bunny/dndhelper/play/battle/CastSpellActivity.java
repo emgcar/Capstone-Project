@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.play;
+package com.brave_bunny.dndhelper.play.battle;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

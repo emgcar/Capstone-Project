@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.select;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -9,9 +10,11 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
 
 /**
@@ -48,11 +51,12 @@ class CharacterListAdapter extends CursorAdapter {
     // TODO some names take over the list for some reason
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        ContentValues value = cursorRowToContentValues(cursor);
 
         String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
         if (!isCompleted(context, name)) {
             mViewHolder.levelView.setText(R.string.in_progress);
-            name = cursor.getString(InProgressCharacterUtil.COL_CHARACTER_NAME);
+            name = InProgressCharacterUtil.getCharacterName(value);
         } else {
             // TODO implement level display
             mViewHolder.levelView.setText("Level 3");

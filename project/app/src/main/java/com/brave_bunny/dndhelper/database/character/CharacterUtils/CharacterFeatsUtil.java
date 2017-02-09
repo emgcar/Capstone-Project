@@ -11,8 +11,6 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.COL_INPROGRESS_FEAT_CHARACTER_ID;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.COL_INPROGRESS_FEAT_FEAT_ID;
 
 /**
  * Created by Jemma on 2/3/2017.
@@ -33,37 +31,21 @@ public class CharacterFeatsUtil {
     public static final String tableName = CharacterContract.CharacterFeats.TABLE_NAME;
 
     public static void transferFeats(Context context, long inProgressIndex, long characterIndex) {
-        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+        ContentValues[] allSpells = InProgressFeatsUtil.getAllFeatsForCharacter(context, inProgressIndex);
+        int numSpells = allSpells.length;
 
-        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        for (int i = 0; i < numSpells; i++) {
+            ContentValues newValue = new ContentValues();
+            newValue.put(FEAT_COLUMNS[COL_CHARACTER_FEAT_CHARACTER_ID], characterIndex);
 
-        try {
-            String query = "SELECT * FROM " + InProgressFeatsUtil.tableName + " WHERE "
-                    + InProgressFeatsUtil.FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID] + " = ?";
-            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(inProgressIndex)});
+            long spellIndex = InProgressFeatsUtil.getFeatId(allSpells[i]);
+            newValue.put(FEAT_COLUMNS[COL_CHARACTER_FEAT_FEAT_ID], spellIndex);
 
-            int numFeats = cursor.getCount();
-            cursor.moveToFirst();
-
-            ContentValues newValues = new ContentValues();
-            newValues.put(FEAT_COLUMNS[COL_CHARACTER_FEAT_CHARACTER_ID], characterIndex);
-
-            for (int i = 0; i < numFeats; i++) {
-                ContentValues values = cursorRowToContentValues(cursor);
-                long featIndex = values.getAsLong(InProgressFeatsUtil.FEAT_COLUMNS[COL_INPROGRESS_FEAT_FEAT_ID]);
-                newValues.put(FEAT_COLUMNS[COL_INPROGRESS_FEAT_FEAT_ID], featIndex);
-                insertFeatIntoCharacterTable(context, newValues, characterIndex);
-                cursor.moveToNext();
-            }
-            cursor.close();
-        } finally {
-            inProgressDb.close();
+            insertFeatIntoCharacterTable(context, newValue);
         }
     }
 
-    public static void insertFeatIntoCharacterTable(Context context, ContentValues values, long index) {
+    public static void insertFeatIntoCharacterTable(Context context, ContentValues values) {
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 

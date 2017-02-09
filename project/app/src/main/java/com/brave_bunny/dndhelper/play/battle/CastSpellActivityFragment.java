@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.play;
+package com.brave_bunny.dndhelper.play.battle;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,13 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.CursorAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.play.UseAbilityListAdapter;
+import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;

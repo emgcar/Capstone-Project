@@ -31,7 +31,19 @@ public class RulesWeaponsUtils {
 
     private static final String tableName = RulesContract.WeaponEntry.TABLE_NAME;
 
-    private static ContentValues getWeapon(Context context, int weaponId) {
+    private static String idLabel() {
+        return RulesContract.WeaponEntry._ID;
+    }
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(idLabel());
+    }
+
+    public static String getWeaponName(ContentValues value) {
+        return value.getAsString(WEAPONS_COLUMNS[COL_WEAPON_NAME]);
+    }
+
+    public static ContentValues getWeapon(Context context, long weaponId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + WEAPONS_COLUMNS[COL_WEAPON_ID] + " = ?";
         return getStats(context, query, weaponId);
     }

@@ -8,38 +8,57 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.numberSpellsUntilLevelOne;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.COL_CHARACTER_ID;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.COL_CHARACTER_NAME;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.INPROGRESS_COLUMNS;
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the selected spells for in-progress characters.
  */
 
 public class InProgressSpellsUtil {
 
-    public static final String[] SPELL_COLUMNS = {
-            InProgressContract.SpellEntry.TABLE_NAME + "." + InProgressContract.SpellEntry._ID,
-            InProgressContract.SpellEntry.COLUMN_CHARACTER_ID,
-            InProgressContract.SpellEntry.COLUMN_SPELL_ID
-    };
+    /* LABELS */
 
-    public static final int COL_INPROGRESS_SPELL_ITEM = 0;
-    public static final int COL_INPROGRESS_SPELL_CHARACTER_ID = 1;
-    public static final int COL_INPROGRESS_SPELL_SPELL_ID = 2;
+    private static String getTableName() {
+        return InProgressContract.SpellEntry.TABLE_NAME;
+    }
 
-    public static final String tableName = InProgressContract.SpellEntry.TABLE_NAME;
+    private static String characterIdLabel() {
+        return InProgressContract.SpellEntry.COLUMN_CHARACTER_ID;
+    }
+
+    private static String spellIdLabel() {
+        return InProgressContract.SpellEntry.COLUMN_SPELL_ID;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getCharacterId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
+
+    public static void setCharacterId(ContentValues values, long charId) {
+        values.put(characterIdLabel(), charId);
+    }
+
+    public static long getSpellId(ContentValues values) {
+        return values.getAsLong(spellIdLabel());
+    }
+
+    public static void setSpellId(ContentValues values, long weaponId) {
+        values.put(spellIdLabel(), weaponId);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static void removeAllInProgressSpells(Context context, long rowIndex) {
-        String query = SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID] + " = ?";
+        String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex)};
         deleteFromTable(context, query, selectionArgs);
     }
 
     public static void removeSpellSelection(Context context, long rowIndex, int domainId) {
-        String query = SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID] + " = ? AND " +
-                SPELL_COLUMNS[COL_INPROGRESS_SPELL_SPELL_ID] + " = ?";
+        String query = characterIdLabel() + " = ? AND " +
+                spellIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(domainId)};
         deleteFromTable(context, query, selectionArgs);
     }
@@ -49,7 +68,7 @@ public class InProgressSpellsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            db.delete(tableName, query, selectionArgs);
+            db.delete(getTableName(), query, selectionArgs);
         } finally {
             db.close();
         }
@@ -58,29 +77,28 @@ public class InProgressSpellsUtil {
     public static void addSpellSelection(Context context, long rowIndex, int spellId) {
         //spellId += numberSpellsUntilLevelOne;
         ContentValues values = new ContentValues();
-        values.put(SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID], rowIndex);
-        values.put(SPELL_COLUMNS[COL_INPROGRESS_SPELL_SPELL_ID], spellId);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(spellIdLabel(), spellId);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            db.insert(tableName, null, values);
+            db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }
     }
 
     public static boolean isSpellSelected(Context context, long rowIndex, long spellId) {
-        //spellId += numberSpellsUntilLevelOne;
         boolean isSelected = false;
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID] + " = ? AND " +
-                    SPELL_COLUMNS[COL_INPROGRESS_SPELL_SPELL_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    spellIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(spellId)});
             if (cursor.getCount() > 0) {
                 isSelected = true;
@@ -98,8 +116,8 @@ public class InProgressSpellsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numSpells = cursor.getCount();
@@ -118,8 +136,8 @@ public class InProgressSpellsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + SPELL_COLUMNS[COL_INPROGRESS_SPELL_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numberSpells = cursor.getCount();
@@ -129,5 +147,31 @@ public class InProgressSpellsUtil {
         }
 
         return numberSpells;
+    }
+
+    public static ContentValues[] getAllSpellsForCharacter(Context context, long rowIndex) {
+        ContentValues[] allSpells;
+
+        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
+            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            int numSpells = cursor.getCount();
+            cursor.moveToFirst();
+            allSpells = new ContentValues[numSpells];
+
+            for (int i = 0; i < numSpells; i++) {
+                allSpells[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            inProgressDb.close();
+        }
+        return allSpells;
     }
 }

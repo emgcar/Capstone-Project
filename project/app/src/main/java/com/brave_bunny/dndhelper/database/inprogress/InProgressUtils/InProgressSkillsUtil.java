@@ -8,28 +8,76 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the selected skills for in-progress characters.
  */
 
 public class InProgressSkillsUtil {
 
-    private static final String[] SKILL_COLUMNS = {
-            InProgressContract.SkillEntry.TABLE_NAME + "." + InProgressContract.SkillEntry._ID,
-            InProgressContract.SkillEntry.COLUMN_CHARACTER_ID,
-            InProgressContract.SkillEntry.COLUMN_SKILL_ID,
-            InProgressContract.SkillEntry.COLUMN_RANKS
-    };
+    /* LABELS */
 
-    public static final int COL_SKILL_INPUT_ID = 0;
-    public static final int COL_SKILL_CHARACTER_ID = 1;
-    public static final int COL_SKILL_SKILL_ID = 2;
-    public static final int COL_SKILL_RANKS = 3;
+    private static String getTableName() {
+        return InProgressContract.SkillEntry.TABLE_NAME;
+    }
 
-    private static final String tableName = InProgressContract.SkillEntry.TABLE_NAME;
+    private static String idLabel() {
+        return InProgressContract.SkillEntry._ID;
+    }
+
+    private static String characterIdLabel() {
+        return InProgressContract.SkillEntry.COLUMN_CHARACTER_ID;
+    }
+
+    private static String skillIdLabel() {
+        return InProgressContract.SkillEntry.COLUMN_SKILL_ID;
+    }
+
+    private static String skillRanksLabel() {
+        return InProgressContract.SkillEntry.COLUMN_RANKS;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(idLabel());
+    }
+
+    public static long getCharacterId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
+
+    public static void setCharacterId(ContentValues values, long charId) {
+        values.put(characterIdLabel(), charId);
+    }
+
+    public static long getSkillId(ContentValues values) {
+        return values.getAsLong(skillIdLabel());
+    }
+
+    public static void setSkillId(ContentValues values, long skillId) {
+        values.put(skillIdLabel(), skillId);
+    }
+
+    public static int getSkillRanks(ContentValues values) {
+        return values.getAsInteger(skillRanksLabel());
+    }
+
+    public static int getSkillRanks(Context context, long rowIndex, long skillId) {
+        ContentValues values = getStats(context, rowIndex, skillId);
+        if (values == null) return 0;
+        return getSkillRanks(values);
+    }
+
+    public static void setSkillsRanks(ContentValues values, long skillRanks) {
+        values.put(skillRanksLabel(), skillRanks);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static void removeAllInProgressSkills(Context context, long rowIndex) {
-        String query = SKILL_COLUMNS[COL_SKILL_CHARACTER_ID] + " = ?";
+        String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex)};
         deleteFromTable(context, query, selectionArgs);
     }
@@ -39,7 +87,7 @@ public class InProgressSkillsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            db.delete(tableName, query, selectionArgs);
+            db.delete(getTableName(), query, selectionArgs);
         } finally {
             db.close();
         }
@@ -51,9 +99,9 @@ public class InProgressSkillsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + SKILL_COLUMNS[COL_SKILL_CHARACTER_ID] + " = ? AND " +
-                    SKILL_COLUMNS[COL_SKILL_SKILL_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    skillIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(skillId)});
             if (cursor.getCount() > 0) {
                 isSelected = true;
@@ -65,38 +113,17 @@ public class InProgressSkillsUtil {
         return isSelected;
     }
 
-    public static int getSkillRanks(Context context, long rowIndex, long skillId) {
-        int ranks = 0;
-        if (isSkillListed(context, rowIndex, skillId)) {
-            InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-            try {
-                String query = "SELECT * FROM " + tableName
-                        + " WHERE " + SKILL_COLUMNS[COL_SKILL_CHARACTER_ID] + " = ? AND " +
-                        SKILL_COLUMNS[COL_SKILL_SKILL_ID] + " = ?";
-                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(skillId)});
-                cursor.moveToFirst();
-                ranks = cursor.getInt(COL_SKILL_RANKS);
-                cursor.close();
-            } finally {
-                db.close();
-            }
-        }
-        return ranks;
-    }
-
     public static void addSkillSelection(Context context, long rowIndex, long skillId, int rank) {
         ContentValues values = new ContentValues();
-        values.put(SKILL_COLUMNS[COL_SKILL_CHARACTER_ID], rowIndex);
-        values.put(SKILL_COLUMNS[COL_SKILL_SKILL_ID], skillId);
-        values.put(SKILL_COLUMNS[COL_SKILL_RANKS], rank);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(skillIdLabel(), skillId);
+        values.put(skillRanksLabel(), rank);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            db.insert(tableName, null, values);
+            db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }
@@ -104,24 +131,22 @@ public class InProgressSkillsUtil {
 
     public static void updateSkillSelection(Context context, long rowIndex, long skillId, int newRank) {
         ContentValues values = new ContentValues();
-        values.put(SKILL_COLUMNS[COL_SKILL_CHARACTER_ID], rowIndex);
-        values.put(SKILL_COLUMNS[COL_SKILL_SKILL_ID], skillId);
-        values.put(SKILL_COLUMNS[COL_SKILL_RANKS], newRank);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(skillIdLabel(), skillId);
+        values.put(skillRanksLabel(), newRank);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String charIndex = SKILL_COLUMNS[COL_SKILL_CHARACTER_ID];
-
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + SKILL_COLUMNS[COL_SKILL_CHARACTER_ID] + " = ? AND " +
-                    SKILL_COLUMNS[COL_SKILL_SKILL_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    skillIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(skillId)});
             try {
                 cursor.moveToFirst();
-                db.update(tableName, values, SKILL_COLUMNS[COL_SKILL_CHARACTER_ID] + " = ? AND "
-                        + SKILL_COLUMNS[COL_SKILL_SKILL_ID] + " = ?",
+                db.update(getTableName(), values, characterIdLabel() + " = ? AND "
+                        + skillIdLabel() + " = ?",
                         new String[]{Long.toString(rowIndex), Long.toString(skillId)});
             } finally {
                 cursor.close();
@@ -147,14 +172,15 @@ public class InProgressSkillsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + SKILL_COLUMNS[COL_SKILL_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             cursor.moveToFirst();
 
             for (int i = 0; i < cursor.getCount(); i++) {
-                skillPointsSpent += cursor.getInt(COL_SKILL_RANKS);
+                ContentValues values = cursorRowToContentValues(cursor);
+                skillPointsSpent += getSkillRanks(values);
                 cursor.moveToNext();
             }
             cursor.close();
@@ -163,5 +189,52 @@ public class InProgressSkillsUtil {
         }
 
         return skillPointsSpent;
+    }
+
+    public static ContentValues getStats(Context context, long rowIndex, long armorId) {
+        ContentValues values = null;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    skillIdLabel() + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(armorId)});
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                values = cursorRowToContentValues(cursor);
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return values;
+    }
+
+    public static ContentValues[] getAllSkillsForCharacter(Context context, long rowIndex) {
+        ContentValues[] allSkills;
+
+        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
+            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            int numSkills = cursor.getCount();
+            cursor.moveToFirst();
+            allSkills = new ContentValues[numSkills];
+
+            for (int i = 0; i < numSkills; i++) {
+                allSkills[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            inProgressDb.close();
+        }
+        return allSkills;
     }
 }

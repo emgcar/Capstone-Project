@@ -51,7 +51,6 @@ public class FamiliarActivityFragment extends Fragment {
         return mRootView;
     }
 
-    //TODO: populate previous choices
     public void getFamiliars(Context context, View view) {
         ContentValues[] allValues;
 

@@ -36,7 +36,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".play.DetailActivity"
+        <activity
+            android:name=".play.DetailActivity"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -115,8 +116,17 @@
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
         <activity
-            android:name=".play.CastSpellActivity"
+            android:name=".play.battle.CastSpellActivity"
             android:label="@string/title_activity_spell"
+            android:parentActivityName=".play.DetailActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
+        </activity>
+        <activity
+            android:name=".play.battle.SkillCheckActivity"
+            android:label="@string/title_activity_skill_check"
             android:parentActivityName=".play.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

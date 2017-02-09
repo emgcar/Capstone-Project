@@ -8,33 +8,57 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the selected feats for in-progress characters.
  */
 
 public class InProgressFeatsUtil {
 
-    public static final String[] FEAT_COLUMNS = {
-            InProgressContract.FeatEntry.TABLE_NAME + "." + InProgressContract.FeatEntry._ID,
-            InProgressContract.FeatEntry.COLUMN_CHARACTER_ID,
-            InProgressContract.FeatEntry.COLUMN_FEAT_ID
-    };
+    /* LABELS */
 
-    public static final int COL_INPROGRESS_FEAT_ITEM = 0;
-    public static final int COL_INPROGRESS_FEAT_CHARACTER_ID = 1;
-    public static final int COL_INPROGRESS_FEAT_FEAT_ID = 2;
+    private static String getTableName() {
+        return InProgressContract.FeatEntry.TABLE_NAME;
+    }
 
-    public static final String tableName = InProgressContract.FeatEntry.TABLE_NAME;
+    private static String characterIdLabel() {
+        return InProgressContract.FeatEntry.COLUMN_CHARACTER_ID;
+    }
+
+    private static String featIdLabel() {
+        return InProgressContract.FeatEntry.COLUMN_FEAT_ID;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getCharacterId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
+
+    public static void setCharacterId(ContentValues values, long charId) {
+        values.put(characterIdLabel(), charId);
+    }
+
+    public static long getFeatId(ContentValues values) {
+        return values.getAsLong(featIdLabel());
+    }
+
+    public static void setFeatId(ContentValues values, long featId) {
+        values.put(featIdLabel(), featId);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static void removeAllInProgressFeats(Context context, long rowIndex) {
-        String query = FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID] + " = ?";
+        String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex)};
         deleteFromTable(context, query, selectionArgs);
     }
 
     public static void removeFeatSelection(Context context, long rowIndex, int domainId) {
-        String query = FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID] + " = ? AND " +
-                FEAT_COLUMNS[COL_INPROGRESS_FEAT_FEAT_ID] + " = ?";
+        String query = characterIdLabel() + " = ? AND " +
+                featIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(domainId)};
         deleteFromTable(context, query, selectionArgs);
     }
@@ -44,7 +68,7 @@ public class InProgressFeatsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            db.delete(tableName, query, selectionArgs);
+            db.delete(getTableName(), query, selectionArgs);
         } finally {
             db.close();
         }
@@ -56,8 +80,8 @@ public class InProgressFeatsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numDomains = cursor.getCount();
@@ -74,9 +98,9 @@ public class InProgressFeatsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID] + " = ? AND " +
-                    FEAT_COLUMNS[COL_INPROGRESS_FEAT_FEAT_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    featIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(featId)});
             if (cursor.getCount() > 0) {
                 isSelected = true;
@@ -90,16 +114,42 @@ public class InProgressFeatsUtil {
 
     public static void addFeatSelection(Context context, long rowIndex, int featId) {
         ContentValues values = new ContentValues();
-        values.put(FEAT_COLUMNS[COL_INPROGRESS_FEAT_CHARACTER_ID], rowIndex);
-        values.put(FEAT_COLUMNS[COL_INPROGRESS_FEAT_FEAT_ID], featId);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(featIdLabel(), featId);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            db.insert(tableName, null, values);
+            db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }
+    }
+
+    public static ContentValues[] getAllFeatsForCharacter(Context context, long rowIndex) {
+        ContentValues[] allFeats;
+
+        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
+            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            int numFeats = cursor.getCount();
+            cursor.moveToFirst();
+            allFeats = new ContentValues[numFeats];
+
+            for (int i = 0; i < numFeats; i++) {
+                allFeats[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            inProgressDb.close();
+        }
+        return allFeats;
     }
 }

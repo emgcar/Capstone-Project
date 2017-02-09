@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.create.skills_feats;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -10,8 +11,18 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesArmorUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesItemsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesWeaponsUtils;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.addOrUpdateArmorSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.getArmorCount;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil.addOrUpdateItemSelection;
@@ -68,29 +79,33 @@ public class SkillAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         final View rootView = view;
 
+        ContentValues selectedItem = cursorRowToContentValues(cursor);
+
         long id;
-        int nameIndex;
+        long itemIndex;
         int ranks;
+        String itemName;
+        ContentValues itemData;
 
         switch (mType) {
             case TYPE_SKILLS:
-                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry._ID));
-                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.SkillsEntry.COLUMN_NAME);
+                itemName = RulesSkillsUtils.getSkillName(selectedItem);
+                id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getSkillRanks(context, mRowIndex, id);
                 break;
             case TYPE_ARMOR:
-                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.ArmorEntry._ID));
-                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.ArmorEntry.COLUMN_NAME);
+                itemName = RulesArmorUtils.getArmorName(selectedItem);
+                id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getArmorCount(context, mRowIndex, id);
                 break;
             case TYPE_WEAPONS:
-                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.WeaponEntry._ID));
-                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.WeaponEntry.COLUMN_NAME);
+                itemName = RulesWeaponsUtils.getWeaponName(selectedItem);
+                id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getWeaponCount(context, mRowIndex, id);
                 break;
             case TYPE_ITEMS:
-                id = cursor.getLong(cursor.getColumnIndexOrThrow(RulesContract.ItemEntry._ID));
-                nameIndex = cursor.getColumnIndexOrThrow(RulesContract.ItemEntry.COLUMN_NAME);
+                itemName = RulesItemsUtils.getItemName(selectedItem);
+                id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getItemCount(context, mRowIndex, id);
                 break;
             default:
@@ -98,8 +113,7 @@ public class SkillAdapter extends CursorAdapter {
         }
 
         TextView tvBody = (TextView) view.findViewById(R.id.skill_name);
-        String body = cursor.getString(nameIndex);
-        tvBody.setText(body);
+        tvBody.setText(itemName);
         tvBody.setTag(R.string.skills, id);
 
         Button minusButton = (Button) view.findViewById(R.id.minus_button);

@@ -40,7 +40,7 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil.removeAllInProgressWeapons;
 
 /**
- * Created by Jemma on 1/13/2017.
+ *  Handles all of the selected domains for in-progress characters.
  */
 
 
@@ -51,93 +51,377 @@ public class InProgressCharacterUtil {
     public static final int STATE_PARTIAL = 1;
     public static final int STATE_COMPLETE = 2;
 
-    private static final String tableName = InProgressContract.CharacterEntry.TABLE_NAME;
+    /* LABELS - Should be private */
 
-    public static final String[] INPROGRESS_COLUMNS = {
-            InProgressContract.CharacterEntry.TABLE_NAME + "." + InProgressContract.CharacterEntry._ID,
-            InProgressContract.CharacterEntry.COLUMN_NAME,
-            InProgressContract.CharacterEntry.COLUMN_GENDER,
-            InProgressContract.CharacterEntry.COLUMN_RACE_ID,
-            InProgressContract.CharacterEntry.COLUMN_CLASS_ID,
-            InProgressContract.CharacterEntry.COLUMN_AGE,
-            InProgressContract.CharacterEntry.COLUMN_WEIGHT,
-            InProgressContract.CharacterEntry.COLUMN_HEIGHT,
-            InProgressContract.CharacterEntry.COLUMN_RELIGION_ID,
-            InProgressContract.CharacterEntry.COLUMN_ALIGN,
+    private static String getTableName() {
+        return InProgressContract.CharacterEntry.TABLE_NAME;
+    }
 
-            InProgressContract.CharacterEntry.COLUMN_STR,
-            InProgressContract.CharacterEntry.COLUMN_DEX,
-            InProgressContract.CharacterEntry.COLUMN_CON,
-            InProgressContract.CharacterEntry.COLUMN_INT,
-            InProgressContract.CharacterEntry.COLUMN_WIS,
-            InProgressContract.CharacterEntry.COLUMN_CHA,
+    private static String characterIdLabel() {
+        return InProgressContract.CharacterEntry.TABLE_NAME + "." + InProgressContract.CharacterEntry._ID;
+    }
 
-            InProgressContract.CharacterEntry.COLUMN_ABILITY_1,
-            InProgressContract.CharacterEntry.COLUMN_ABILITY_2,
-            InProgressContract.CharacterEntry.COLUMN_ABILITY_3,
-            InProgressContract.CharacterEntry.COLUMN_ABILITY_4,
-            InProgressContract.CharacterEntry.COLUMN_ABILITY_5,
-            InProgressContract.CharacterEntry.COLUMN_ABILITY_6,
+    private static String characterNameLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_NAME;
+    }
 
-            InProgressContract.CharacterEntry.COLUMN_MONEY,
-            InProgressContract.CharacterEntry.COLUMN_LIGHT_LOAD,
-            InProgressContract.CharacterEntry.COLUMN_MED_LOAD,
-            InProgressContract.CharacterEntry.COLUMN_HEAVY_LOAD,
+    private static String characterGenderLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_GENDER;
+    }
 
-            InProgressContract.CharacterEntry.COLUMN_AC,
-            InProgressContract.CharacterEntry.COLUMN_HP,
+    private static String characterRaceLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_RACE_ID;
+    }
 
-            InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID
-    };
+    private static String characterClassLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_CLASS_ID;
+    }
 
-    public static final int COL_CHARACTER_ID = 0;
-    public static final int COL_CHARACTER_NAME = 1;
-    public static final int COL_CHARACTER_GENDER = 2;
-    public static final int COL_CHARACTER_RACE_ID = 3;
-    public static final int COL_CHARACTER_CLASS_ID = 4;
-    public static final int COL_CHARACTER_AGE = 5;
-    public static final int COL_CHARACTER_WEIGHT = 6;
-    public static final int COL_CHARACTER_HEIGHT = 7;
-    public static final int COL_CHARACTER_RELIGION_ID = 8;
-    public static final int COL_CHARACTER_ALIGN = 9;
+    private static String characterAgeLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_AGE;
+    }
 
-    public static final int COL_CHARACTER_STRENGTH = 10;
-    public static final int COL_CHARACTER_DEXTERITY = 11;
-    public static final int COL_CHARACTER_CONSTITUTION = 12;
-    public static final int COL_CHARACTER_INTELLIGENCE = 13;
-    public static final int COL_CHARACTER_WISDOM = 14;
-    public static final int COL_CHARACTER_CHARISMA = 15;
+    private static String characterWeightLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_WEIGHT;
+    }
 
-    public static final int COL_CHARACTER_ABILITY1 = 16;
-    public static final int COL_CHARACTER_ABILITY2 = 17;
-    public static final int COL_CHARACTER_ABILITY3 = 18;
-    public static final int COL_CHARACTER_ABILITY4 = 19;
-    public static final int COL_CHARACTER_ABILITY5 = 20;
-    public static final int COL_CHARACTER_ABILITY6 = 21;
+    private static String characterHeightLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_HEIGHT;
+    }
 
-    public static final int COL_CHARACTER_MONEY = 22;
-    public static final int COL_CHARACTER_LIGHT_LOAD = 23;
-    public static final int COL_CHARACTER_MED_LOAD = 24;
-    public static final int COL_CHARACTER_HEAVY_LOAD = 25;
+    private static String characterReligionLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_RELIGION_ID;
+    }
 
-    public static final int COL_CHARACTER_AC = 26;
-    public static final int COL_CHARACTER_HP = 27;
+    private static String characterAlignLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_ALIGN;
+    }
 
-    private static final int COL_CHARACTER_FAMILIAR = 28;
+    private static String characterStrengthLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_STR;
+    }
+
+    private static String characterDexterityLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_DEX;
+    }
+
+    private static String characterConstitutionLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_CON;
+    }
+
+    private static String characterIntelligenceLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_INT;
+    }
+
+    private static String characterWisdomLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_WIS;
+    }
+
+    private static String characterCharismaLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_CHA;
+    }
+
+    private static String characterAbility1Label() {
+        return InProgressContract.CharacterEntry.COLUMN_ABILITY_1;
+    }
+
+    private static String characterAbility2Label() {
+        return InProgressContract.CharacterEntry.COLUMN_ABILITY_2;
+    }
+
+    private static String characterAbility3Label() {
+        return InProgressContract.CharacterEntry.COLUMN_ABILITY_3;
+    }
+
+    private static String characterAbility4Label() {
+        return InProgressContract.CharacterEntry.COLUMN_ABILITY_4;
+    }
+
+    private static String characterAbility5Label() {
+        return InProgressContract.CharacterEntry.COLUMN_ABILITY_5;
+    }
+
+    private static String characterAbility6Label() {
+        return InProgressContract.CharacterEntry.COLUMN_ABILITY_6;
+    }
+
+    private static String characterMoneyLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_MONEY;
+    }
+
+    private static String characterLightLoadLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_LIGHT_LOAD;
+    }
+
+    private static String characterMediumLoadLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_MED_LOAD;
+    }
+
+    private static String characterHeavyLoadLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_HEAVY_LOAD;
+    }
+
+    private static String characterACLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_AC;
+    }
+
+    private static String characterHPLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_HP;
+    }
+
+    private static String characterFamiliarLabel() {
+        return InProgressContract.CharacterEntry.COLUMN_FAMILIAR_ID;
+    }
+
+    /* PARSE VALUES*/
+
+    public static String getCharacterName(ContentValues values) {
+        return values.getAsString(characterNameLabel());
+    }
+
+    public static void setCharacterName(ContentValues values, String name) {
+        values.put(characterNameLabel(), name);
+    }
+
+    public static int getCharacterGender(ContentValues values) {
+        return values.getAsInteger(characterGenderLabel());
+    }
+
+    public static void setCharacterGender(ContentValues values, int gender) {
+        values.put(characterGenderLabel(), gender);
+    }
+
+    public static int getCharacterRace(ContentValues values) {
+        return values.getAsInteger(characterRaceLabel());
+    }
+
+    public static void setCharacterRace(ContentValues values, int race) {
+        values.put(characterRaceLabel(), race);
+    }
+
+    public static int getCharacterClass(ContentValues values) {
+        return values.getAsInteger(characterClassLabel());
+    }
+
+    public static void setCharacterClass(ContentValues values, int classId) {
+        values.put(characterClassLabel(), classId);
+    }
+
+    public static String getCharacterAge(ContentValues values) {
+        return values.getAsString(characterAgeLabel());
+    }
+
+    public static void setCharacterAge(ContentValues values, String age) {
+        values.put(characterAgeLabel(), age);
+    }
+
+    public static String getCharacterWeight(ContentValues values) {
+        return values.getAsString(characterWeightLabel());
+    }
+
+    public static void setCharacterWeight(ContentValues values, String weight) {
+        values.put(characterWeightLabel(), weight);
+    }
+
+    public static String getCharacterHeight(ContentValues values) {
+        return values.getAsString(characterHeightLabel());
+    }
+
+    public static void setCharacterHeight(ContentValues values, String height) {
+        values.put(characterHeightLabel(), height);
+    }
+
+    public static int getCharacterReligion(ContentValues values) {
+        return values.getAsInteger(characterReligionLabel());
+    }
+
+    public static void setCharacterReligion(ContentValues values, int religion) {
+        values.put(characterReligionLabel(), religion);
+    }
+
+    public static int getCharacterAlign(ContentValues values) {
+        return values.getAsInteger(characterAlignLabel());
+    }
+
+    public static void setCharacterAlign(ContentValues values, int religion) {
+        values.put(characterAlignLabel(), religion);
+    }
+
+    public static int getCharacterStr(ContentValues values) {
+        return values.getAsInteger(characterStrengthLabel());
+    }
+
+    public static void setCharacterStr(ContentValues values, int str) {
+        values.put(characterStrengthLabel(), str);
+    }
+
+    public static int getCharacterDex(ContentValues values) {
+        return values.getAsInteger(characterDexterityLabel());
+    }
+
+    public static void setCharacterDex(ContentValues values, int dex) {
+        values.put(characterDexterityLabel(), dex);
+    }
+
+    public static int getCharacterCon(ContentValues values) {
+        return values.getAsInteger(characterConstitutionLabel());
+    }
+
+    public static void setCharacterCon(ContentValues values, int con) {
+        values.put(characterConstitutionLabel(), con);
+    }
+
+    public static int getCharacterInt(ContentValues values) {
+        return values.getAsInteger(characterIntelligenceLabel());
+    }
+
+    public static void setCharacterInt(ContentValues values, int intScore) {
+        values.put(characterIntelligenceLabel(), intScore);
+    }
+
+    public static int getCharacterWis(ContentValues values) {
+        return values.getAsInteger(characterWisdomLabel());
+    }
+
+    public static void setCharacterWis(ContentValues values, int wis) {
+        values.put(characterWisdomLabel(), wis);
+    }
+
+    public static int getCharacterCha(ContentValues values) {
+        return values.getAsInteger(characterCharismaLabel());
+    }
+
+    public static void setCharacterCha(ContentValues values, int cha) {
+        values.put(characterCharismaLabel(), cha);
+    }
+
+    public static int getCharacterAbility1(ContentValues values) {
+        return values.getAsInteger(characterAbility1Label());
+    }
+
+    public static void setCharacterAbility1(ContentValues values, int ability) {
+        values.put(characterAbility1Label(), ability);
+    }
+
+    public static int getCharacterAbility2(ContentValues values) {
+        return values.getAsInteger(characterAbility2Label());
+    }
+
+    public static void setCharacterAbility2(ContentValues values, int ability) {
+        values.put(characterAbility2Label(), ability);
+    }
+
+    public static int getCharacterAbility3(ContentValues values) {
+        return values.getAsInteger(characterAbility3Label());
+    }
+
+    public static void setCharacterAbility3(ContentValues values, int ability) {
+        values.put(characterAbility3Label(), ability);
+    }
+
+    public static int getCharacterAbility4(ContentValues values) {
+        return values.getAsInteger(characterAbility4Label());
+    }
+
+    public static void setCharacterAbility4(ContentValues values, int ability) {
+        values.put(characterAbility4Label(), ability);
+    }
+
+    public static int getCharacterAbility5(ContentValues values) {
+        return values.getAsInteger(characterAbility5Label());
+    }
+
+    public static void setCharacterAbility5(ContentValues values, int ability) {
+        values.put(characterAbility5Label(), ability);
+    }
+
+    public static int getCharacterAbility6(ContentValues values) {
+        return values.getAsInteger(characterAbility6Label());
+    }
+
+    public static void setCharacterAbility6(ContentValues values, int ability) {
+        values.put(characterAbility6Label(), ability);
+    }
+
+    public static float getCharacterMoney(ContentValues values) {
+        return values.getAsFloat(characterMoneyLabel());
+    }
+
+    public static void setCharacterMoney(ContentValues values, float money) {
+        values.put(characterMoneyLabel(), money);
+    }
+
+    public static float getCharacterLightLoad(ContentValues values) {
+        return values.getAsFloat(characterLightLoadLabel());
+    }
+
+    public static void setCharacterLightLoad(ContentValues values, int lightLoad) {
+        values.put(characterLightLoadLabel(), lightLoad);
+    }
+
+    public static float getCharacterMediumLoad(ContentValues values) {
+        return values.getAsFloat(characterMediumLoadLabel());
+    }
+
+    public static void setCharacterMediumLoad(ContentValues values, int medLoad) {
+        values.put(characterMediumLoadLabel(), medLoad);
+    }
+
+    public static float getCharacterHeavyLoad(ContentValues values) {
+        return values.getAsFloat(characterHeavyLoadLabel());
+    }
+
+    public static void setCharacterHeavyLoad(ContentValues values, int heavyLoad) {
+        values.put(characterHeavyLoadLabel(), heavyLoad);
+    }
+
+    public static int getCharacterAC(ContentValues values) {
+        return values.getAsInteger(characterACLabel());
+    }
+
+    public static void setCharacterAC(ContentValues values, int ac) {
+        values.put(characterACLabel(), ac);
+    }
+
+    public static int getCharacterHP(ContentValues values) {
+        return values.getAsInteger(characterHPLabel());
+    }
+
+    public static void setCharacterHP(ContentValues values, int hp) {
+        values.put(characterHPLabel(), hp);
+    }
+
+    public static long getCharacterFamiliar(ContentValues values) {
+        return values.getAsLong(characterFamiliarLabel());
+    }
+
+    public static long getCharacterFamiliar(Context context, long rowIndex) {
+        ContentValues values = getInProgressRow(context, rowIndex);
+        return getCharacterFamiliar(values);
+    }
+
+    public static void setCharacterFamiliar(ContentValues values, long familiar) {
+        values.put(characterFamiliarLabel(), familiar);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     private static boolean isOptionSelected(ContentValues values, String column) {
         int inProgressValue = values.getAsInteger(column);
         return (inProgressValue > 0);
     }
 
-    private static boolean isIntegerSet(ContentValues values, String column) {
-        int inProgressValue = values.getAsInteger(column);
-        return (inProgressValue != -1);
+    private static boolean isIntegerSet(int value) {
+        return (value != -1);
     }
 
     private static boolean isStringSet(ContentValues values, String column) {
         String inProgressValue = values.getAsString(column);
         return (!inProgressValue.equals(""));
+    }
+
+    private static boolean isLongSet(long value) {
+        return (value != -1);
     }
 
     /*
@@ -162,8 +446,7 @@ public class InProgressCharacterUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String id = INPROGRESS_COLUMNS[COL_CHARACTER_ID];
-            db.delete(tableName, id + " = ?", new String[]{Long.toString(rowIndex)});
+            db.delete(getTableName(), characterIdLabel() + " = ?", new String[]{Long.toString(rowIndex)});
         } finally {
             db.close();
         }
@@ -176,8 +459,8 @@ public class InProgressCharacterUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + INPROGRESS_COLUMNS[COL_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             cursor.moveToFirst();
@@ -193,39 +476,17 @@ public class InProgressCharacterUtil {
         return values;
     }
 
-    public static int getInProgressValue(Context context, long rowIndex, int colIndex) {
-        int value;
-
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + INPROGRESS_COLUMNS[COL_CHARACTER_ID] + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-
-            cursor.moveToFirst();
-
-            value = cursor.getInt(colIndex);
-            cursor.close();
-        } finally {
-            db.close();
-        }
-
-        return value;
-    }
-
     public static void updateInProgressTable(Context context, ContentValues values, long index) {
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName + " WHERE "
-                    + INPROGRESS_COLUMNS[COL_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(index)});
             try {
                 cursor.moveToFirst();
-                db.update(tableName, values, INPROGRESS_COLUMNS[COL_CHARACTER_ID] + " = ?",
+                db.update(getTableName(), values, characterIdLabel() + " = ?",
                         new String[]{Long.toString(index)});
             } finally {
                 cursor.close();
@@ -241,7 +502,7 @@ public class InProgressCharacterUtil {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            index = db.insert(tableName, null, values);
+            index = db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }
@@ -252,10 +513,10 @@ public class InProgressCharacterUtil {
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        String id = INPROGRESS_COLUMNS[COL_CHARACTER_ID];
+        String id = characterIdLabel();
 
         try {
-            db.delete(tableName, id + " = ?", new String[]{Long.toString(index)});
+            db.delete(getTableName(), id + " = ?", new String[]{Long.toString(index)});
         } finally {
             db.close();
         }
@@ -265,28 +526,26 @@ public class InProgressCharacterUtil {
         Random rand = new Random();
 
         ContentValues characterValues = new ContentValues();
+        setCharacterName(characterValues, "");
+        setCharacterGender(characterValues, CharacterContract.GENDER_MALE);
+        setCharacterClass(characterValues, 0);
+        setCharacterRace(characterValues, 0);
+        setCharacterAlign(characterValues, 0);
+        setCharacterFamiliar(characterValues, -1);
 
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_NAME], "");
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_GENDER], CharacterContract.GENDER_MALE);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_CLASS_ID], 0);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_RACE_ID], 0);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ALIGN], 0);
+        setCharacterStr(characterValues, -1);
+        setCharacterDex(characterValues, -1);
+        setCharacterCon(characterValues, -1);
+        setCharacterInt(characterValues, -1);
+        setCharacterWis(characterValues, -1);
+        setCharacterCha(characterValues, -1);
 
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_STRENGTH], -1);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_DEXTERITY], -1);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_CONSTITUTION], -1);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_INTELLIGENCE], -1);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_WISDOM], -1);
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_CHARISMA], -1);
-
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ABILITY1], generateAbilityScore(rand));
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ABILITY2], generateAbilityScore(rand));
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ABILITY3], generateAbilityScore(rand));
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ABILITY4], generateAbilityScore(rand));
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ABILITY5], generateAbilityScore(rand));
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_ABILITY6], generateAbilityScore(rand));
-
-        characterValues.put(INPROGRESS_COLUMNS[COL_CHARACTER_FAMILIAR], -1);
+        setCharacterAbility1(characterValues, generateAbilityScore(rand));
+        setCharacterAbility2(characterValues, generateAbilityScore(rand));
+        setCharacterAbility3(characterValues, generateAbilityScore(rand));
+        setCharacterAbility4(characterValues, generateAbilityScore(rand));
+        setCharacterAbility5(characterValues, generateAbilityScore(rand));
+        setCharacterAbility6(characterValues, generateAbilityScore(rand));
 
         return characterValues;
     }
@@ -311,13 +570,13 @@ public class InProgressCharacterUtil {
     }
 
     private static boolean areDetailsPartiallyFilled(ContentValues values) {
-        boolean isPartiallyFilled = isStringSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_NAME]);
-        isPartiallyFilled |= isOptionSelected(values, INPROGRESS_COLUMNS[COL_CHARACTER_RACE_ID]);
+        boolean isPartiallyFilled = isStringSet(values, characterNameLabel());
+        isPartiallyFilled |= isOptionSelected(values, characterRaceLabel());
         return isPartiallyFilled;
     }
 
     private static boolean areClassSpecificsPartiallyFilled(Context context, ContentValues values) {
-        int classValue = values.getAsInteger(INPROGRESS_COLUMNS[COL_CHARACTER_CLASS_ID]);
+        int classValue = values.getAsInteger(characterClassLabel());
         boolean isPartiallyFilled = (classValue > 0);
 
         switch (classValue) {
@@ -346,13 +605,13 @@ public class InProgressCharacterUtil {
     }
 
     private static boolean areDetailsFilled(ContentValues values) {
-        boolean isFilled = isStringSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_NAME]);
-        isFilled &= isOptionSelected(values, INPROGRESS_COLUMNS[COL_CHARACTER_RACE_ID]);
+        boolean isFilled = isStringSet(values, characterNameLabel());
+        isFilled &= isOptionSelected(values, characterRaceLabel());
         return isFilled;
     }
 
     private static boolean areClassSpecificsFilled(Context context, ContentValues values) {
-        int classValue = values.getAsInteger(INPROGRESS_COLUMNS[COL_CHARACTER_CLASS_ID]);
+        int classValue = values.getAsInteger(characterClassLabel());
         boolean isFilled = (classValue > 0);
 
         switch (classValue) {
@@ -368,7 +627,7 @@ public class InProgressCharacterUtil {
                 isFilled &= isFamiliarSelected(values);
 
                 int numberSpells = numberSpellsSelected(context, values);
-                Object intScore = values.get(INPROGRESS_COLUMNS[COL_CHARACTER_INTELLIGENCE]);
+                Object intScore = values.get(characterIntelligenceLabel());
                 if (intScore != null) {
                     long intMod = RulesCharacterUtils.scoreToModifier((long)intScore);
                     isFilled &= (numberSpells == (3 + intMod));
@@ -380,24 +639,24 @@ public class InProgressCharacterUtil {
 
     public static void updateClassValues(Context context, long rowIndex, int classSelection) {
         ContentValues values = getInProgressRow(context, rowIndex);
-        long previousClass = values.getAsLong(INPROGRESS_COLUMNS[COL_CHARACTER_CLASS_ID]);
+        long previousClass = getCharacterClass(values);
 
-        long prevMoneyDiff = 0;
+        float prevMoneyDiff = 0;
         ContentValues prevClassValues = getClassStats(context, previousClass);
         if (prevClassValues != null) {
-            long prevMaxMoney = prevClassValues.getAsLong(CLASS_COLUMNS[COL_CLASS_STARTING_GOLD]);
-            long prevMoney = values.getAsLong(INPROGRESS_COLUMNS[COL_CHARACTER_MONEY]);
+            float prevMaxMoney = prevClassValues.getAsLong(CLASS_COLUMNS[COL_CLASS_STARTING_GOLD]);
+            float prevMoney = getCharacterMoney(values);
             prevMoneyDiff = prevMaxMoney - prevMoney;
         }
 
         ContentValues currClassValues = getClassStats(context, classSelection);
-        long currMoney = 0;
+        float currMoney = 0;
         if (currClassValues != null) {
-            long currMaxMoney = currClassValues.getAsLong(CLASS_COLUMNS[COL_CLASS_STARTING_GOLD]);
+            float currMaxMoney = currClassValues.getAsLong(CLASS_COLUMNS[COL_CLASS_STARTING_GOLD]);
             currMoney = currMaxMoney - prevMoneyDiff;
         }
 
-        values.put(INPROGRESS_COLUMNS[COL_CHARACTER_MONEY], currMoney);
+        setCharacterMoney(values, currMoney);
 
         updateInProgressTable(context, values, rowIndex);
     }
@@ -407,7 +666,7 @@ public class InProgressCharacterUtil {
      */
 
     public static boolean isFamiliarSameAsSelected(Context context, long rowIndex, long familiarId) {
-        long chosenFamiliar = getInProgressValue(context, rowIndex, COL_CHARACTER_FAMILIAR);
+        long chosenFamiliar = getCharacterFamiliar(context, rowIndex);
 
         if (familiarId == chosenFamiliar) {
             return true;
@@ -417,12 +676,12 @@ public class InProgressCharacterUtil {
 
     public static void changeFamiliarSelection(Context context, long rowIndex, long familiarId) {
         ContentValues values = getInProgressRow(context, rowIndex);
-        values.put(INPROGRESS_COLUMNS[COL_CHARACTER_FAMILIAR], familiarId);
+        setCharacterFamiliar(values, familiarId);
         updateInProgressTable(context, values, rowIndex);
     }
 
     private static boolean isFamiliarSelected(ContentValues values) {
-        return isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_FAMILIAR]);
+        return isLongSet(getCharacterFamiliar(values));
     }
 
     /*
@@ -436,7 +695,7 @@ public class InProgressCharacterUtil {
         int baseScore = inProgressValues.getAsInteger(inProgressAbilityColumn);
         if (baseScore == -1) return baseScore;
 
-        int raceId = inProgressValues.getAsInteger(INPROGRESS_COLUMNS[COL_CHARACTER_RACE_ID]);
+        int raceId = inProgressValues.getAsInteger(characterRaceLabel());
         if (raceId != 0) {
             ContentValues raceValues = getRaceStats(context, raceId);
             baseScore += raceValues.getAsInteger(raceAbilityColumn);
@@ -447,57 +706,57 @@ public class InProgressCharacterUtil {
 
     public static int getTotalStrengthScore(Context context, long rowIndex) {
         return getTotalAbilityScore(context, rowIndex,
-                INPROGRESS_COLUMNS[COL_CHARACTER_STRENGTH],
+                characterStrengthLabel(),
                 RACE_COLUMNS[COL_RACE_STR]);
     }
 
     public static int getTotalDexterityScore(Context context, long rowIndex) {
         return getTotalAbilityScore(context, rowIndex,
-                INPROGRESS_COLUMNS[COL_CHARACTER_DEXTERITY],
+                characterDexterityLabel(),
                 RACE_COLUMNS[COL_RACE_DEX]);
     }
 
     public static int getTotalConstitutionScore(Context context, long rowIndex) {
         return getTotalAbilityScore(context, rowIndex,
-                INPROGRESS_COLUMNS[COL_CHARACTER_CONSTITUTION],
+                characterConstitutionLabel(),
                 RACE_COLUMNS[COL_RACE_CON]);
     }
 
     public static int getTotalIntelligenceScore(Context context, long rowIndex) {
         return getTotalAbilityScore(context, rowIndex,
-                INPROGRESS_COLUMNS[COL_CHARACTER_INTELLIGENCE],
+                characterIntelligenceLabel(),
                 RACE_COLUMNS[COL_RACE_INT]);
     }
 
     public static int getTotalWisdomScore(Context context, long rowIndex) {
         return getTotalAbilityScore(context, rowIndex,
-                INPROGRESS_COLUMNS[COL_CHARACTER_WISDOM],
+                characterWisdomLabel(),
                 RACE_COLUMNS[COL_RACE_WIS]);
     }
 
     public static int getTotalCharismaScore(Context context, long rowIndex) {
         return getTotalAbilityScore(context, rowIndex,
-                INPROGRESS_COLUMNS[COL_CHARACTER_CHARISMA],
+                characterCharismaLabel(),
                 RACE_COLUMNS[COL_RACE_CHA]);
     }
 
     private static boolean areAbilitiesFilled(ContentValues values) {
-        boolean isFilled = isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_STRENGTH]);
-        isFilled &= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_DEXTERITY]);
-        isFilled &= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_CONSTITUTION]);
-        isFilled &= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_INTELLIGENCE]);
-        isFilled &= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_WISDOM]);
-        isFilled &= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_CHARISMA]);
+        boolean isFilled = isIntegerSet(getCharacterStr(values));
+        isFilled &= isIntegerSet(getCharacterDex(values));
+        isFilled &= isIntegerSet(getCharacterCon(values));
+        isFilled &= isIntegerSet(getCharacterInt(values));
+        isFilled &= isIntegerSet(getCharacterWis(values));
+        isFilled &= isIntegerSet(getCharacterCha(values));
         return isFilled;
     }
 
     private static boolean areAbilitiesPartiallyFilled(ContentValues values) {
-        boolean isPartiallyFilled = isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_STRENGTH]);
-        isPartiallyFilled |= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_DEXTERITY]);
-        isPartiallyFilled |= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_CONSTITUTION]);
-        isPartiallyFilled |= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_INTELLIGENCE]);
-        isPartiallyFilled |= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_WISDOM]);
-        isPartiallyFilled |= isIntegerSet(values, INPROGRESS_COLUMNS[COL_CHARACTER_CHARISMA]);
+        boolean isPartiallyFilled = isIntegerSet(getCharacterStr(values));
+        isPartiallyFilled |= isIntegerSet(getCharacterDex(values));
+        isPartiallyFilled |= isIntegerSet(getCharacterCon(values));
+        isPartiallyFilled |= isIntegerSet(getCharacterInt(values));
+        isPartiallyFilled |= isIntegerSet(getCharacterWis(values));
+        isPartiallyFilled |= isIntegerSet(getCharacterCha(values));
         return isPartiallyFilled;
     }
 

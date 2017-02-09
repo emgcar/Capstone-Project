@@ -8,36 +8,55 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.COL_CHARACTER_ID;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.INPROGRESS_COLUMNS;
-
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the selected domains for in-progress characters.
  */
 
 public class InProgressDomainsUtil {
 
-    private static final String[] DOMAIN_COLUMNS = {
-            InProgressContract.ClericDomainEntry.TABLE_NAME + "." + InProgressContract.ClericDomainEntry._ID,
-            InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID,
-            InProgressContract.ClericDomainEntry.COLUMN_DOMAIN_ID
-    };
+    /* LABELS - Should be private */
 
-    public static final int COL_INPROGRESS_DOMAIN_ITEM = 0;
-    public static final int COL_INPROGRESS_DOMAIN_CHARACTER_ID = 1;
-    public static final int COL_INPROGRESS_DOMAIN_DOMAIN_ID = 2;
+    private static String getTableName() {
+        return InProgressContract.ClericDomainEntry.TABLE_NAME;
+    }
 
-    private static final String tableName = InProgressContract.ClericDomainEntry.TABLE_NAME;
+    private static String characterIdLabel() {
+        return InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID;
+    }
+
+    private static String domainIdLabel() {
+        return InProgressContract.ClericDomainEntry.COLUMN_DOMAIN_ID;
+    }
+
+    /* PARSE VALUES */
+
+    public static long getCharacterId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
+
+    public static void setCharacterId(ContentValues values, long charId) {
+        values.put(characterIdLabel(), charId);
+    }
+
+    public static long getFeatId(ContentValues values) {
+        return values.getAsLong(domainIdLabel());
+    }
+
+    public static void setFeatId(ContentValues values, long featId) {
+        values.put(domainIdLabel(), featId);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static void removeAllInProgressDomains(Context context, long rowIndex) {
-        String query = DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID] + " = ?";
+        String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex)};
         deleteFromTable(context, query, selectionArgs);
     }
 
     public static void removeDomainSelection(Context context, long rowIndex, int domainId) {
-        String query = DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID] + " = ? AND " +
-                DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_DOMAIN_ID] + " = ?";
+        String query = characterIdLabel() + " = ? AND " +
+                domainIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(domainId)};
         deleteFromTable(context, query, selectionArgs);
     }
@@ -47,7 +66,7 @@ public class InProgressDomainsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            db.delete(tableName, query, selectionArgs);
+            db.delete(getTableName(), query, selectionArgs);
         } finally {
             db.close();
         }
@@ -55,14 +74,14 @@ public class InProgressDomainsUtil {
 
     public static void addDomainSelection(Context context, long rowIndex, int domainId) {
         ContentValues values = new ContentValues();
-        values.put(DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID], rowIndex);
-        values.put(DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_DOMAIN_ID], domainId);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(domainIdLabel(), domainId);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            db.insert(tableName, null, values);
+            db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }
@@ -74,9 +93,9 @@ public class InProgressDomainsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID] + " = ? AND " +
-                    DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_DOMAIN_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    domainIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(domainId)});
             if (cursor.getCount() > 0) {
                 isSelected = true;
@@ -94,8 +113,8 @@ public class InProgressDomainsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numDomains = cursor.getCount();
@@ -114,8 +133,8 @@ public class InProgressDomainsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + DOMAIN_COLUMNS[COL_INPROGRESS_DOMAIN_CHARACTER_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
 
             numberSpells = cursor.getCount();

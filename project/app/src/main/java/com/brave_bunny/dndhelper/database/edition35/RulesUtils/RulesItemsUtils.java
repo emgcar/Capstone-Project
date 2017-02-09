@@ -31,7 +31,19 @@ public class RulesItemsUtils {
 
     private static final String tableName = RulesContract.ItemEntry.TABLE_NAME;
 
-    private static ContentValues getItem(Context context, int itemId) {
+    private static String idLabel() {
+        return RulesContract.ItemEntry._ID;
+    }
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(idLabel());
+    }
+
+    public static String getItemName(ContentValues value) {
+        return value.getAsString(ITEMS_COLUMNS[COL_ITEMS_NAME]);
+    }
+
+    public static ContentValues getItem(Context context, long itemId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + ITEMS_COLUMNS[COL_ITEMS_ID] + " = ?";
         return getStats(context, query, itemId);
     }

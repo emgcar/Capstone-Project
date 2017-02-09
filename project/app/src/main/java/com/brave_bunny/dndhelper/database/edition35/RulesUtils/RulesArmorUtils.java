@@ -26,6 +26,10 @@ public class RulesArmorUtils {
 
     public static final String tableName = RulesContract.ArmorEntry.TABLE_NAME;
 
+    public static String getArmorName(ContentValues value) {
+        return value.getAsString(ARMOR_COLUMNS[COL_ARMOR_NAME]);
+    }
+
     public static Cursor getAllArmor(Context context) {
         Cursor cursor;
 

@@ -20,15 +20,10 @@ import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
-import com.brave_bunny.dndhelper.play.CastSpellActivity;
-import com.brave_bunny.dndhelper.play.CastSpellActivityFragment;
+import com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment;
 import com.brave_bunny.dndhelper.play.DetailActivity;
-import com.brave_bunny.dndhelper.play.battle.BattleActivity;
 
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.COL_CHARACTER_IN_BATTLE;
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.getCharacterValue;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isInBattle;
 
 /**
  * A placeholder fragment containing a simple view.

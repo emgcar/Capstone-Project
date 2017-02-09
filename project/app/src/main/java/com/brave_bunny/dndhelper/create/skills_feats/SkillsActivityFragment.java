@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.create.skills_feats;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -34,8 +35,8 @@ public class SkillsActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_skills, container, false);
 
         //TODO implement options for viewing all and cross-class also
-        int classId = InProgressCharacterUtil.getInProgressValue(getContext(), rowIndex,
-                InProgressCharacterUtil.COL_CHARACTER_CLASS_ID);
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);
+        int classId = InProgressCharacterUtil.getCharacterClass(values);
         mCursor = getClassSkills(getContext(), classId);
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
 

@@ -13,6 +13,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUti
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.transferSkills;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.transferSpells;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_FIGHTER;
@@ -376,6 +377,8 @@ public class CharacterUtil {
         //TODO transfer familiar
         //TODO transfer domains
         //TODO transfer skills
+        transferSkills(context, inProgressIndex, characterIndex);
+
         //TODO transfer feats
         //TODO transfer items
 

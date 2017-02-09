@@ -8,28 +8,77 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the selected items for in-progress characters.
  */
 
 public class InProgressItemsUtil {
 
-    private static final String[] ITEM_COLUMNS = {
-            InProgressContract.ItemEntry.TABLE_NAME + "." + InProgressContract.ItemEntry._ID,
-            InProgressContract.ItemEntry.COLUMN_CHARACTER_ID,
-            InProgressContract.ItemEntry.COLUMN_ITEM_ID,
-            InProgressContract.ItemEntry.COLUMN_COUNT
-    };
+    /* LABELS */
 
-    public static final int COL_ITEM_INPUT_ID = 0;
-    public static final int COL_ITEM_CHARACTER_ID = 1;
-    public static final int COL_ITEM_ITEM_ID = 2;
-    public static final int COL_ITEM_COUNT = 3;
+    private static String getTableName() {
+        return InProgressContract.ItemEntry.TABLE_NAME;
+    }
 
-    private static final String tableName = InProgressContract.ItemEntry.TABLE_NAME;
+    private static String idLabel() {
+        return InProgressContract.ItemEntry._ID;
+    }
+
+    private static String characterIdLabel() {
+        return InProgressContract.ItemEntry.COLUMN_CHARACTER_ID;
+    }
+
+    private static String itemIdLabel() {
+        return InProgressContract.ItemEntry.COLUMN_ITEM_ID;
+    }
+
+    private static String itemCountLabel() {
+        return InProgressContract.ItemEntry.COLUMN_COUNT;
+    }
+
+
+    /* PARSE VALUES*/
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(idLabel());
+    }
+
+    public static long getCharacterId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
+
+    public static void setCharacterId(ContentValues values, long charId) {
+        values.put(characterIdLabel(), charId);
+    }
+
+    public static long getItemId(ContentValues values) {
+        return values.getAsLong(itemIdLabel());
+    }
+
+    public static void setItemId(ContentValues values, long armorId) {
+        values.put(itemIdLabel(), armorId);
+    }
+
+    public static int getItemCount(ContentValues values) {
+        return values.getAsInteger(itemCountLabel());
+    }
+
+    public static int getItemCount(Context context, long rowIndex, long itemId) {
+        ContentValues values = getStats(context, rowIndex, itemId);
+        if (values == null) return 0;
+        return getItemCount(values);
+    }
+
+    public static void setItemCount(ContentValues values, long itemCount) {
+        values.put(itemCountLabel(), itemCount);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static void removeAllInProgressItems(Context context, long rowIndex) {
-        String query = ITEM_COLUMNS[COL_ITEM_CHARACTER_ID] + " = ?";
+        String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex)};
         deleteFromTable(context, query, selectionArgs);
     }
@@ -39,7 +88,7 @@ public class InProgressItemsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            db.delete(tableName, query, selectionArgs);
+            db.delete(getTableName(), query, selectionArgs);
         } finally {
             db.close();
         }
@@ -51,9 +100,9 @@ public class InProgressItemsUtil {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + ITEM_COLUMNS[COL_ITEM_CHARACTER_ID] + " = ? AND " +
-                    ITEM_COLUMNS[COL_ITEM_ITEM_ID] + " = ?";
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    itemIdLabel() + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(itemId)});
             if (cursor.getCount() > 0) {
                 isSelected = true;
@@ -65,38 +114,17 @@ public class InProgressItemsUtil {
         return isSelected;
     }
 
-    public static int getItemCount(Context context, long rowIndex, long itemId) {
-        int count = 0;
-        if (isItemListed(context, rowIndex, itemId)) {
-            InProgressDbHelper dbHelper = new InProgressDbHelper(context);
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-            try {
-                String query = "SELECT * FROM " + tableName
-                        + " WHERE " + ITEM_COLUMNS[COL_ITEM_CHARACTER_ID] + " = ? AND " +
-                        ITEM_COLUMNS[COL_ITEM_ITEM_ID] + " = ?";
-                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(itemId)});
-                cursor.moveToFirst();
-                count = cursor.getInt(COL_ITEM_COUNT);
-                cursor.close();
-            } finally {
-                db.close();
-            }
-        }
-        return count;
-    }
-
     public static void addItemSelection(Context context, long rowIndex, long itemId, int count) {
         ContentValues values = new ContentValues();
-        values.put(ITEM_COLUMNS[COL_ITEM_CHARACTER_ID], rowIndex);
-        values.put(ITEM_COLUMNS[COL_ITEM_ITEM_ID], itemId);
-        values.put(ITEM_COLUMNS[COL_ITEM_COUNT], count);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(itemIdLabel(), itemId);
+        values.put(itemCountLabel(), count);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            db.insert(tableName, null, values);
+            db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }
@@ -104,19 +132,26 @@ public class InProgressItemsUtil {
 
     public static void updateItemSelection(Context context, long rowIndex, long itemId, int count) {
         ContentValues values = new ContentValues();
-        values.put(ITEM_COLUMNS[COL_ITEM_CHARACTER_ID], rowIndex);
-        values.put(ITEM_COLUMNS[COL_ITEM_ITEM_ID], itemId);
-        values.put(ITEM_COLUMNS[COL_ITEM_COUNT], count);
+        values.put(characterIdLabel(), rowIndex);
+        values.put(itemIdLabel(), itemId);
+        values.put(itemCountLabel(), count);
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName
-                    + " WHERE " + ITEM_COLUMNS[COL_ITEM_CHARACTER_ID] + " = ? AND " +
-                    ITEM_COLUMNS[COL_ITEM_ITEM_ID] + " = ?";
-            String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(itemId)};
-            db.update(tableName, values, query, selectionArgs);
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    itemIdLabel() + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(itemId)});
+            try {
+                cursor.moveToFirst();
+                db.update(getTableName(), values, characterIdLabel() + " = ? AND "
+                                + itemIdLabel() + " = ?",
+                        new String[]{Long.toString(rowIndex), Long.toString(itemId)});
+            } finally {
+                cursor.close();
+            }
         } finally {
             db.close();
         }
@@ -128,5 +163,27 @@ public class InProgressItemsUtil {
         } else {
             addItemSelection(context, rowIndex, itemId, count);
         }
+    }
+
+    public static ContentValues getStats(Context context, long rowIndex, long armorId) {
+        ContentValues values = null;
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ? AND " +
+                    itemIdLabel() + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex), Long.toString(armorId)});
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                values = cursorRowToContentValues(cursor);
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+        return values;
     }
 }

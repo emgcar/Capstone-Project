@@ -22,7 +22,7 @@ public class RulesSkillsUtils {
 
     private static final String tableName = RulesContract.SkillsEntry.TABLE_NAME;
 
-    private static final String[] SKILL_COLUMNS = {
+    public static final String[] SKILL_COLUMNS = {
             RulesContract.SkillsEntry.TABLE_NAME + "." + RulesContract.SkillsEntry._ID,
             RulesContract.SkillsEntry.COLUMN_NAME,
             RulesContract.SkillsEntry.COLUMN_BASE_SCORE,
@@ -45,6 +45,18 @@ public class RulesSkillsUtils {
     public static final int COL_SKILL_WIZARD = 7;
     public static final int COL_SKILL_ARMOR_PENALTY = 8;
     public static final int COL_SKILL_DOUBLE_ARMOR_PENALTY = 9;
+
+    private static String idLabel() {
+        return RulesContract.SkillsEntry._ID;
+    }
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(idLabel());
+    }
+
+    public static String getSkillName(ContentValues value) {
+        return value.getAsString(SKILL_COLUMNS[COL_SKILL_NAME]);
+    }
 
     public static ContentValues getSkill(Context context, long skillId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + SKILL_COLUMNS[COL_SKILL_ID] + " = ?";

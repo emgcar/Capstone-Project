@@ -16,6 +16,8 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
+import com.brave_bunny.dndhelper.play.battle.SkillCheckActivity;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CG;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CN;
@@ -28,7 +30,7 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomai
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_DWARF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_ELF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
-import static com.brave_bunny.dndhelper.play.CastSpellActivityFragment.ROW_INDEX;
+import static com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment.ROW_INDEX;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -61,7 +63,9 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     public void showSkills(View view) {
-
+        Intent skillActivity = new Intent(this, SkillCheckActivity.class);
+        skillActivity.putExtra(SkillCheckActivity.indexValue, index);
+        startActivity(skillActivity);
     }
 
     public void showFeats(View view) {

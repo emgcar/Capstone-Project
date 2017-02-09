@@ -218,6 +218,7 @@
     <string name="title_activity_weapon">WeaponActivity</string>
     <string name="title_activity_armor">ArmorActivity</string>
     <string name="title_activity_item">ItemActivity</string>
+    <string name="title_activity_skill_check">SkillCheckActivity</string>
 
 
 </resources>
