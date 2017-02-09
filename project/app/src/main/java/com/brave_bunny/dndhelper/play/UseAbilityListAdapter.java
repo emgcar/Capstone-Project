@@ -10,16 +10,15 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.Utility;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
 
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil.COL_CHARACTER_FEAT_FEAT_ID;
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.COL_CHARACTER_SKILL_SKILL_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.getDomain;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_ID;
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.getFeat;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.COL_SKILL_ID;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.COL_SKILL_NAME;
@@ -67,38 +66,35 @@ public class UseAbilityListAdapter extends CursorAdapter {
         TextView nameText = (TextView) view.findViewById(R.id.name_details);
         long itemId;
 
-        ContentValues value;
+        ContentValues selectedItem = cursorRowToContentValues(cursor);
+        ContentValues itemData;
+
         String name;
         switch(listType) {
             case TYPE_SPELL:
-                itemId = CharacterSpellsUtil.getSpellId(cursor);
-                value = getSpell(context, itemId);
-                if (value == null) return;
-                name = value.getAsString(SPELL_COLUMNS[COL_SPELL_NAME]);
-                nameText.setText(name);
-                view.setTag(R.string.select_spells, cursor.getLong(COL_SPELL_ID));
+                itemId = CharacterSpellsUtil.getSpellId(selectedItem);
+                itemData = getSpell(context, itemId);
+                name = RulesSpellsUtils.getSpellName(itemData);
                 break;
             /*case TYPE_DOMAIN:
-                itemId = cursor.getLong(COL_CHARACTER_DOMAIN_DOMAIN_ID);
-                value = getDomain(context, itemId);
-                view.setTag(R.string.select_spells, cursor.getLong(COL_DOMAIN_ID));
+                itemId = CharacterClassUtil.getDomainId(selectedItem);
+                itemData = getDomain(context, itemId);
+                name = RulesDomainUtils.getDomainName(itemData);
                 break;*/
             case TYPE_SKILL:
-                itemId = cursor.getLong(COL_CHARACTER_SKILL_SKILL_ID);
-                value = getSkill(context, itemId);
-                if (value == null) return;
-                name = value.getAsString(SKILL_COLUMNS[COL_SKILL_NAME]);
-                nameText.setText(name);
-                view.setTag(R.string.select_spells, cursor.getLong(COL_SKILL_ID));
+                itemId = CharacterSkillsUtil.getSkillId(selectedItem);
+                itemData = getSkill(context, itemId);
+                name = RulesSkillsUtils.getSkillName(itemData);
                 break;
-            /*case TYPE_FEAT:
-                itemId = cursor.getLong(COL_CHARACTER_FEAT_FEAT_ID);
-                value = getFeat(context, itemId);
-                view.setTag(R.string.select_spells, cursor.getLong(COL_FEAT_ID));
-                break;*/
+            case TYPE_FEAT:
+                itemId = CharacterFeatsUtil.getFeatId(selectedItem);
+                itemData = getFeat(context, itemId);
+                name = RulesFeatsUtils.getFeatName(itemData);
+                break;
             default:
                 return;
         }
         nameText.setText(name);
+        view.setTag(R.string.select_spells, itemId);
     }
 }

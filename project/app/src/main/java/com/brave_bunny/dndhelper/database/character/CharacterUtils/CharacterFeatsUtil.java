@@ -2,44 +2,62 @@ package com.brave_bunny.dndhelper.database.character.CharacterUtils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil;
 
-import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
-
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the selected feats for created characters.
  */
 
 public class CharacterFeatsUtil {
 
-    public static final String[] FEAT_COLUMNS = {
-            CharacterContract.CharacterFeats.TABLE_NAME + "." + CharacterContract.CharacterFeats._ID,
-            CharacterContract.CharacterFeats.COLUMN_CHARACTER_ID,
-            CharacterContract.CharacterFeats.COLUMN_FEAT_ID
-    };
+    /* LABELS */
 
-    public static final int COL_CHARACTER_FEAT_ITEM = 0;
-    public static final int COL_CHARACTER_FEAT_CHARACTER_ID = 1;
-    public static final int COL_CHARACTER_FEAT_FEAT_ID = 2;
+    private static String getTableName() {
+        return CharacterContract.CharacterFeats.TABLE_NAME;
+    }
 
-    public static final String tableName = CharacterContract.CharacterFeats.TABLE_NAME;
+    private static String characterIdLabel() {
+        return CharacterContract.CharacterFeats.COLUMN_CHARACTER_ID;
+    }
+
+    private static String featIdLabel() {
+        return CharacterContract.CharacterFeats.COLUMN_FEAT_ID;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getCharacterId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
+
+    public static void setCharacterId(ContentValues values, long charId) {
+        values.put(characterIdLabel(), charId);
+    }
+
+    public static long getFeatId(ContentValues values) {
+        return values.getAsLong(featIdLabel());
+    }
+
+    public static void setFeatId(ContentValues values, long featId) {
+        values.put(featIdLabel(), featId);
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static void transferFeats(Context context, long inProgressIndex, long characterIndex) {
-        ContentValues[] allSpells = InProgressFeatsUtil.getAllFeatsForCharacter(context, inProgressIndex);
-        int numSpells = allSpells.length;
+        ContentValues[] allFeats = InProgressFeatsUtil.getAllFeatsForCharacter(context, inProgressIndex);
+        int numSpells = allFeats.length;
 
         for (int i = 0; i < numSpells; i++) {
             ContentValues newValue = new ContentValues();
-            newValue.put(FEAT_COLUMNS[COL_CHARACTER_FEAT_CHARACTER_ID], characterIndex);
+            newValue.put(characterIdLabel(), characterIndex);
 
-            long spellIndex = InProgressFeatsUtil.getFeatId(allSpells[i]);
-            newValue.put(FEAT_COLUMNS[COL_CHARACTER_FEAT_FEAT_ID], spellIndex);
+            long spellIndex = InProgressFeatsUtil.getFeatId(allFeats[i]);
+            newValue.put(featIdLabel(), spellIndex);
 
             insertFeatIntoCharacterTable(context, newValue);
         }
@@ -50,7 +68,7 @@ public class CharacterFeatsUtil {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            db.insert(tableName, null, values);
+            db.insert(getTableName(), null, values);
         } finally {
             db.close();
         }

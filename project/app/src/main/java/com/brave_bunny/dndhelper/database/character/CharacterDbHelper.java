@@ -127,7 +127,8 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterItems._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
 
                 CharacterContract.CharacterItems.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
-                CharacterContract.CharacterItems.COLUMN_ITEM_ID + " INTEGER NOT NULL )";
+                CharacterContract.CharacterItems.COLUMN_ITEM_ID + " INTEGER NOT NULL," +
+                CharacterContract.CharacterItems.COLUMN_COUNT + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_ITEMS_TABLE);
     }
@@ -139,7 +140,8 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
 
                 CharacterContract.CharacterArmor.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
                 CharacterContract.CharacterArmor.COLUMN_ARMOR_ID + " INTEGER NOT NULL," +
-                CharacterContract.CharacterArmor.COLUMN_COUNT + " INTEGER NOT NULL )";
+                CharacterContract.CharacterArmor.COLUMN_COUNT + " INTEGER NOT NULL," +
+                CharacterContract.CharacterArmor.COLUMN_EQUIPPED + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_ARMOR_TABLE);
     }
@@ -151,6 +153,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
 
                 CharacterContract.CharacterWeapons.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
                 CharacterContract.CharacterWeapons.COLUMN_WEAPON_ID + " INTEGER NOT NULL," +
+                CharacterContract.CharacterWeapons.COLUMN_COUNT + " INTEGER NOT NULL," +
                 CharacterContract.CharacterWeapons.COLUMN_EQUIPPED + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_WEAPONS_TABLE);

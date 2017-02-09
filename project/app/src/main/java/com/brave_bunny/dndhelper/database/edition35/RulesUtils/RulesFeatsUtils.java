@@ -28,6 +28,32 @@ public class RulesFeatsUtils {
 
     private static final String tableName = RulesContract.FeatEntry.TABLE_NAME;
 
+    /* LABELS */
+
+    private static String getTableName() {
+        return RulesContract.FeatEntry.TABLE_NAME;
+    }
+
+    private static String featIdLabel() {
+        return RulesContract.FeatEntry._ID;
+    }
+
+    private static String featNameLabel() {
+        return RulesContract.FeatEntry.COLUMN_NAME;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getFeatId(ContentValues values) {
+        return values.getAsLong(featIdLabel());
+    }
+
+    public static String getFeatName(ContentValues values) {
+        return values.getAsString(featNameLabel());
+    }
+
+    /* DATABASE FUNCTIONS */
+
     public static ContentValues getFeat(Context context, long index) {
         String query = "SELECT * FROM " + tableName + " WHERE " + FEATS_COLUMNS[COL_FEAT_ID] + " = ?";
         return getStats(context, query, index);

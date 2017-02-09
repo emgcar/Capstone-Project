@@ -156,6 +156,7 @@ public class CharacterContract {
 
         public static final String COLUMN_CHARACTER_ID = "character";
         public static final String COLUMN_ITEM_ID = "item";
+        public static final String COLUMN_COUNT = "count";
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CHARACTER_ITEMS;
@@ -174,6 +175,7 @@ public class CharacterContract {
         public static final String COLUMN_CHARACTER_ID = "character";
         public static final String COLUMN_ARMOR_ID = "armor";
         public static final String COLUMN_COUNT = "armor_count";
+        public static final String COLUMN_EQUIPPED = "equipped";
 
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CHARACTER_ARMOR;
@@ -191,6 +193,7 @@ public class CharacterContract {
 
         public static final String COLUMN_CHARACTER_ID = "character";
         public static final String COLUMN_WEAPON_ID = "weapon";
+        public static final String COLUMN_COUNT = "weapon_count";
         public static final String COLUMN_EQUIPPED = "equipped";
 
         public static final String CONTENT_TYPE =

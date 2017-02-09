@@ -5,4 +5,10 @@ package com.brave_bunny.dndhelper.database.character.CharacterUtils;
  */
 
 public class CharacterClassUtil {
+
+    /* LABELS - Should be private */
+
+    /* PARSE VALUES*/
+
+    /* DATABASE FUNCTIONS */
 }

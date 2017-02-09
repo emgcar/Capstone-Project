@@ -13,6 +13,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUti
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil.transferFeats;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.transferSkills;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.transferSpells;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
@@ -371,15 +372,17 @@ public class CharacterUtil {
 
         long characterIndex = insertValuesInCharacterTable(context, characterValues);
 
-        //TODO transfer spells
         transferSpells(context, inProgressIndex, characterIndex);
 
         //TODO transfer familiar
         //TODO transfer domains
-        //TODO transfer skills
+
+        //TODO transfer skills - need to implement all of the extra mods
         transferSkills(context, inProgressIndex, characterIndex);
 
-        //TODO transfer feats
+        //TODO transfer feats - need to check
+        transferFeats(context, inProgressIndex, characterIndex);
+
         //TODO transfer items
 
         return characterIndex;

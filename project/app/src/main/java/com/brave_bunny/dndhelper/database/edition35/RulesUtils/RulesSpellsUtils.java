@@ -29,6 +29,40 @@ public class RulesSpellsUtils {
 
     private static final String tableName = RulesContract.SpellsEntry.TABLE_NAME;
 
+    /* LABELS */
+
+    private static String getTableName() {
+        return RulesContract.SpellsEntry.TABLE_NAME;
+    }
+
+    private static String spellIdLabel() {
+        return RulesContract.SpellsEntry._ID;
+    }
+
+    private static String spellNameLabel() {
+        return RulesContract.SpellsEntry.COLUMN_NAME;
+    }
+
+    private static String spellLevelLabel() {
+        return RulesContract.SpellsEntry.COLUMN_LEVEL;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getSpellId(ContentValues values) {
+        return values.getAsLong(spellIdLabel());
+    }
+
+    public static String getSpellName(ContentValues values) {
+        return values.getAsString(spellNameLabel());
+    }
+
+    public static int getSpellLevel(ContentValues values) {
+        return values.getAsInteger(spellLevelLabel());
+    }
+
+    /* DATABASE FUNCTIONS */
+
     public static ContentValues getSpell(Context context, long spellId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + SPELL_COLUMNS[COL_SPELL_ID] + " = ?";
         return getStats(context, query, spellId);
