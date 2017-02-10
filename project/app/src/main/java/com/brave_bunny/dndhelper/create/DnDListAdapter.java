@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.create;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.view.LayoutInflater;
@@ -9,16 +10,13 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesDomainsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesFamiliarsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_NAME;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFamiliarsUtils.COL_FAMILIAR_NAME;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_NAME;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_NAME;
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.getNumberDomainsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.isDomainSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.getNumberFeatsSelected;
@@ -80,24 +78,30 @@ public class DnDListAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
 
         String name = "";
+        long id;
         TextView nameText = (TextView) view.findViewById(R.id.name_details);
+        ContentValues itemData = cursorRowToContentValues(cursor);
 
         switch (listType) {
             case LIST_TYPE_DEITY:
-                name = cursor.getString(COL_DOMAIN_NAME);
-                view.setTag(R.string.select_domains, cursor.getLong(COL_DOMAIN_ID));
+                name = RulesDomainsUtils.getDomainName(itemData);
+                id = RulesDomainsUtils.getDomainId(itemData);
+                view.setTag(R.string.select_domains, id);
                 break;
             case LIST_TYPE_FAMILIAR:
-                name = cursor.getString(COL_FAMILIAR_NAME);
-                view.setTag(R.string.select_familiar, cursor.getLong(COL_FAMILIAR_ID));
+                name = RulesFamiliarsUtils.getFamiliarName(itemData);
+                id = RulesFamiliarsUtils.getFamiliarId(itemData);
+                view.setTag(R.string.select_familiar, id);
                 break;
             case LIST_TYPE_SPELL:
-                name = cursor.getString(COL_SPELL_NAME);
-                view.setTag(R.string.select_spells, cursor.getLong(COL_SPELL_ID));
+                name = RulesSpellsUtils.getSpellName(itemData);
+                id = RulesSpellsUtils.getSpellId(itemData);
+                view.setTag(R.string.select_spells, id);
                 break;
             case LIST_TYPE_FEAT:
-                name = cursor.getString(COL_FEAT_NAME);
-                view.setTag(R.string.select_feats, cursor.getLong(COL_FEAT_ID));
+                name = RulesFeatsUtils.getFeatName(itemData);
+                id = RulesFeatsUtils.getFeatId(itemData);
+                view.setTag(R.string.select_feats, id);
                 break;
         }
 

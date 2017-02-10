@@ -287,8 +287,8 @@ public class RulesContract {
         public static final String TABLE_NAME = "armor";
 
         public static final String COLUMN_NAME = "name";
-        static final String COLUMN_ARMOR_WEIGHT = "armor_weight";
-        static final String COLUMN_ARMOR_COST = "armor_cost";
+        public static final String COLUMN_ARMOR_WEIGHT = "armor_weight";
+        public static final String COLUMN_ARMOR_COST = "armor_cost";
 
         static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_ARMOR;
@@ -303,7 +303,6 @@ public class RulesContract {
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_WEAPONS).build();
 
         public static final String TABLE_NAME = "weapons";
-
         public static final String COLUMN_NAME = "name";
         public static final String COLUMN_WEAPON_WEIGHT = "weapon_weight";
         public static final String COLUMN_WEAPON_COST = "weapon_cost";

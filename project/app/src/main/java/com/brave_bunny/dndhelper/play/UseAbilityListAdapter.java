@@ -10,25 +10,17 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.getFeat;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.COL_SKILL_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.COL_SKILL_NAME;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.SKILL_COLUMNS;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.getSkill;
-
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_NAME;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.SPELL_COLUMNS;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.getSpell;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils.getSpell;
 
 /**
  * Created by Jemma on 2/7/2017.

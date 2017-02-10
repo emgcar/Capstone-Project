@@ -16,17 +16,10 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
 import com.brave_bunny.dndhelper.play.battle.SkillCheckActivity;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CG;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_CN;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LE;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LG;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_LN;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_N;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NE;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.ALIGN_NG;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_DWARF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_ELF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
@@ -235,35 +228,8 @@ public class DetailActivity extends AppCompatActivity {
         }
 
         private void setAlignment() {
-            switch (alignment) {
-                case ALIGN_LG:
-                    mViewHolder.mAlignmentView.setText(R.string.lawful_good);
-                    break;
-                case ALIGN_LN:
-                    mViewHolder.mAlignmentView.setText(R.string.lawful_neutral);
-                    break;
-                case ALIGN_LE:
-                    mViewHolder.mAlignmentView.setText(R.string.lawful_evil);
-                    break;
-                case ALIGN_NG:
-                    mViewHolder.mAlignmentView.setText(R.string.neutral_good);
-                    break;
-                case ALIGN_N:
-                    mViewHolder.mAlignmentView.setText(R.string.neutral);
-                    break;
-                case ALIGN_NE:
-                    mViewHolder.mAlignmentView.setText(R.string.neutral_evil);
-                    break;
-                case ALIGN_CG:
-                    mViewHolder.mAlignmentView.setText(R.string.chaotic_good);
-                    break;
-                case ALIGN_CN:
-                    mViewHolder.mAlignmentView.setText(R.string.chaotic_neutral);
-                    break;
-                default:
-                    mViewHolder.mAlignmentView.setText(R.string.chaotic_evil);
-                    break;
-            }
+            String alignmentText = RulesCharacterUtils.getAligmentText(getContext(), alignment);
+            mViewHolder.mAlignmentView.setText(alignmentText);
         }
 
         private void setInformation() {

@@ -10,41 +10,55 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the weapon data.
  */
 
 public class RulesWeaponsUtils {
 
+    /* LABELS */
 
-    private static final String[] WEAPONS_COLUMNS = {
-            RulesContract.WeaponEntry.TABLE_NAME + "." + RulesContract.WeaponEntry._ID,
-            RulesContract.WeaponEntry.COLUMN_NAME,
-            RulesContract.WeaponEntry.COLUMN_WEAPON_WEIGHT,
-            RulesContract.WeaponEntry.COLUMN_WEAPON_COST
-    };
+    private static String getTableName() {
+        return RulesContract.WeaponEntry.TABLE_NAME;
+    }
 
-    public static final int COL_WEAPON_ID = 0;
-    public static final int COL_WEAPON_NAME = 1;
-    public static final int COL_WEAPON_WEIGHT = 2;
-    public static final int COL_WEAPON_COST = 3;
-
-
-    private static final String tableName = RulesContract.WeaponEntry.TABLE_NAME;
-
-    private static String idLabel() {
+    private static String weaponIdLabel() {
         return RulesContract.WeaponEntry._ID;
     }
 
-    public static long getId(ContentValues values) {
-        return values.getAsLong(idLabel());
+    private static String weaponNameLabel() {
+        return RulesContract.WeaponEntry.COLUMN_NAME;
     }
 
-    public static String getWeaponName(ContentValues value) {
-        return value.getAsString(WEAPONS_COLUMNS[COL_WEAPON_NAME]);
+    private static String weaponWeightLabel() {
+        return RulesContract.WeaponEntry.COLUMN_WEAPON_WEIGHT;
     }
+
+    private static String weaponCostLabel() {
+        return RulesContract.WeaponEntry.COLUMN_WEAPON_COST;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getWeaponId(ContentValues values) {
+        return values.getAsLong(weaponIdLabel());
+    }
+
+    public static String getWeaponName(ContentValues values) {
+        return values.getAsString(weaponNameLabel());
+    }
+
+    public static float getWeaponWeight(ContentValues values) {
+        return values.getAsFloat(weaponWeightLabel());
+    }
+
+    public static float getWeaponCost(ContentValues values) {
+        return values.getAsFloat(weaponCostLabel());
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static ContentValues getWeapon(Context context, long weaponId) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + WEAPONS_COLUMNS[COL_WEAPON_ID] + " = ?";
+        String query = "SELECT * FROM " + getTableName() + " WHERE " + weaponIdLabel() + " = ?";
         return getStats(context, query, weaponId);
     }
 

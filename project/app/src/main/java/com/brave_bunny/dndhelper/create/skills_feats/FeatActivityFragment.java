@@ -18,9 +18,10 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.COL_FEAT_ID;
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.addFeatSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.isFeatSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.removeFeatSelection;
@@ -82,8 +83,9 @@ public class FeatActivityFragment extends Fragment {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 
                     if (cursor != null) {
+                        ContentValues featItem = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int featId = cursor.getInt(COL_FEAT_ID);
+                        long featId = RulesFeatsUtils.getFeatId(featItem);
 
                         if(isFeatSelected(getContext(), rowIndex, featId)) {
                             adapter.decreaseNumberSelected();

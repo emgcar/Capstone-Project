@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.create.classes;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -18,9 +19,10 @@ import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesDomainsUtils.COL_DOMAIN_ID;
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.addSpellSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.isSpellSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.removeSpellSelection;
@@ -82,8 +84,9 @@ public class SpellActivityFragment extends Fragment {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 
                     if (cursor != null) {
+                        ContentValues spellData = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int spellId = cursor.getInt(COL_DOMAIN_ID);
+                        long spellId = RulesSpellsUtils.getSpellId(spellData);
 
                         if(isSpellSelected(getContext(), rowIndex, spellId)) {
                             adapter.decreaseNumberSelected();

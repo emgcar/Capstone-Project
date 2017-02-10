@@ -10,24 +10,78 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the armor data.
  */
 
 public class RulesArmorUtils {
-    private static final String[] ARMOR_COLUMNS = {
-            RulesContract.ArmorEntry.TABLE_NAME + "." + RulesContract.ArmorEntry._ID,
-            RulesContract.ArmorEntry.COLUMN_NAME
-    };
 
-    public static final int COL_ARMOR_ID = 0;
-    public static final int COL_ARMOR_NAME = 1;
-    public static final int COL_ARMOR_WEIGHT = 2;
-    public static final int COL_ARMOR_COST = 3;
+    /* LABELS */
 
-    public static final String tableName = RulesContract.ArmorEntry.TABLE_NAME;
+    private static String getTableName() {
+        return RulesContract.ArmorEntry.TABLE_NAME;
+    }
 
-    public static String getArmorName(ContentValues value) {
-        return value.getAsString(ARMOR_COLUMNS[COL_ARMOR_NAME]);
+    private static String armorIdLabel() {
+        return RulesContract.ArmorEntry._ID;
+    }
+
+    private static String armorNameLabel() {
+        return RulesContract.ArmorEntry.COLUMN_NAME;
+    }
+
+    private static String armorWeightLabel() {
+        return RulesContract.ArmorEntry.COLUMN_ARMOR_WEIGHT;
+    }
+
+    private static String armorCostLabel() {
+        return RulesContract.ArmorEntry.COLUMN_ARMOR_COST;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getArmorId(ContentValues values) {
+        return values.getAsLong(armorIdLabel());
+    }
+
+    public static String getArmorName(ContentValues values) {
+        return values.getAsString(armorNameLabel());
+    }
+
+    public static float getArmorWeight(ContentValues values) {
+        return values.getAsFloat(armorWeightLabel());
+    }
+
+    public static float getArmorCost(ContentValues values) {
+        return values.getAsFloat(armorCostLabel());
+    }
+
+    /* DATABASE FUNCTIONS */
+
+    public static ContentValues getArmor(Context context, long armorId) {
+        String query = "SELECT * FROM " + getTableName() + " WHERE " + armorIdLabel() + " = ?";
+        return getStats(context, query, armorId);
+    }
+
+    private static ContentValues getStats(Context context, String query, long index) {
+        ContentValues values = null;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(index)});
+
+            cursor.moveToFirst();
+
+            if(cursor.getCount() > 0) {
+                values = Utility.cursorRowToContentValues(cursor);
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return values;
     }
 
     public static Cursor getAllArmor(Context context) {
@@ -37,7 +91,7 @@ public class RulesArmorUtils {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
-            String query = "SELECT * FROM " + tableName;
+            String query = "SELECT * FROM " + RulesContract.ArmorEntry.TABLE_NAME;
             cursor = db.rawQuery(query, null);
 
             cursor.moveToFirst();
@@ -46,28 +100,5 @@ public class RulesArmorUtils {
         }
 
         return cursor;
-    }
-
-    public static ContentValues getArmorData(Context context, long armorId) {
-        ContentValues values = null;
-
-        RulesDbHelper dbHelper = new RulesDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "SELECT * FROM " + tableName + " WHERE " + ARMOR_COLUMNS[COL_ARMOR_ID] + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(armorId)});
-
-            cursor.moveToFirst();
-
-            if (cursor.getCount() > 0) {
-                values = Utility.cursorRowToContentValues(cursor);
-            }
-            cursor.close();
-        } finally {
-            db.close();
-        }
-
-        return values;
     }
 }

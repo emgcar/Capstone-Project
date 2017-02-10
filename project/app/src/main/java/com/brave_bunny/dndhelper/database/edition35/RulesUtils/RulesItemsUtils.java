@@ -10,41 +10,55 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the item data.
  */
 
 public class RulesItemsUtils {
 
+    /* LABELS */
 
-    private static final String[] ITEMS_COLUMNS = {
-            RulesContract.ItemEntry.TABLE_NAME + "." + RulesContract.ItemEntry._ID,
-            RulesContract.ItemEntry.COLUMN_NAME,
-            RulesContract.ItemEntry.COLUMN_ITEM_WEIGHT,
-            RulesContract.ItemEntry.COLUMN_ITEM_COST
-    };
+    private static String getTableName() {
+        return RulesContract.ItemEntry.TABLE_NAME;
+    }
 
-    public static final int COL_ITEMS_ID = 0;
-    public static final int COL_ITEMS_NAME = 1;
-    public static final int COL_ITEMS_WEIGHT = 2;
-    public static final int COL_ITEMS_COST = 3;
-
-
-    private static final String tableName = RulesContract.ItemEntry.TABLE_NAME;
-
-    private static String idLabel() {
+    private static String itemIdLabel() {
         return RulesContract.ItemEntry._ID;
     }
 
-    public static long getId(ContentValues values) {
-        return values.getAsLong(idLabel());
+    private static String itemNameLabel() {
+        return RulesContract.ItemEntry.COLUMN_NAME;
     }
 
-    public static String getItemName(ContentValues value) {
-        return value.getAsString(ITEMS_COLUMNS[COL_ITEMS_NAME]);
+    private static String itemWeightLabel() {
+        return RulesContract.ItemEntry.COLUMN_ITEM_WEIGHT;
     }
+
+    private static String itemCostLabel() {
+        return RulesContract.ItemEntry.COLUMN_ITEM_COST;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getItemId(ContentValues values) {
+        return values.getAsLong(itemIdLabel());
+    }
+
+    public static String getItemName(ContentValues values) {
+        return values.getAsString(itemNameLabel());
+    }
+
+    public static float getItemWeight(ContentValues values) {
+        return values.getAsFloat(itemWeightLabel());
+    }
+
+    public static float getItemCost(ContentValues values) {
+        return values.getAsFloat(itemCostLabel());
+    }
+
+    /* DATABASE FUNCTIONS */
 
     public static ContentValues getItem(Context context, long itemId) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + ITEMS_COLUMNS[COL_ITEMS_ID] + " = ?";
+        String query = "SELECT * FROM " + getTableName() + " WHERE " + itemIdLabel() + " = ?";
         return getStats(context, query, itemId);
     }
 

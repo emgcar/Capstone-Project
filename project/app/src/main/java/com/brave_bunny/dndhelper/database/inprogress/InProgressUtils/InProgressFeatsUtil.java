@@ -56,10 +56,10 @@ public class InProgressFeatsUtil {
         deleteFromTable(context, query, selectionArgs);
     }
 
-    public static void removeFeatSelection(Context context, long rowIndex, int domainId) {
+    public static void removeFeatSelection(Context context, long rowIndex, long featId) {
         String query = characterIdLabel() + " = ? AND " +
                 featIdLabel() + " = ?";
-        String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(domainId)};
+        String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(featId)};
         deleteFromTable(context, query, selectionArgs);
     }
 
@@ -112,7 +112,7 @@ public class InProgressFeatsUtil {
         return isSelected;
     }
 
-    public static void addFeatSelection(Context context, long rowIndex, int featId) {
+    public static void addFeatSelection(Context context, long rowIndex, long featId) {
         ContentValues values = new ContentValues();
         values.put(characterIdLabel(), rowIndex);
         values.put(featIdLabel(), featId);

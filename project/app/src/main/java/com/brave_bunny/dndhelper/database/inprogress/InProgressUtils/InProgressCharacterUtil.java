@@ -8,18 +8,17 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
 import java.util.Random;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_CLERIC;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_COLUMNS;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_FIGHTER;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_ROGUE;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.CLASS_WIZARD;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.COL_CLASS_STARTING_GOLD;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getClassStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_CLERIC;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_FIGHTER;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_ROGUE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_WIZARD;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getClassStats;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_CHA;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_CON;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_DEX;
@@ -29,7 +28,6 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRaces
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_COLUMNS;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.getRaceStats;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.removeAllInProgressArmor;
-import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.getNumberDomainsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.numberDomainsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.removeAllInProgressDomains;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.removeAllInProgressFeats;
@@ -644,7 +642,7 @@ public class InProgressCharacterUtil {
         float prevMoneyDiff = 0;
         ContentValues prevClassValues = getClassStats(context, previousClass);
         if (prevClassValues != null) {
-            float prevMaxMoney = prevClassValues.getAsLong(CLASS_COLUMNS[COL_CLASS_STARTING_GOLD]);
+            float prevMaxMoney = RulesClassesUtils.getClassStartingGold(prevClassValues);
             float prevMoney = getCharacterMoney(values);
             prevMoneyDiff = prevMaxMoney - prevMoney;
         }
@@ -652,7 +650,7 @@ public class InProgressCharacterUtil {
         ContentValues currClassValues = getClassStats(context, classSelection);
         float currMoney = 0;
         if (currClassValues != null) {
-            float currMaxMoney = currClassValues.getAsLong(CLASS_COLUMNS[COL_CLASS_STARTING_GOLD]);
+            float currMaxMoney = RulesClassesUtils.getClassStartingGold(currClassValues);
             currMoney = currMaxMoney - prevMoneyDiff;
         }
 

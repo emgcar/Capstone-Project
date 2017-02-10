@@ -10,23 +10,10 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the feat data.
  */
 
 public class RulesFeatsUtils {
-
-    private static final int TRUE = 1;
-    private static final int FALSE = 0;
-
-    private static final String[] FEATS_COLUMNS = {
-            RulesContract.FeatEntry.TABLE_NAME + "." + RulesContract.FeatEntry._ID,
-            RulesContract.FeatEntry.COLUMN_NAME
-    };
-
-    public static final int COL_FEAT_ID = 0;
-    public static final int COL_FEAT_NAME = 1;
-
-    private static final String tableName = RulesContract.FeatEntry.TABLE_NAME;
 
     /* LABELS */
 
@@ -55,7 +42,7 @@ public class RulesFeatsUtils {
     /* DATABASE FUNCTIONS */
 
     public static ContentValues getFeat(Context context, long index) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + FEATS_COLUMNS[COL_FEAT_ID] + " = ?";
+        String query = "SELECT * FROM " + getTableName() + " WHERE " + featIdLabel() + " = ?";
         return getStats(context, query, index);
     }
 

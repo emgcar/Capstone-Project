@@ -10,7 +10,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the race data.
  */
 
 public class RulesRacesUtils {

@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.database.edition35.RulesUtils;
+package com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,24 +10,10 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
 /**
- * Created by Jemma on 2/3/2017.
+ * Handles all of the spell data.
  */
 
 public class RulesSpellsUtils {
-
-    public static final int numberSpellsUntilLevelOne = 19;
-
-    public static final String[] SPELL_COLUMNS = {
-            RulesContract.SpellsEntry.TABLE_NAME + "." + RulesContract.SpellsEntry._ID,
-            RulesContract.SpellsEntry.COLUMN_NAME,
-            RulesContract.SpellsEntry.COLUMN_LEVEL
-    };
-
-    public static final int COL_SPELL_ID = 0;
-    public static final int COL_SPELL_NAME = 1;
-    public static final int COL_SPELL_LEVEL = 2;
-
-    private static final String tableName = RulesContract.SpellsEntry.TABLE_NAME;
 
     /* LABELS */
 
@@ -64,7 +50,7 @@ public class RulesSpellsUtils {
     /* DATABASE FUNCTIONS */
 
     public static ContentValues getSpell(Context context, long spellId) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + SPELL_COLUMNS[COL_SPELL_ID] + " = ?";
+        String query = "SELECT * FROM " + getTableName() + " WHERE " + spellIdLabel() + " = ?";
         return getStats(context, query, spellId);
     }
 

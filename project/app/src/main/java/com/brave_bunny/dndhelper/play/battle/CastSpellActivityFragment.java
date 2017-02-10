@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.play.battle;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,10 +16,10 @@ import android.widget.ListView;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils;
 import com.brave_bunny.dndhelper.play.UseAbilityListAdapter;
-import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSpellsUtils.COL_SPELL_ID;
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 
 /**
@@ -70,8 +71,9 @@ public class CastSpellActivityFragment extends Fragment {
                     Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
 
                     if (cursor != null) {
+                        ContentValues spellItem = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        int spellId = cursor.getInt(COL_SPELL_ID);
+                        long spellId = RulesSpellsUtils.getSpellId(spellItem);
 
                         // TODO: cast spell
                     }

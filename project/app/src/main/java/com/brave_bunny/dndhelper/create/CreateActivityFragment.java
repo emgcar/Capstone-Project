@@ -22,12 +22,12 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getClassStats;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesClassesUtils.getFirstLevelStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getClassStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getFirstLevelStats;
 
 /**
  * Created by Jemma on 1/17/2017.

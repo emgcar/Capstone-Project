@@ -56,7 +56,7 @@ public class InProgressSpellsUtil {
         deleteFromTable(context, query, selectionArgs);
     }
 
-    public static void removeSpellSelection(Context context, long rowIndex, int domainId) {
+    public static void removeSpellSelection(Context context, long rowIndex, long domainId) {
         String query = characterIdLabel() + " = ? AND " +
                 spellIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(domainId)};
@@ -74,7 +74,7 @@ public class InProgressSpellsUtil {
         }
     }
 
-    public static void addSpellSelection(Context context, long rowIndex, int spellId) {
+    public static void addSpellSelection(Context context, long rowIndex, long spellId) {
         //spellId += numberSpellsUntilLevelOne;
         ContentValues values = new ContentValues();
         values.put(characterIdLabel(), rowIndex);

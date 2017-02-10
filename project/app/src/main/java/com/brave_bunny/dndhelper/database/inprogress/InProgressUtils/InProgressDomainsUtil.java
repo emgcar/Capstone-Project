@@ -54,7 +54,7 @@ public class InProgressDomainsUtil {
         deleteFromTable(context, query, selectionArgs);
     }
 
-    public static void removeDomainSelection(Context context, long rowIndex, int domainId) {
+    public static void removeDomainSelection(Context context, long rowIndex, long domainId) {
         String query = characterIdLabel() + " = ? AND " +
                 domainIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex), Long.toString(domainId)};
@@ -72,7 +72,7 @@ public class InProgressDomainsUtil {
         }
     }
 
-    public static void addDomainSelection(Context context, long rowIndex, int domainId) {
+    public static void addDomainSelection(Context context, long rowIndex, long domainId) {
         ContentValues values = new ContentValues();
         values.put(characterIdLabel(), rowIndex);
         values.put(domainIdLabel(), domainId);
