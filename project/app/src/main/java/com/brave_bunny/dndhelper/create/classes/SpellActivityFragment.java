@@ -48,7 +48,8 @@ public class SpellActivityFragment extends Fragment {
 
         Bundle extras = getActivity().getIntent().getExtras();
         rowIndex = (long) extras.get(DeityActivity.indexValue);
-        mIntScore = InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), rowIndex);
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);
+        mIntScore = InProgressCharacterUtil.getTotalIntelligenceScore(values);
 
         getSpells(getContext(), mRootView);
 

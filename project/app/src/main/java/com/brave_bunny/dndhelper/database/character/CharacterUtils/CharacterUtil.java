@@ -264,27 +264,27 @@ public class CharacterUtil {
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
 
         // adding character strength
-        int strTotal = InProgressCharacterUtil.getTotalStrengthScore(context, inProgressIndex);
+        int strTotal = InProgressCharacterUtil.getTotalStrengthScore(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_STR, strTotal);
 
         // adding character dexterity
-        int dexTotal = InProgressCharacterUtil.getTotalDexterityScore(context, inProgressIndex);
+        int dexTotal = InProgressCharacterUtil.getTotalDexterityScore(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_DEX, dexTotal);
 
         // adding character constitution
-        int conTotal = InProgressCharacterUtil.getTotalConstitutionScore(context, inProgressIndex);
+        int conTotal = InProgressCharacterUtil.getTotalConstitutionScore(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_CON, conTotal);
 
         // adding character intelligence
-        int intTotal = InProgressCharacterUtil.getTotalIntelligenceScore(context, inProgressIndex);
+        int intTotal = InProgressCharacterUtil.getTotalIntelligenceScore(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_INT, intTotal);
 
         // adding character wisdom
-        int wisTotal = InProgressCharacterUtil.getTotalWisdomScore(context, inProgressIndex);
+        int wisTotal = InProgressCharacterUtil.getTotalWisdomScore(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_WIS, wisTotal);
 
         // adding character charisma
-        int chaTotal = InProgressCharacterUtil.getTotalCharismaScore(context, inProgressIndex);
+        int chaTotal = InProgressCharacterUtil.getTotalCharismaScore(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_CHA, chaTotal);
 
         // adding character base attack bonus, fortitude, reflex, and will

@@ -20,7 +20,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Strength"/>
+                android:text="@string/strength"/>
 
 
             <TextView
@@ -41,7 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dexterity"/>
+                android:text="@string/dexterity"/>
 
 
             <TextView
@@ -62,7 +62,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Constitution"/>
+                android:text="@string/constitution"/>
 
 
             <TextView
@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Intelligence"/>
+                android:text="@string/intelligence"/>
 
 
             <TextView
@@ -112,7 +112,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wisdom"/>
+                android:text="@string/wisdom"/>
 
 
             <TextView
@@ -133,7 +133,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Charisma"/>
+                android:text="@string/charisma"/>
 
 
             <TextView
@@ -156,7 +156,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/choice_1"
-            android:text="11"
             android:background="@drawable/choice"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -166,7 +165,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/choice_2"
-            android:text="12"
             android:background="@drawable/choice"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -176,7 +174,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/choice_3"
-            android:text="13"
             android:background="@drawable/choice"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -186,7 +183,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/choice_4"
-            android:text="14"
             android:background="@drawable/choice"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -196,7 +192,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/choice_5"
-            android:text="15"
             android:background="@drawable/choice"
             android:padding="10dp"
             android:layout_margin="10dp"/>
@@ -206,17 +201,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/choice_6"
-            android:text="16"
             android:background="@drawable/choice"
             android:padding="10dp"
             android:layout_margin="10dp"/>
 
     </LinearLayout>
 
-    <Button
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm Choices"
-        android:onClick="setAbilityScores"/>
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_ability"
+            android:onClick="setAbilityScores"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reroll_ability"
+            android:onClick="rerollScores"/>
+    </LinearLayout>
 
 </LinearLayout>

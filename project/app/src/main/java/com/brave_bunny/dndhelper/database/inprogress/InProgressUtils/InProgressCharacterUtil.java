@@ -49,6 +49,22 @@ public class InProgressCharacterUtil {
     public static final int STATE_PARTIAL = 1;
     public static final int STATE_COMPLETE = 2;
 
+    public static final int ABILITY1 = 1;
+    public static final int ABILITY2 = 2;
+    public static final int ABILITY3 = 3;
+    public static final int ABILITY4 = 4;
+    public static final int ABILITY5 = 5;
+    public static final int ABILITY6 = 6;
+
+    public static final int ABILITYSTR = 7;
+    public static final int ABILITYDEX = 8;
+    public static final int ABILITYCON = 9;
+    public static final int ABILITYINT = 10;
+    public static final int ABILITYWIS = 11;
+    public static final int ABILITYCHA = 12;
+
+    public static Random rand;
+
     /* LABELS - Should be private */
 
     private static String getTableName() {
@@ -245,52 +261,100 @@ public class InProgressCharacterUtil {
         values.put(characterAlignLabel(), religion);
     }
 
-    public static int getCharacterStr(ContentValues values) {
+    public static int getCharacterStrConnection(ContentValues values) {
         return values.getAsInteger(characterStrengthLabel());
+    }
+
+    public static int getCharacterStr(ContentValues values) {
+        int connect = getCharacterStrConnection(values);
+        return getAbilityFromConnection(values, connect);
     }
 
     public static void setCharacterStr(ContentValues values, int str) {
         values.put(characterStrengthLabel(), str);
     }
 
-    public static int getCharacterDex(ContentValues values) {
+    public static int getCharacterDexConnection(ContentValues values) {
         return values.getAsInteger(characterDexterityLabel());
+    }
+
+    public static int getCharacterDex(ContentValues values) {
+        int connect = getCharacterDexConnection(values);
+        return getAbilityFromConnection(values, connect);
     }
 
     public static void setCharacterDex(ContentValues values, int dex) {
         values.put(characterDexterityLabel(), dex);
     }
 
-    public static int getCharacterCon(ContentValues values) {
+    public static int getCharacterConConnection(ContentValues values) {
         return values.getAsInteger(characterConstitutionLabel());
+    }
+
+    public static int getCharacterCon(ContentValues values) {
+        int connect = getCharacterConConnection(values);
+        return getAbilityFromConnection(values, connect);
     }
 
     public static void setCharacterCon(ContentValues values, int con) {
         values.put(characterConstitutionLabel(), con);
     }
 
-    public static int getCharacterInt(ContentValues values) {
+    public static int getCharacterIntConnection(ContentValues values) {
         return values.getAsInteger(characterIntelligenceLabel());
+    }
+
+    public static int getCharacterInt(ContentValues values) {
+        int connect = getCharacterIntConnection(values);
+        return getAbilityFromConnection(values, connect);
     }
 
     public static void setCharacterInt(ContentValues values, int intScore) {
         values.put(characterIntelligenceLabel(), intScore);
     }
 
-    public static int getCharacterWis(ContentValues values) {
+    public static int getCharacterWisConnection(ContentValues values) {
         return values.getAsInteger(characterWisdomLabel());
+    }
+
+    public static int getCharacterWis(ContentValues values) {
+        int connect = getCharacterWisConnection(values);
+        return getAbilityFromConnection(values, connect);
     }
 
     public static void setCharacterWis(ContentValues values, int wis) {
         values.put(characterWisdomLabel(), wis);
     }
 
-    public static int getCharacterCha(ContentValues values) {
+    public static int getCharacterChaConnection(ContentValues values) {
         return values.getAsInteger(characterCharismaLabel());
+    }
+
+    public static int getCharacterCha(ContentValues values) {
+        int connect = getCharacterChaConnection(values);
+        return getAbilityFromConnection(values, connect);
     }
 
     public static void setCharacterCha(ContentValues values, int cha) {
         values.put(characterCharismaLabel(), cha);
+    }
+
+    public static int getAbilityFromConnection(ContentValues values, int connect) {
+        switch(connect) {
+            case ABILITY1:
+                return getCharacterAbility1(values);
+            case ABILITY2:
+                return getCharacterAbility2(values);
+            case ABILITY3:
+                return getCharacterAbility3(values);
+            case ABILITY4:
+                return getCharacterAbility4(values);
+            case ABILITY5:
+                return getCharacterAbility5(values);
+            case ABILITY6:
+                return getCharacterAbility6(values);
+        }
+        return connect;
     }
 
     public static int getCharacterAbility1(ContentValues values) {
@@ -507,6 +571,7 @@ public class InProgressCharacterUtil {
         return index;
     }
 
+    //TODO implement option to delete characters
     public static void deleteValuesFromInProgressTable(Context context, long index) {
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -521,7 +586,7 @@ public class InProgressCharacterUtil {
     }
 
     public static ContentValues setNewInProgressContentValues() {
-        Random rand = new Random();
+        rand = new Random();
 
         ContentValues characterValues = new ContentValues();
         setCharacterName(characterValues, "");
@@ -546,6 +611,28 @@ public class InProgressCharacterUtil {
         setCharacterAbility6(characterValues, generateAbilityScore(rand));
 
         return characterValues;
+    }
+
+    public static void setNewAbilityChoices(Context context, long rowIndex) {
+
+        ContentValues characterValues = getInProgressRow(context, rowIndex);
+
+        setCharacterStr(characterValues, -1);
+        setCharacterDex(characterValues, -1);
+        setCharacterCon(characterValues, -1);
+        setCharacterInt(characterValues, -1);
+        setCharacterWis(characterValues, -1);
+        setCharacterCha(characterValues, -1);
+
+        setCharacterAbility1(characterValues, generateAbilityScore(rand));
+        setCharacterAbility2(characterValues, generateAbilityScore(rand));
+        setCharacterAbility3(characterValues, generateAbilityScore(rand));
+        setCharacterAbility4(characterValues, generateAbilityScore(rand));
+        setCharacterAbility5(characterValues, generateAbilityScore(rand));
+        setCharacterAbility6(characterValues, generateAbilityScore(rand));
+
+        updateInProgressTable(context, characterValues, rowIndex);
+
     }
 
     public static int checkStateOfCharacterChoices(Context context, long index) {
@@ -686,7 +773,7 @@ public class InProgressCharacterUtil {
      *      ABILITY util functions
      */
 
-    private static int getTotalAbilityScore(Context context, long rowIndex,
+    private static int getAbilityScoreModifier(Context context, long rowIndex,
                                      String inProgressAbilityColumn, String raceAbilityColumn) {
 
         ContentValues inProgressValues = getInProgressRow(context, rowIndex);
@@ -702,40 +789,36 @@ public class InProgressCharacterUtil {
         return baseScore;
     }
 
-    public static int getTotalStrengthScore(Context context, long rowIndex) {
-        return getTotalAbilityScore(context, rowIndex,
-                characterStrengthLabel(),
-                RACE_COLUMNS[COL_RACE_STR]);
+    //TODO add modifiers
+    public static int getTotalStrengthScore(ContentValues values) {
+        int score = InProgressCharacterUtil.getCharacterStr(values);
+        //score += getAbilityScoreModifier();
+        return score;
     }
 
-    public static int getTotalDexterityScore(Context context, long rowIndex) {
-        return getTotalAbilityScore(context, rowIndex,
-                characterDexterityLabel(),
-                RACE_COLUMNS[COL_RACE_DEX]);
+    //TODO add modifiers
+    public static int getTotalDexterityScore(ContentValues values) {
+        return InProgressCharacterUtil.getCharacterDex(values);
     }
 
-    public static int getTotalConstitutionScore(Context context, long rowIndex) {
-        return getTotalAbilityScore(context, rowIndex,
-                characterConstitutionLabel(),
-                RACE_COLUMNS[COL_RACE_CON]);
+    //TODO add modifiers
+    public static int getTotalConstitutionScore(ContentValues values) {
+        return InProgressCharacterUtil.getCharacterCon(values);
     }
 
-    public static int getTotalIntelligenceScore(Context context, long rowIndex) {
-        return getTotalAbilityScore(context, rowIndex,
-                characterIntelligenceLabel(),
-                RACE_COLUMNS[COL_RACE_INT]);
+    //TODO add modifiers
+    public static int getTotalIntelligenceScore(ContentValues values) {
+        return InProgressCharacterUtil.getCharacterInt(values);
     }
 
-    public static int getTotalWisdomScore(Context context, long rowIndex) {
-        return getTotalAbilityScore(context, rowIndex,
-                characterWisdomLabel(),
-                RACE_COLUMNS[COL_RACE_WIS]);
+    //TODO add modifiers
+    public static int getTotalWisdomScore(ContentValues values) {
+        return InProgressCharacterUtil.getCharacterWis(values);
     }
 
-    public static int getTotalCharismaScore(Context context, long rowIndex) {
-        return getTotalAbilityScore(context, rowIndex,
-                characterCharismaLabel(),
-                RACE_COLUMNS[COL_RACE_CHA]);
+    //TODO add modifiers
+    public static int getTotalCharismaScore(ContentValues values) {
+        return InProgressCharacterUtil.getCharacterCha(values);
     }
 
     private static boolean areAbilitiesFilled(ContentValues values) {

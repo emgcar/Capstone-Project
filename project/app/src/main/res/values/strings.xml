@@ -80,6 +80,8 @@
     <!-- base ability scores -->
     <string name="ability_scores" translatable="true">Ability Scores: </string>
     <string name="ability_scores_prompt" translatable="true">Choose Ability Scores</string>
+    <string name="confirm_ability" translatable="true">Confirm Choices</string>
+    <string name="reroll_ability" translatable="true">Re-Roll Scores</string>
     <string name="strength" translatable="true">Strength: </string>
     <string name="dexterity" translatable="true">Dexterity: </string>
     <string name="constitution" translatable="true">Constitution: </string>

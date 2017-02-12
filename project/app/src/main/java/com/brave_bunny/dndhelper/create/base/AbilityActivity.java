@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.updateInProgressTable;
 
@@ -18,13 +19,10 @@ public class AbilityActivity extends AppCompatActivity {
 
     private long index;
 
-    private View rootView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_frame_layout);
-        rootView = this.findViewById(android.R.id.content);
 
         Bundle extras = getIntent().getExtras();
         index = extras.getLong(indexValue);
@@ -39,33 +37,22 @@ public class AbilityActivity extends AppCompatActivity {
         }
     }
 
-    int getScore(TextView view) {
-        return Integer.parseInt(view.getText().toString());
-    }
-
-    public static TextView findTextView(View view, int id) {
-        return (TextView) view.findViewById(id);
-    }
-
-    private void setChoiceToContentValue(ContentValues values, int id, String columnName) {
-
-        TextView choiceText = findTextView(rootView, id);
-        int choice = getScore(choiceText);
-        values.put(columnName, choice);
-    }
-
     public void setAbilityScores(View view) {
-        ContentValues abilityValues = new ContentValues();
-
-        setChoiceToContentValue(abilityValues, R.id.ability_strength, InProgressContract.CharacterEntry.COLUMN_STR);
-        setChoiceToContentValue(abilityValues, R.id.ability_dexterity, InProgressContract.CharacterEntry.COLUMN_DEX);
-        setChoiceToContentValue(abilityValues, R.id.ability_constitution, InProgressContract.CharacterEntry.COLUMN_CON);
-        setChoiceToContentValue(abilityValues, R.id.ability_wisdom, InProgressContract.CharacterEntry.COLUMN_WIS);
-        setChoiceToContentValue(abilityValues, R.id.ability_intelligence, InProgressContract.CharacterEntry.COLUMN_INT);
-        setChoiceToContentValue(abilityValues, R.id.ability_charisma, InProgressContract.CharacterEntry.COLUMN_CHA);
-
-        updateInProgressTable(this, abilityValues, index);
-
         this.finish();
+    }
+
+    public void rerollScores(View view) {
+        InProgressCharacterUtil.setNewAbilityChoices(getBaseContext(), index);
+        onRerollSelected();
+    }
+
+    public void onRerollSelected() {
+
+        AbilityFragment abilityFragment = (AbilityFragment)
+                getSupportFragmentManager().findFragmentById(R.id.fragment);
+
+        if (abilityFragment != null) {
+            abilityFragment.updateTexts();
+        }
     }
 }

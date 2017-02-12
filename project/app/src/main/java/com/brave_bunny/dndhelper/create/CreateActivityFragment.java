@@ -234,19 +234,20 @@ public class CreateActivityFragment extends Fragment {
     //TODO find way to change HP on class page when CON stat changes
     //TODO: find way to change max spells when INT stat changes
     public void updateAbilityScores() {
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
         if (baseViewHolder != null) {
             setAbilityScore(baseViewHolder.mStrText,
-                    InProgressCharacterUtil.getTotalStrengthScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalStrengthScore(values));
             setAbilityScore(baseViewHolder.mDexText,
-                    InProgressCharacterUtil.getTotalDexterityScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalDexterityScore(values));
             setAbilityScore(baseViewHolder.mConText,
-                    InProgressCharacterUtil.getTotalConstitutionScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalConstitutionScore(values));
             setAbilityScore(baseViewHolder.mIntText,
-                    InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalIntelligenceScore(values));
             setAbilityScore(baseViewHolder.mWisText,
-                    InProgressCharacterUtil.getTotalWisdomScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalWisdomScore(values));
             setAbilityScore(baseViewHolder.mChaText,
-                    InProgressCharacterUtil.getTotalCharismaScore(getContext(), index));
+                    InProgressCharacterUtil.getTotalCharismaScore(values));
         }
     }
 
@@ -365,10 +366,10 @@ public class CreateActivityFragment extends Fragment {
     // TODO: update on ability score change
     public void setHPText(int classSelection) {
         ContentValues classValues = getClassStats(getContext(), classSelection);
-        int hitPoints = classValues.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
+        int hitPoints = RulesClassesUtils.getClassHitDie(classValues);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
-        int conScore = values.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CON);
+        int conScore = InProgressCharacterUtil.getCharacterCon(values);
         if (conScore != -1) {
             hitPoints += RulesCharacterUtils.scoreToModifier(conScore);
         }
