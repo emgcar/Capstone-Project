@@ -41,6 +41,80 @@ public class RulesRacesUtils {
 
     private static final String tableName = RulesContract.RaceEntry.TABLE_NAME;
 
+    /* LABELS */
+
+    private static String getTableName() {
+        return RulesContract.RaceEntry.TABLE_NAME;
+    }
+
+    private static String raceIdLabel() {
+        return RulesContract.RaceEntry._ID;
+    }
+
+    private static String raceNameLabel() {
+        return RulesContract.RaceEntry.COLUMN_NAME;
+    }
+
+    private static String raceStrLabel() {
+        return RulesContract.RaceEntry.COLUMN_STR;
+    }
+
+    private static String raceDexLabel() {
+        return RulesContract.RaceEntry.COLUMN_DEX;
+    }
+
+    private static String raceConLabel() {
+        return RulesContract.RaceEntry.COLUMN_CON;
+    }
+
+    private static String raceIntLabel() {
+        return RulesContract.RaceEntry.COLUMN_INT;
+    }
+
+    private static String raceWisLabel() {
+        return RulesContract.RaceEntry.COLUMN_WIS;
+    }
+
+    private static String raceChaLabel() {
+        return RulesContract.RaceEntry.COLUMN_CHA;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getRaceId(ContentValues values) {
+        return values.getAsLong(raceIdLabel());
+    }
+
+    public static String getRaceName(ContentValues values) {
+        return values.getAsString(raceNameLabel());
+    }
+
+    public static int getRaceStrMod(ContentValues values) {
+        return values.getAsInteger(raceStrLabel());
+    }
+
+    public static int getRaceDexMod(ContentValues values) {
+        return values.getAsInteger(raceDexLabel());
+    }
+
+    public static int getRaceConMod(ContentValues values) {
+        return values.getAsInteger(raceConLabel());
+    }
+
+    public static int getRaceIntMod(ContentValues values) {
+        return values.getAsInteger(raceIntLabel());
+    }
+
+    public static int getRaceWisMod(ContentValues values) {
+        return values.getAsInteger(raceWisLabel());
+    }
+
+    public static int getRaceChaMod(ContentValues values) {
+        return values.getAsInteger(raceChaLabel());
+    }
+
+    /* DATABASE FUNCTIONS */
+
     public static ContentValues getRaceStats(Context context, int raceId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + RACE_COLUMNS[COL_RACE_ID] + " = ?";
         return getStats(context, query, raceId);

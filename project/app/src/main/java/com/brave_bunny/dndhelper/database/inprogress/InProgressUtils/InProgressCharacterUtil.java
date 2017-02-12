@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
@@ -773,52 +774,78 @@ public class InProgressCharacterUtil {
      *      ABILITY util functions
      */
 
-    private static int getAbilityScoreModifier(Context context, long rowIndex,
-                                     String inProgressAbilityColumn, String raceAbilityColumn) {
+    private static int getAbilityScoreModifier(Context context, ContentValues values, int abilityChoice) {
+        int modifier = 0;
 
-        ContentValues inProgressValues = getInProgressRow(context, rowIndex);
-        int baseScore = inProgressValues.getAsInteger(inProgressAbilityColumn);
-        if (baseScore == -1) return baseScore;
-
-        int raceId = inProgressValues.getAsInteger(characterRaceLabel());
+        int raceId = InProgressCharacterUtil.getCharacterRace(values);
         if (raceId != 0) {
             ContentValues raceValues = getRaceStats(context, raceId);
-            baseScore += raceValues.getAsInteger(raceAbilityColumn);
+
+            switch(abilityChoice) {
+                case ABILITYSTR:
+                    modifier = RulesRacesUtils.getRaceStrMod(raceValues);
+                    break;
+                case ABILITYDEX:
+                    modifier = RulesRacesUtils.getRaceDexMod(raceValues);
+                    break;
+                case ABILITYCON:
+                    modifier = RulesRacesUtils.getRaceConMod(raceValues);
+                    break;
+                case ABILITYINT:
+                    modifier = RulesRacesUtils.getRaceIntMod(raceValues);
+                    break;
+                case ABILITYWIS:
+                    modifier = RulesRacesUtils.getRaceWisMod(raceValues);
+                    break;
+                case ABILITYCHA:
+                    modifier = RulesRacesUtils.getRaceChaMod(raceValues);
+                    break;
+            }
         }
 
-        return baseScore;
+        return modifier;
     }
 
-    //TODO add modifiers
-    public static int getTotalStrengthScore(ContentValues values) {
+    public static int getTotalStrengthScore(Context context, ContentValues values) {
         int score = InProgressCharacterUtil.getCharacterStr(values);
-        //score += getAbilityScoreModifier();
+        if (score == -1) return score;
+        score += getAbilityScoreModifier(context, values, ABILITYSTR);
         return score;
     }
 
-    //TODO add modifiers
-    public static int getTotalDexterityScore(ContentValues values) {
-        return InProgressCharacterUtil.getCharacterDex(values);
+    public static int getTotalDexterityScore(Context context, ContentValues values) {
+        int score = InProgressCharacterUtil.getCharacterDex(values);
+        if (score == -1) return score;
+        score += getAbilityScoreModifier(context, values, ABILITYDEX);
+        return score;
     }
 
-    //TODO add modifiers
-    public static int getTotalConstitutionScore(ContentValues values) {
-        return InProgressCharacterUtil.getCharacterCon(values);
+    public static int getTotalConstitutionScore(Context context, ContentValues values) {
+        int score = InProgressCharacterUtil.getCharacterCon(values);
+        if (score == -1) return score;
+        score += getAbilityScoreModifier(context, values, ABILITYCON);
+        return score;
     }
 
-    //TODO add modifiers
-    public static int getTotalIntelligenceScore(ContentValues values) {
-        return InProgressCharacterUtil.getCharacterInt(values);
+    public static int getTotalIntelligenceScore(Context context, ContentValues values) {
+        int score = InProgressCharacterUtil.getCharacterInt(values);
+        if (score == -1) return score;
+        score += getAbilityScoreModifier(context, values, ABILITYINT);
+        return score;
     }
 
-    //TODO add modifiers
-    public static int getTotalWisdomScore(ContentValues values) {
-        return InProgressCharacterUtil.getCharacterWis(values);
+    public static int getTotalWisdomScore(Context context, ContentValues values) {
+        int score = InProgressCharacterUtil.getCharacterWis(values);
+        if (score == -1) return score;
+        score += getAbilityScoreModifier(context, values, ABILITYWIS);
+        return score;
     }
 
-    //TODO add modifiers
-    public static int getTotalCharismaScore(ContentValues values) {
-        return InProgressCharacterUtil.getCharacterCha(values);
+    public static int getTotalCharismaScore(Context context, ContentValues values) {
+        int score = InProgressCharacterUtil.getCharacterCha(values);
+        if (score == -1) return score;
+        score += getAbilityScoreModifier(context, values, ABILITYCHA);
+        return score;
     }
 
     private static boolean areAbilitiesFilled(ContentValues values) {

@@ -1,24 +1,17 @@
 package com.brave_bunny.dndhelper.create.base;
 
-import android.content.ClipData;
 import android.content.ContentValues;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
 
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.ABILITY1;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.ABILITY2;
@@ -41,10 +34,6 @@ public class AbilityFragment extends Fragment {
     private static long mIndex;
 
     private static int currentSelection;
-
-    private static TextView getCurrentlySelectedTextView() {
-        return getTextView(currentSelection);
-    }
 
     private static TextView getTextView(int view) {
         switch (view) {
@@ -456,7 +445,7 @@ public class AbilityFragment extends Fragment {
         }
     }
 
-    public void setOptionListeners(View rootView, int id) {
+    /*public void setOptionListeners(View rootView, int id) {
         TextView view = (TextView) rootView.findViewById(id);
         view.setOnDragListener(new ChoiceDragListener());
         view.setOnTouchListener(new ChoiceTouchListener());
@@ -538,7 +527,7 @@ public class AbilityFragment extends Fragment {
             }
             return true;
         }
-    }
+    }*/
 
     public static class AbilityViewHolder extends RecyclerView.ViewHolder {
         public TextView mOption1Text;

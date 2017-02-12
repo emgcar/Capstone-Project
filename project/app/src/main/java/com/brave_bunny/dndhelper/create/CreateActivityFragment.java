@@ -237,17 +237,17 @@ public class CreateActivityFragment extends Fragment {
         ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
         if (baseViewHolder != null) {
             setAbilityScore(baseViewHolder.mStrText,
-                    InProgressCharacterUtil.getTotalStrengthScore(values));
+                    InProgressCharacterUtil.getTotalStrengthScore(getContext(), values));
             setAbilityScore(baseViewHolder.mDexText,
-                    InProgressCharacterUtil.getTotalDexterityScore(values));
+                    InProgressCharacterUtil.getTotalDexterityScore(getContext(), values));
             setAbilityScore(baseViewHolder.mConText,
-                    InProgressCharacterUtil.getTotalConstitutionScore(values));
+                    InProgressCharacterUtil.getTotalConstitutionScore(getContext(), values));
             setAbilityScore(baseViewHolder.mIntText,
-                    InProgressCharacterUtil.getTotalIntelligenceScore(values));
+                    InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), values));
             setAbilityScore(baseViewHolder.mWisText,
-                    InProgressCharacterUtil.getTotalWisdomScore(values));
+                    InProgressCharacterUtil.getTotalWisdomScore(getContext(), values));
             setAbilityScore(baseViewHolder.mChaText,
-                    InProgressCharacterUtil.getTotalCharismaScore(values));
+                    InProgressCharacterUtil.getTotalCharismaScore(getContext(), values));
         }
     }
 
