@@ -188,4 +188,21 @@ public class CharacterItemsUtil {
         }
         return values;
     }
+
+    public static void insertItemsIntoCharacterTable(Context context, ContentValues values) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(getTableName(), null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void deleteItemsFromCharacterTable(Context context, long characterId) {
+        String query = characterIdLabel() + " = ?";
+        String[] selectionArgs = new String[]{Long.toString(characterId)};
+        deleteFromTable(context, query, selectionArgs);
+    }
 }

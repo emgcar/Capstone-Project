@@ -3,6 +3,7 @@ package com.brave_bunny.dndhelper;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -12,6 +13,7 @@ public class Utility {
 
     /* START code from http://stackoverflow.com/questions/7932420/android-sqlite-cursor-contentvalues */
     public static ContentValues cursorRowToContentValues(Cursor cursor) {
+        if (cursor.getCount() == 0) return null;
         ContentValues values = new ContentValues();
         String[] columns = cursor.getColumnNames();
         int length = columns.length;
@@ -37,4 +39,20 @@ public class Utility {
         return values;
     }
     /* END code from http://stackoverflow.com/questions/7932420/android-sqlite-cursor-contentvalues */
+
+
+
+    /* START http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */
+    public static View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
+    /* END http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */
 }

@@ -186,4 +186,30 @@ public class InProgressItemsUtil {
         }
         return values;
     }
+
+    public static ContentValues[] getAllItemsForCharacter(Context context, long rowIndex) {
+        ContentValues[] allItems;
+
+        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
+            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            int numSpells = cursor.getCount();
+            cursor.moveToFirst();
+            allItems = new ContentValues[numSpells];
+
+            for (int i = 0; i < numSpells; i++) {
+                allItems[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            inProgressDb.close();
+        }
+        return allItems;
+    }
 }

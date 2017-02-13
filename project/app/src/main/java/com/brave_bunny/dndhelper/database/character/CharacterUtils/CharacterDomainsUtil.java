@@ -1,33 +1,41 @@
-package com.brave_bunny.dndhelper.database.inprogress.InProgressUtils;
+package com.brave_bunny.dndhelper.database.character.CharacterUtils;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 
-import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
+import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.database.character.CharacterContract;
+import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesDomainsUtils;
+import com.brave_bunny.dndhelper.play.UseAbilityListAdapter;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.Utility.getViewByPosition;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
 
 /**
- * Handles all of the selected domains for in-progress characters.
+ * Created by Jemma on 2/13/2017.
  */
 
-public class InProgressDomainsUtil {
-
+public class CharacterDomainsUtil {
     /* LABELS - Should be private */
 
     private static String getTableName() {
-        return InProgressContract.ClericDomainEntry.TABLE_NAME;
+        return CharacterContract.ClericDomainEntry.TABLE_NAME;
     }
 
     private static String characterIdLabel() {
-        return InProgressContract.ClericDomainEntry.COLUMN_CHARACTER_ID;
+        return CharacterContract.ClericDomainEntry.COLUMN_CHARACTER_ID;
     }
 
     private static String domainIdLabel() {
-        return InProgressContract.ClericDomainEntry.COLUMN_DOMAIN_ID;
+        return CharacterContract.ClericDomainEntry.COLUMN_DOMAIN_ID;
     }
 
     /* PARSE VALUES */
@@ -44,8 +52,8 @@ public class InProgressDomainsUtil {
         return values.getAsLong(domainIdLabel());
     }
 
-    public static void setDomainId(ContentValues values, long domainId) {
-        values.put(domainIdLabel(), domainId);
+    public static void setDomainId(ContentValues values, long featId) {
+        values.put(domainIdLabel(), featId);
     }
 
     /* DATABASE FUNCTIONS */
@@ -64,7 +72,7 @@ public class InProgressDomainsUtil {
     }
 
     public static void deleteFromTable(Context context, String query, String[] selectionArgs) {
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
@@ -79,7 +87,7 @@ public class InProgressDomainsUtil {
         values.put(characterIdLabel(), rowIndex);
         values.put(domainIdLabel(), domainId);
 
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
@@ -91,7 +99,7 @@ public class InProgressDomainsUtil {
 
     public static boolean isDomainSelected(Context context, long rowIndex, long domainId) {
         boolean isSelected = false;
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
@@ -111,7 +119,7 @@ public class InProgressDomainsUtil {
 
     public static int getNumberDomainsSelected(Context context, long rowIndex) {
         int numDomains = 0;
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
@@ -127,11 +135,26 @@ public class InProgressDomainsUtil {
         return numDomains;
     }
 
+    public static Cursor getDomainCursor(Context context, long rowIndex) {
+        Cursor domains;
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
+            domains = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+        return domains;
+    }
+
     public static int numberDomainsSelected(Context context, ContentValues values) {
-        long rowIndex = values.getAsLong(InProgressContract.CharacterEntry._ID);
+        long rowIndex = CharacterUtil.getId(values);
         int numberSpells;
 
-        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         try {
@@ -148,29 +171,50 @@ public class InProgressDomainsUtil {
         return numberSpells;
     }
 
-    public static ContentValues[] getAllDomainsForCharacter(Context context, long rowIndex) {
-        ContentValues[] allDomains;
-
-        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
-        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+    public static void insertDomainIntoCharacterTable(Context context, ContentValues values) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         try {
-            String query = "SELECT * FROM " + getTableName() + " WHERE "
-                    + characterIdLabel() + " = ?";
-            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
-
-            int numDomains = cursor.getCount();
-            cursor.moveToFirst();
-            allDomains = new ContentValues[numDomains];
-
-            for (int i = 0; i < numDomains; i++) {
-                allDomains[i] = cursorRowToContentValues(cursor);
-                cursor.moveToNext();
-            }
-            cursor.close();
+            db.insert(getTableName(), null, values);
         } finally {
-            inProgressDb.close();
+            db.close();
         }
-        return allDomains;
+    }
+
+    public static void setDomainList(Context context, View view, long rowIndex) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + CharacterContract.ClericDomainEntry.TABLE_NAME
+                    + " WHERE " + CharacterContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            final UseAbilityListAdapter adapter = new UseAbilityListAdapter(context, cursor,
+                    0, TYPE_DOMAIN, rowIndex);
+            final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                    // if it cannot seek to that position.
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+
+                    if (cursor != null) {
+                        ContentValues domainData = cursorRowToContentValues(cursor);
+                        FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        long domainId = RulesDomainsUtils.getDomainId(domainData);
+
+                        // TODO: cast spell
+                    }
+                }
+            });
+        } finally {
+            db.close();
+        }
     }
 }

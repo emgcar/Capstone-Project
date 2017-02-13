@@ -12,7 +12,8 @@ import com.brave_bunny.dndhelper.R;
 public class CastSpellActivity extends AppCompatActivity {
 
     public static final String indexValue = "ROW_INDEX";
-    public static final String inprogressValues = "INPROGRESS_TABLE_VALUES";
+    public static final String characterValues = "CHARACTER_VALUES";
+    public static final String listType = "LIST_TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -4,14 +4,22 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 
+import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
+import com.brave_bunny.dndhelper.play.UseAbilityListAdapter;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.Utility.getViewByPosition;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
 
 /**
  * Handles all of the selected skills for created characters.
@@ -135,50 +143,6 @@ public class CharacterSkillsUtil {
 
     /* DATABASE FUNCTIONS */
 
-    //TODO add all of the extra modifiers
-    public static void transferSkills(Context context, long inProgressIndex,
-                                      ContentValues inProgressValues, long characterIndex) {
-
-        ContentValues[] allSkills = RulesSkillsUtils.getAllSkills(context);
-        int numSkills = allSkills.length;
-
-        for (int i = 0; i < numSkills; i++) {
-            long skillId = RulesSkillsUtils.getId(allSkills[i]);
-            if (RulesSkillsUtils.canBeUntrained(allSkills[i])) {
-                transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
-            } else if (InProgressSkillsUtil.isSkillListed(context, inProgressIndex, skillId) ) {
-                transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
-            }
-        }
-    }
-
-    public static void transferSkill(Context context, ContentValues skillData, long characterIndex,
-                                     long inProgressIndex, ContentValues inProgressValues) {
-        long skillId = RulesSkillsUtils.getId(skillData);
-
-        ContentValues newEntry = new ContentValues();
-        CharacterSkillsUtil.setCharacterId(newEntry, characterIndex);
-        CharacterSkillsUtil.setSkillId(newEntry, skillId);
-
-        //TODO
-        CharacterSkillsUtil.setSkillInClass(newEntry, false);
-
-        int ranks = InProgressSkillsUtil.getSkillRanks(context, inProgressIndex, skillId);
-        CharacterSkillsUtil.setSkillsRanks(newEntry, ranks);
-
-        int abilMod = InProgressSkillsUtil.getSkillAbilityMod(skillData, inProgressValues);
-        CharacterSkillsUtil.setSkillAbilMod(newEntry, abilMod);
-
-        //TODO
-        int miscMod = 0;
-        CharacterSkillsUtil.setSkillMiscMod(newEntry, miscMod);
-
-        int totalMod = ranks + abilMod + miscMod;
-        CharacterSkillsUtil.setSkillTotalMod(newEntry, totalMod);
-
-        insertSkillIntoCharacterTable(context, newEntry);
-    }
-
     public static void insertSkillIntoCharacterTable(Context context, ContentValues values) {
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -209,6 +173,74 @@ public class CharacterSkillsUtil {
             db.close();
         }
         return values;
+    }
+
+    public static void deleteSkillFromCharacterTable(Context context, long characterId) {
+        String query = characterIdLabel() + " = ?";
+        String[] selectionArgs = new String[]{Long.toString(characterId)};
+        deleteFromTable(context, query, selectionArgs);
+    }
+
+    public static void deleteFromTable(Context context, String query, String[] selectionArgs) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            db.delete(getTableName(), query, selectionArgs);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static Cursor getSkillCursor(Context context, long rowIndex) {
+        Cursor domains;
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName()
+                    + " WHERE " + characterIdLabel() + " = ?";
+            domains = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+        } finally {
+            db.close();
+        }
+        return domains;
+    }
+
+    public static void setSkillList(Context context, View view, long rowIndex) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + CharacterContract.CharacterSkills.TABLE_NAME
+                    + " WHERE " + CharacterContract.CharacterSkills.COLUMN_CHARACTER_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            final UseAbilityListAdapter adapter = new UseAbilityListAdapter(context, cursor,
+                    0, TYPE_SKILL, rowIndex);
+            final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                    // if it cannot seek to that position.
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+
+                    if (cursor != null) {
+                        ContentValues skillData = cursorRowToContentValues(cursor);
+                        FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        long skillId = RulesSkillsUtils.getId(skillData);
+
+                        // TODO: cast spell
+                    }
+                }
+            });
+        } finally {
+            db.close();
+        }
     }
 
 }

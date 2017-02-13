@@ -14,12 +14,14 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.character.CharacterContract;
-import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils;
-import com.brave_bunny.dndhelper.play.UseAbilityListAdapter;
 
-import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterDomainsUtil.setDomainList;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil.setFeatList;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.setSkillList;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.setSpellList;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 
 /**
@@ -30,6 +32,7 @@ public class CastSpellActivityFragment extends Fragment {
 
     private View mRootView;
     static long rowIndex;
+    static int mListType;
 
     public CastSpellActivityFragment() {
     }
@@ -41,60 +44,25 @@ public class CastSpellActivityFragment extends Fragment {
 
         Bundle extras = getActivity().getIntent().getExtras();
         rowIndex = (long) extras.get(CastSpellActivity.indexValue);
+        mListType = (int) extras.get(CastSpellActivity.listType);
 
-        getSpells(getContext(), mRootView);
+        switch (mListType) {
+            case TYPE_DOMAIN:
+                setDomainList(getContext(), mRootView, rowIndex);
+                break;
+            case TYPE_FEAT:
+                setFeatList(getContext(), mRootView, rowIndex);
+                break;
+            case TYPE_SKILL:
+                setSkillList(getContext(), mRootView, rowIndex);
+                break;
+            case TYPE_SPELL:
+                setSpellList(getContext(), mRootView, rowIndex);
+                break;
+            default:
+                break;
+        }
 
         return mRootView;
     }
-
-    public void getSpells(Context context, View view) {
-
-        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        try {
-            String query = "SELECT * FROM " + CharacterContract.CharacterSpells.TABLE_NAME
-                    + " WHERE " + CharacterContract.CharacterSpells.COLUMN_CHARACTER_ID + " = ?";
-            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
-
-            final UseAbilityListAdapter adapter = new UseAbilityListAdapter(context, cursor,
-                    0, TYPE_SPELL, rowIndex);
-            final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
-            listView.setAdapter(adapter);
-
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                    // CursorAdapter returns a cursor at the correct position for getItem(), or null
-                    // if it cannot seek to that position.
-                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-
-                    if (cursor != null) {
-                        ContentValues spellItem = cursorRowToContentValues(cursor);
-                        FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        long spellId = RulesSpellsUtils.getSpellId(spellItem);
-
-                        // TODO: cast spell
-                    }
-                }
-            });
-        } finally {
-            db.close();
-        }
-    }
-
-    /* START http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */
-    public View getViewByPosition(int pos, ListView listView) {
-        final int firstListItemPosition = listView.getFirstVisiblePosition();
-        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
-
-        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
-            return listView.getAdapter().getView(pos, null, listView);
-        } else {
-            final int childIndex = pos - firstListItemPosition;
-            return listView.getChildAt(childIndex);
-        }
-    }
-    /* END http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */
 }

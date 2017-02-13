@@ -186,4 +186,30 @@ public class InProgressWeaponsUtil {
         }
         return values;
     }
+
+    public static ContentValues[] getAllWeaponsForCharacter(Context context, long rowIndex) {
+        ContentValues[] allWeapons;
+
+        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
+            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            int numSpells = cursor.getCount();
+            cursor.moveToFirst();
+            allWeapons = new ContentValues[numSpells];
+
+            for (int i = 0; i < numSpells; i++) {
+                allWeapons[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            inProgressDb.close();
+        }
+        return allWeapons;
+    }
 }

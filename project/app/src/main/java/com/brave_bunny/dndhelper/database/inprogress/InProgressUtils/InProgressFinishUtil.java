@@ -3,12 +3,33 @@ package com.brave_bunny.dndhelper.database.inprogress.InProgressUtils;
 import android.content.ContentValues;
 import android.content.Context;
 
+import com.brave_bunny.dndhelper.database.character.CharacterContract;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterArmorUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterDomainsUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterItemsUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterWeaponsUtil;
+import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterArmorUtil.insertArmorIntoCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterDomainsUtil.insertDomainIntoCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil.insertFeatIntoCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterItemsUtil.insertItemsIntoCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.insertSkillIntoCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.insertSpellIntoCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.insertValuesInCharacterTable;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterWeaponsUtil.insertWeaponsIntoCharacterTable;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_CLERIC;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_FIGHTER;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_ROGUE;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_WIZARD;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getClassStats;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getFirstLevelStats;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.removeAllInProgressArmor;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.getInProgressRow;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.removeAllInProgressStats;
@@ -27,12 +48,15 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 
 public class InProgressFinishUtil {
 
+    private static final int TRUE = 1;
+    private static final int FALSE = 0;
+
     public static final int STATE_EMPTY = 0;
     public static final int STATE_PARTIAL = 1;
     public static final int STATE_COMPLETE = 2;
 
     //TODO for all final tables
-    public static void removeAllCharacterData(Context context, long rowIndex) {
+    public static void removeAllInProgressCharacterData(Context context, long rowIndex) {
         removeAllInProgressStats(context, rowIndex);
         removeAllInProgressDomains(context, rowIndex);
         removeAllInProgressSpells(context, rowIndex);
@@ -201,6 +225,299 @@ public class InProgressFinishUtil {
             return true;
         }
         return false;
+    }
+
+    //TODO add all chosen content to all tables (deity, spells, familiar, skills, feats, ...)
+    public static long createNewCharacter(Context context, long inProgressIndex) {
+        ContentValues inProgressValues = InProgressCharacterUtil.getInProgressRow(context, inProgressIndex);
+        ContentValues characterValues = new ContentValues();
+
+        // adding character name
+        String nameString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_NAME);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_NAME, nameString);
+
+        // adding character gender
+        int genderChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_GENDER);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_GENDER, genderChoice);
+
+        // adding character race
+        int raceChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_RACE_ID);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_RACE, raceChoice);
+
+        // adding character age
+        String ageString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_AGE);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_AGE, ageString);
+
+        // adding character weight
+        String weightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_WEIGHT);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WEIGHT, weightString);
+
+        // adding character height
+        String heightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_HEIGHT);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEIGHT, heightString);
+
+        //TODO save religion?
+        // adding character religion
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_RELIGION_ID, 0);
+
+        // adding character alignment
+        int alignChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ALIGN);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
+
+        // adding character strength
+        int strTotal = InProgressCharacterUtil.getTotalStrengthScore(context, inProgressValues);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_STR, strTotal);
+
+        // adding character dexterity
+        int dexTotal = InProgressCharacterUtil.getTotalDexterityScore(context, inProgressValues);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_DEX, dexTotal);
+
+        // adding character constitution
+        int conTotal = InProgressCharacterUtil.getTotalConstitutionScore(context, inProgressValues);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_CON, conTotal);
+
+        // adding character intelligence
+        int intTotal = InProgressCharacterUtil.getTotalIntelligenceScore(context, inProgressValues);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_INT, intTotal);
+
+        // adding character wisdom
+        int wisTotal = InProgressCharacterUtil.getTotalWisdomScore(context, inProgressValues);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WIS, wisTotal);
+
+        // adding character charisma
+        int chaTotal = InProgressCharacterUtil.getTotalCharismaScore(context, inProgressValues);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_CHA, chaTotal);
+
+        // adding character base attack bonus, fortitude, reflex, and will
+        int classChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
+        ContentValues classLevelOneStats = getFirstLevelStats(context, classChoice);
+
+        int baseAttack = 0;
+        int fortitude = RulesCharacterUtils.scoreToModifier(conTotal);
+        int reflex = RulesCharacterUtils.scoreToModifier(dexTotal);
+        int will = RulesCharacterUtils.scoreToModifier(wisTotal);
+
+        switch (classChoice) {
+            case CLASS_CLERIC:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_WILL);
+                break;
+            case CLASS_FIGHTER:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_WILL);
+                break;
+            case CLASS_ROGUE:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_WILL);
+                break;
+            case CLASS_WIZARD:
+                baseAttack = classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
+                fortitude += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_FORT);
+                reflex += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_REF);
+                will += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_WILL);
+                break;
+        }
+        // adding character base attack bonus
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_BASE_ATTACK, baseAttack);
+
+        // adding character fortitude
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_FORT, fortitude);
+
+        // adding character reflex
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_REF, reflex);
+
+        // adding character will
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WILL, will);
+
+        // adding character money
+        int money = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_MONEY);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_MONEY, money);
+
+        //TODO get  load levels
+        // adding character light load
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_LIGHT_LOAD, 0);
+
+        // adding character medium load
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_MED_LOAD, 0);
+
+        // adding character heavy load
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEAVY_LOAD, 0);
+
+        //TODO: add armor bonus, shield bonus, and size modifier
+        // adding character AC
+        int armor_class = 10 + RulesCharacterUtils.scoreToModifier(dexTotal);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_AC, armor_class);
+
+        // adding character HP
+        ContentValues classStats = getClassStats(context, classChoice);
+        int hpDie = classStats.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
+        hpDie += RulesCharacterUtils.scoreToModifier(conTotal);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_CURR, hpDie);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_MAX, hpDie);
+
+        //TODO: check for Improved Initiative feat
+        // adding character initiative
+        int initiative = RulesCharacterUtils.scoreToModifier(dexTotal);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_INITIATIVE, initiative);
+
+
+        // adding character in battle
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_IN_BATTLE, FALSE);
+
+        long characterIndex = insertValuesInCharacterTable(context, characterValues);
+
+        transferDomains(context, inProgressIndex, characterIndex);
+        transferSpells(context, inProgressIndex, characterIndex);
+        transferSkills(context, inProgressIndex, inProgressValues, characterIndex);
+        transferFeats(context, inProgressIndex, characterIndex);
+        transferArmor(context, inProgressIndex, characterIndex);
+        transferWeapons(context, inProgressIndex, characterIndex);
+        transferItems(context, inProgressIndex, characterIndex);
+
+        return characterIndex;
+    }
+
+    public static void transferDomains(Context context, long inProgressIndex, long characterIndex) {
+        ContentValues[] allDomains = InProgressDomainsUtil.getAllDomainsForCharacter(context, inProgressIndex);
+        int numSpells = allDomains.length;
+
+        for (int i = 0; i < numSpells; i++) {
+            ContentValues newValue = new ContentValues();
+            CharacterDomainsUtil.setCharacterId(newValue, characterIndex);
+
+            long domainId = InProgressDomainsUtil.getDomainId(allDomains[i]);
+            CharacterDomainsUtil.setDomainId(newValue, domainId);
+
+            insertDomainIntoCharacterTable(context, newValue);
+        }
+    }
+
+    public static void transferFeats(Context context, long inProgressIndex, long characterIndex) {
+        ContentValues[] allFeats = InProgressFeatsUtil.getAllFeatsForCharacter(context, inProgressIndex);
+        int numSpells = allFeats.length;
+
+        for (int i = 0; i < numSpells; i++) {
+            ContentValues newValue = new ContentValues();
+            CharacterFeatsUtil.setCharacterId(newValue, characterIndex);
+
+            long featId = InProgressFeatsUtil.getFeatId(allFeats[i]);
+            CharacterFeatsUtil.setFeatId(newValue, featId);
+
+            insertFeatIntoCharacterTable(context, newValue);
+        }
+    }
+
+    public static void transferSpells(Context context, long inProgressIndex, long characterIndex) {
+
+        ContentValues[] allSpells = InProgressSpellsUtil.getAllSpellsForCharacter(context, inProgressIndex);
+        int numSpells = allSpells.length;
+
+        for (int i = 0; i < numSpells; i++) {
+            ContentValues newValue = new ContentValues();
+            CharacterSpellsUtil.setCharacterId(newValue, characterIndex);
+
+            long spellIndex = InProgressSpellsUtil.getSpellId(allSpells[i]);
+            CharacterSpellsUtil.setSpellId(newValue, spellIndex);
+
+            insertSpellIntoCharacterTable(context, newValue);
+        }
+    }
+
+    public static void transferSkills(Context context, long inProgressIndex,
+                                      ContentValues inProgressValues, long characterIndex) {
+
+        ContentValues[] allSkills = RulesSkillsUtils.getAllSkills(context);
+        int numSkills = allSkills.length;
+
+        for (int i = 0; i < numSkills; i++) {
+            long skillId = RulesSkillsUtils.getId(allSkills[i]);
+            if (RulesSkillsUtils.canBeUntrained(allSkills[i])) {
+                transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
+            } else if (InProgressSkillsUtil.isSkillListed(context, inProgressIndex, skillId) ) {
+                transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
+            }
+        }
+    }
+
+    public static void transferSkill(Context context, ContentValues skillData, long characterIndex,
+                                     long inProgressIndex, ContentValues inProgressValues) {
+        long skillId = RulesSkillsUtils.getId(skillData);
+
+        ContentValues newEntry = new ContentValues();
+        CharacterSkillsUtil.setCharacterId(newEntry, characterIndex);
+        CharacterSkillsUtil.setSkillId(newEntry, skillId);
+
+        //TODO
+        CharacterSkillsUtil.setSkillInClass(newEntry, false);
+
+        int ranks = InProgressSkillsUtil.getSkillRanks(context, inProgressIndex, skillId);
+        CharacterSkillsUtil.setSkillsRanks(newEntry, ranks);
+
+        int abilMod = InProgressSkillsUtil.getSkillAbilityMod(skillData, inProgressValues);
+        CharacterSkillsUtil.setSkillAbilMod(newEntry, abilMod);
+
+        //TODO
+        int miscMod = 0;
+        CharacterSkillsUtil.setSkillMiscMod(newEntry, miscMod);
+
+        int totalMod = ranks + abilMod + miscMod;
+        CharacterSkillsUtil.setSkillTotalMod(newEntry, totalMod);
+
+        insertSkillIntoCharacterTable(context, newEntry);
+    }
+
+    public static void transferItems(Context context, long inProgressIndex, long characterIndex) {
+
+        ContentValues[] allItems = InProgressItemsUtil.getAllItemsForCharacter(context, inProgressIndex);
+        int numItems = allItems.length;
+
+        for (int i = 0; i < numItems; i++) {
+            ContentValues newValue = new ContentValues();
+            CharacterItemsUtil.setCharacterId(newValue, characterIndex);
+
+            long itemId = InProgressItemsUtil.getItemId(allItems[i]);
+            CharacterItemsUtil.setItemId(newValue, itemId);
+
+            insertItemsIntoCharacterTable(context, newValue);
+        }
+    }
+
+    public static void transferArmor(Context context, long inProgressIndex, long characterIndex) {
+
+        ContentValues[] allArmor = InProgressArmorUtil.getAllArmorForCharacter(context, inProgressIndex);
+        int numArmor = allArmor.length;
+
+        for (int i = 0; i < numArmor; i++) {
+            ContentValues newValue = new ContentValues();
+            CharacterArmorUtil.setCharacterId(newValue, characterIndex);
+
+            long armorId = InProgressArmorUtil.getArmorId(allArmor[i]);
+            CharacterArmorUtil.setArmorId(newValue, armorId);
+
+            insertArmorIntoCharacterTable(context, newValue);
+        }
+    }
+
+    public static void transferWeapons(Context context, long inProgressIndex, long characterIndex) {
+
+        ContentValues[] allWeapons = InProgressWeaponsUtil.getAllWeaponsForCharacter(context, inProgressIndex);
+        int numWeapons = allWeapons.length;
+
+        for (int i = 0; i < numWeapons; i++) {
+            ContentValues newValue = new ContentValues();
+            CharacterWeaponsUtil.setCharacterId(newValue, characterIndex);
+
+            long weaponId = InProgressWeaponsUtil.getWeaponId(allWeapons[i]);
+            CharacterWeaponsUtil.setWeaponId(newValue, weaponId);
+
+            insertWeaponsIntoCharacterTable(context, newValue);
+        }
     }
 
 }

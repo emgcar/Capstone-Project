@@ -72,8 +72,8 @@ public class CreateActivity extends AppCompatActivity
         int characterState = InProgressFinishUtil.checkStateOfCharacterChoices(this, index);
 
         if (characterState == InProgressFinishUtil.STATE_COMPLETE) {
-            CharacterUtil.createNewCharacter(this, index);
-            InProgressFinishUtil.removeAllCharacterData(this, index);
+            InProgressFinishUtil.createNewCharacter(this, index);
+            InProgressFinishUtil.removeAllInProgressCharacterData(this, index);
 
             this.finish();
         }

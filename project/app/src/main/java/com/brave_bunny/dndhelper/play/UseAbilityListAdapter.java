@@ -10,16 +10,20 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterDomainsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesDomainsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils.getFeat;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils.getSkill;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesDomainsUtils.getDomain;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpellsUtils.getSpell;
 
 /**
@@ -61,6 +65,8 @@ public class UseAbilityListAdapter extends CursorAdapter {
         ContentValues selectedItem = cursorRowToContentValues(cursor);
         ContentValues itemData;
 
+        if (selectedItem == null) return;
+
         String name;
         switch(listType) {
             case TYPE_SPELL:
@@ -68,11 +74,11 @@ public class UseAbilityListAdapter extends CursorAdapter {
                 itemData = getSpell(context, itemId);
                 name = RulesSpellsUtils.getSpellName(itemData);
                 break;
-            /*case TYPE_DOMAIN:
-                itemId = CharacterClassUtil.getDomainId(selectedItem);
+            case TYPE_DOMAIN:
+                itemId = CharacterDomainsUtil.getDomainId(selectedItem);
                 itemData = getDomain(context, itemId);
-                name = RulesDomainUtils.getDomainName(itemData);
-                break;*/
+                name = RulesDomainsUtils.getDomainName(itemData);
+                break;
             case TYPE_SKILL:
                 itemId = CharacterSkillsUtil.getSkillId(selectedItem);
                 itemData = getSkill(context, itemId);

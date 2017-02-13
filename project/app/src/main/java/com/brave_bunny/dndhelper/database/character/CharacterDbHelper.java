@@ -81,6 +81,18 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterClasses.COLUMN_LEVEL + " INTEGER NOT NULL )";
 
         sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_CLASSES_TABLE);
+
+        addClericDomainTable(sqLiteDatabase);
+    }
+
+    public void addClericDomainTable(SQLiteDatabase sqLiteDatabase) {
+        final String SQL_CREATE_CHARACTER_CLERIC_DOMAIN_TABLE = "CREATE TABLE " +
+                CharacterContract.ClericDomainEntry.TABLE_NAME + " (" +
+                CharacterContract.ClericDomainEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                CharacterContract.ClericDomainEntry.COLUMN_CHARACTER_ID + " INTEGER NOT NULL," +
+                CharacterContract.ClericDomainEntry.COLUMN_DOMAIN_ID + " INTEGER NOT NULL )";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_CHARACTER_CLERIC_DOMAIN_TABLE);
     }
 
     private void createCharacterSpellsTable(SQLiteDatabase sqLiteDatabase) {

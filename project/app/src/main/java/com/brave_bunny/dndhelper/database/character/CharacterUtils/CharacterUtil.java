@@ -8,20 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
-import com.brave_bunny.dndhelper.database.edition35.RulesContract;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
-
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil.transferFeats;
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.transferSkills;
-import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.transferSpells;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_CLERIC;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_FIGHTER;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_ROGUE;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_WIZARD;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getClassStats;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getFirstLevelStats;
 
 /**
  * Created by Jemma on 1/11/2017.
@@ -97,6 +84,15 @@ public class CharacterUtil {
     public static final int COL_CHARACTER_HP_MAX = 24;
     public static final int COL_CHARACTER_HP_CURR = 25;
     public static final int COL_CHARACTER_IN_BATTLE = 26;
+
+
+    private static String characterIdLabel() {
+        return InProgressContract.CharacterEntry._ID;
+    }
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
 
     public static ContentValues getCharacterRow(Context context, long rowIndex) {
         ContentValues values;
@@ -224,168 +220,6 @@ public class CharacterUtil {
             db.close();
         }
         return index;
-    }
-
-    //TODO add all chosen content to all tables (deity, spells, familiar, skills, feats, ...)
-    public static long createNewCharacter(Context context, long inProgressIndex) {
-        ContentValues inProgressValues = InProgressCharacterUtil.getInProgressRow(context, inProgressIndex);
-        ContentValues characterValues = new ContentValues();
-
-        // adding character name
-        String nameString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_NAME);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_NAME, nameString);
-
-        // adding character gender
-        int genderChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_GENDER);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_GENDER, genderChoice);
-
-        // adding character race
-        int raceChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_RACE_ID);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_RACE, raceChoice);
-
-        // adding character age
-        String ageString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_AGE);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_AGE, ageString);
-
-        // adding character weight
-        String weightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_WEIGHT);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WEIGHT, weightString);
-
-        // adding character height
-        String heightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_HEIGHT);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEIGHT, heightString);
-
-        //TODO save religion?
-        // adding character religion
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_RELIGION_ID, 0);
-
-        // adding character alignment
-        int alignChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ALIGN);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
-
-        // adding character strength
-        int strTotal = InProgressCharacterUtil.getTotalStrengthScore(context, inProgressValues);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_STR, strTotal);
-
-        // adding character dexterity
-        int dexTotal = InProgressCharacterUtil.getTotalDexterityScore(context, inProgressValues);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_DEX, dexTotal);
-
-        // adding character constitution
-        int conTotal = InProgressCharacterUtil.getTotalConstitutionScore(context, inProgressValues);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_CON, conTotal);
-
-        // adding character intelligence
-        int intTotal = InProgressCharacterUtil.getTotalIntelligenceScore(context, inProgressValues);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_INT, intTotal);
-
-        // adding character wisdom
-        int wisTotal = InProgressCharacterUtil.getTotalWisdomScore(context, inProgressValues);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WIS, wisTotal);
-
-        // adding character charisma
-        int chaTotal = InProgressCharacterUtil.getTotalCharismaScore(context, inProgressValues);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_CHA, chaTotal);
-
-        // adding character base attack bonus, fortitude, reflex, and will
-        int classChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_CLASS_ID);
-        ContentValues classLevelOneStats = getFirstLevelStats(context, classChoice);
-
-        int baseAttack = 0;
-        int fortitude = RulesCharacterUtils.scoreToModifier(conTotal);
-        int reflex = RulesCharacterUtils.scoreToModifier(dexTotal);
-        int will = RulesCharacterUtils.scoreToModifier(wisTotal);
-
-        switch (classChoice) {
-            case CLASS_CLERIC:
-                baseAttack = classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
-                fortitude += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_FORT);
-                reflex += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_REF);
-                will += classLevelOneStats.getAsInteger(RulesContract.ClericEntry.COLUMN_WILL);
-                break;
-            case CLASS_FIGHTER:
-                baseAttack = classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
-                fortitude += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_FORT);
-                reflex += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_REF);
-                will += classLevelOneStats.getAsInteger(RulesContract.FighterEntry.COLUMN_WILL);
-                break;
-            case CLASS_ROGUE:
-                baseAttack = classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
-                fortitude += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_FORT);
-                reflex += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_REF);
-                will += classLevelOneStats.getAsInteger(RulesContract.RogueEntry.COLUMN_WILL);
-                break;
-            case CLASS_WIZARD:
-                baseAttack = classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
-                fortitude += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_FORT);
-                reflex += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_REF);
-                will += classLevelOneStats.getAsInteger(RulesContract.WizardEntry.COLUMN_WILL);
-                break;
-        }
-        // adding character base attack bonus
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_BASE_ATTACK, baseAttack);
-
-        // adding character fortitude
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_FORT, fortitude);
-
-        // adding character reflex
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_REF, reflex);
-
-        // adding character will
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_WILL, will);
-
-        // adding character money
-        int money = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_MONEY);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_MONEY, money);
-
-
-        //TODO get  load levels
-        // adding character light load
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_LIGHT_LOAD, 0);
-
-        // adding character medium load
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_MED_LOAD, 0);
-
-        // adding character heavy load
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEAVY_LOAD, 0);
-
-        //TODO: add armor bonus, shield bonus, and size modifier
-        // adding character AC
-        int armor_class = 10 + RulesCharacterUtils.scoreToModifier(dexTotal);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_AC, armor_class);
-
-        // adding character HP
-        ContentValues classStats = getClassStats(context, classChoice);
-        int hpDie = classStats.getAsInteger(RulesContract.ClassEntry.COLUMN_HIT_DIE);
-        hpDie += RulesCharacterUtils.scoreToModifier(conTotal);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_CURR, hpDie);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_MAX, hpDie);
-
-        //TODO: check for Improved Initiative feat
-        // adding character initiative
-        int initiative = RulesCharacterUtils.scoreToModifier(dexTotal);
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_INITIATIVE, initiative);
-
-
-        // adding character in battle
-        characterValues.put(CharacterContract.CharacterEntry.COLUMN_IN_BATTLE, FALSE);
-
-        long characterIndex = insertValuesInCharacterTable(context, characterValues);
-
-        transferSpells(context, inProgressIndex, characterIndex);
-
-        //TODO transfer familiar
-        //TODO transfer domains
-
-        //TODO transfer skills - need to implement all of the extra mods
-        transferSkills(context, inProgressIndex, inProgressValues, characterIndex);
-
-        //TODO transfer feats - need to check
-        transferFeats(context, inProgressIndex, characterIndex);
-
-        //TODO transfer items
-
-        return characterIndex;
     }
 
     public static void deleteValuesFromCharacterTable(Context context, String tableName, long index) {

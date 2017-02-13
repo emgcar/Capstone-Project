@@ -18,11 +18,14 @@ import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
-import com.brave_bunny.dndhelper.play.battle.SkillCheckActivity;
 
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_DWARF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_ELF;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 import static com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment.ROW_INDEX;
 
 public class DetailActivity extends AppCompatActivity {
@@ -48,21 +51,29 @@ public class DetailActivity extends AppCompatActivity {
     public void showSpells(View view) {
         Intent spellActivity = new Intent(this, CastSpellActivity.class);
         spellActivity.putExtra(CastSpellActivity.indexValue, index);
+        spellActivity.putExtra(CastSpellActivity.listType, TYPE_SPELL);
         startActivity(spellActivity);
     }
 
     public void showDomains(View view) {
-
+        Intent activity = new Intent(this, CastSpellActivity.class);
+        activity.putExtra(CastSpellActivity.indexValue, index);
+        activity.putExtra(CastSpellActivity.listType, TYPE_DOMAIN);
+        startActivity(activity);
     }
 
     public void showSkills(View view) {
-        Intent skillActivity = new Intent(this, SkillCheckActivity.class);
-        skillActivity.putExtra(SkillCheckActivity.indexValue, index);
-        startActivity(skillActivity);
+        Intent activity = new Intent(this, CastSpellActivity.class);
+        activity.putExtra(CastSpellActivity.indexValue, index);
+        activity.putExtra(CastSpellActivity.listType, TYPE_SKILL);
+        startActivity(activity);
     }
 
     public void showFeats(View view) {
-
+        Intent activity = new Intent(this, CastSpellActivity.class);
+        activity.putExtra(CastSpellActivity.indexValue, index);
+        activity.putExtra(CastSpellActivity.listType, TYPE_FEAT);
+        startActivity(activity);
     }
 
     public void showFamiliar(View view) {

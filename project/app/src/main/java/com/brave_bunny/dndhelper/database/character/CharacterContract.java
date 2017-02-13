@@ -14,6 +14,7 @@ public class CharacterContract {
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_CHARACTERS = "stats";
     public static final String PATH_CHARACTER_CLASS = "character_class";
+    public static final String PATH_CHARACTER_CLERIC_DOMAIN = "character_cleric_domain";
     public static final String PATH_CHARACTER_SPELLS = "character_spells";
     public static final String PATH_CHARACTER_SKILLS = "character_feats";
     public static final String PATH_CHARACTER_FEATS = "character_feats";
@@ -88,6 +89,22 @@ public class CharacterContract {
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CHARACTER_CLASS;
 
         public static Uri buildCharacterUri(long id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+    }
+
+    public static final class ClericDomainEntry implements BaseColumns {
+        public static final Uri CONTENT_URI =
+                BASE_CONTENT_URI.buildUpon().appendPath(PATH_CHARACTER_CLERIC_DOMAIN).build();
+        public static final String TABLE_NAME = "character_cleric_domain";
+
+        public static final String COLUMN_CHARACTER_ID = "character_id";
+        public static final String COLUMN_DOMAIN_ID = "domain_id";
+
+        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CHARACTER_CLERIC_DOMAIN;
+
+        public static Uri buildClericDomainUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }

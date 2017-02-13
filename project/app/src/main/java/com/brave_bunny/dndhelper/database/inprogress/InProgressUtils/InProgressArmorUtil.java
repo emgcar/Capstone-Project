@@ -187,4 +187,30 @@ public class InProgressArmorUtil {
         }
         return values;
     }
+
+    public static ContentValues[] getAllArmorForCharacter(Context context, long rowIndex) {
+        ContentValues[] allArmor;
+
+        InProgressDbHelper inProgressDbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase inProgressDb = inProgressDbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName() + " WHERE "
+                    + characterIdLabel() + " = ?";
+            Cursor cursor = inProgressDb.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            int numSpells = cursor.getCount();
+            cursor.moveToFirst();
+            allArmor = new ContentValues[numSpells];
+
+            for (int i = 0; i < numSpells; i++) {
+                allArmor[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            inProgressDb.close();
+        }
+        return allArmor;
+    }
 }

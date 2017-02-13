@@ -210,4 +210,32 @@ public class CharacterArmorUtil {
         }
         return values;
     }
+
+    public static void insertArmorIntoCharacterTable(Context context, ContentValues values) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        try {
+            db.insert(getTableName(), null, values);
+        } finally {
+            db.close();
+        }
+    }
+
+    public static void deleteArmorFromCharacterTable(Context context, long characterId) {
+        String query = characterIdLabel() + " = ?";
+        String[] selectionArgs = new String[]{Long.toString(characterId)};
+        deleteFromTable(context, query, selectionArgs);
+    }
+
+    public static void deleteFromTable(Context context, String query, String[] selectionArgs) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            db.delete(getTableName(), query, selectionArgs);
+        } finally {
+            db.close();
+        }
+    }
 }
