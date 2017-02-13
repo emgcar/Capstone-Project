@@ -378,7 +378,7 @@ public class CharacterUtil {
         //TODO transfer domains
 
         //TODO transfer skills - need to implement all of the extra mods
-        transferSkills(context, inProgressIndex, characterIndex);
+        transferSkills(context, inProgressIndex, inProgressValues, characterIndex);
 
         //TODO transfer feats - need to check
         transferFeats(context, inProgressIndex, characterIndex);

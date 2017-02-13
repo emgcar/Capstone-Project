@@ -9,6 +9,7 @@ import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_CLERIC;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_FIGHTER;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_ROGUE;
@@ -19,6 +20,9 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.Ru
  */
 
 public class RulesSkillsUtils {
+
+    public static final int TRUE = 1;
+    public static final int FALSE = 0;
 
     private static final String tableName = RulesContract.SkillsEntry.TABLE_NAME;
 
@@ -58,6 +62,14 @@ public class RulesSkillsUtils {
         return value.getAsString(SKILL_COLUMNS[COL_SKILL_NAME]);
     }
 
+    public static boolean canBeUntrained(ContentValues value) {
+        return (value.getAsInteger(SKILL_COLUMNS[COL_SKILL_UNTRAINED])==TRUE);
+    }
+
+    public static String getBaseScore(ContentValues skillData) {
+        return skillData.getAsString(SKILL_COLUMNS[COL_SKILL_BASE_SCORE]);
+    }
+
     public static ContentValues getSkill(Context context, long skillId) {
         String query = "SELECT * FROM " + tableName + " WHERE " + SKILL_COLUMNS[COL_SKILL_ID] + " = ?";
         return getStats(context, query, skillId);
@@ -75,7 +87,7 @@ public class RulesSkillsUtils {
             cursor.moveToFirst();
 
             if(cursor.getCount() > 0) {
-                values = Utility.cursorRowToContentValues(cursor);
+                values = cursorRowToContentValues(cursor);
             }
             cursor.close();
         } finally {
@@ -91,6 +103,31 @@ public class RulesSkillsUtils {
 
         String query = "SELECT * FROM " + RulesContract.SkillsEntry.TABLE_NAME;
         return getSkillList(context, query, null);
+    }
+
+    public static ContentValues[] getAllSkills(Context context) {
+        ContentValues[] values = null;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + RulesContract.SkillsEntry.TABLE_NAME;
+            Cursor cursor = db.rawQuery(query, null);
+            int numSkills = cursor.getCount();
+            values = new ContentValues[numSkills];
+
+            cursor.moveToFirst();
+            for (int i = 0; i < numSkills; i++) {
+                values[i] = cursorRowToContentValues(cursor);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        } finally {
+            db.close();
+        }
+
+        return values;
     }
 
     public static Cursor getCrossClassSkills(Context context, int classIndex) {
@@ -147,5 +184,9 @@ public class RulesSkillsUtils {
                 break;
         }
         return classColumn;
+    }
+
+    public static int maxRanksPerLevel(int level) {
+        return level + 3;
     }
 }

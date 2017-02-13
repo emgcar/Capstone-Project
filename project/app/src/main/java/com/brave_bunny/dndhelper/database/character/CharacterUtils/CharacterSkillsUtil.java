@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
 
@@ -135,21 +136,47 @@ public class CharacterSkillsUtil {
     /* DATABASE FUNCTIONS */
 
     //TODO add all of the extra modifiers
-    public static void transferSkills(Context context, long inProgressIndex, long characterIndex) {
+    public static void transferSkills(Context context, long inProgressIndex,
+                                      ContentValues inProgressValues, long characterIndex) {
 
-
-        ContentValues[] allSkills = InProgressSkillsUtil.getAllSkillsForCharacter(context, inProgressIndex);
+        ContentValues[] allSkills = RulesSkillsUtils.getAllSkills(context);
         int numSkills = allSkills.length;
 
         for (int i = 0; i < numSkills; i++) {
-            ContentValues newValue = new ContentValues();
-            newValue.put(characterIdLabel(), characterIndex);
-
-            long skillIndex = InProgressSkillsUtil.getSkillId(allSkills[i]);
-            newValue.put(skillIdLabel(), skillIndex);
-
-            insertSkillIntoCharacterTable(context, newValue);
+            long skillId = RulesSkillsUtils.getId(allSkills[i]);
+            if (RulesSkillsUtils.canBeUntrained(allSkills[i])) {
+                transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
+            } else if (InProgressSkillsUtil.isSkillListed(context, inProgressIndex, skillId) ) {
+                transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
+            }
         }
+    }
+
+    public static void transferSkill(Context context, ContentValues skillData, long characterIndex,
+                                     long inProgressIndex, ContentValues inProgressValues) {
+        long skillId = RulesSkillsUtils.getId(skillData);
+
+        ContentValues newEntry = new ContentValues();
+        CharacterSkillsUtil.setCharacterId(newEntry, characterIndex);
+        CharacterSkillsUtil.setSkillId(newEntry, skillId);
+
+        //TODO
+        CharacterSkillsUtil.setSkillInClass(newEntry, false);
+
+        int ranks = InProgressSkillsUtil.getSkillRanks(context, inProgressIndex, skillId);
+        CharacterSkillsUtil.setSkillsRanks(newEntry, ranks);
+
+        int abilMod = InProgressSkillsUtil.getSkillAbilityMod(skillData, inProgressValues);
+        CharacterSkillsUtil.setSkillAbilMod(newEntry, abilMod);
+
+        //TODO
+        int miscMod = 0;
+        CharacterSkillsUtil.setSkillMiscMod(newEntry, miscMod);
+
+        int totalMod = ranks + abilMod + miscMod;
+        CharacterSkillsUtil.setSkillTotalMod(newEntry, totalMod);
+
+        insertSkillIntoCharacterTable(context, newEntry);
     }
 
     public static void insertSkillIntoCharacterTable(Context context, ContentValues values) {

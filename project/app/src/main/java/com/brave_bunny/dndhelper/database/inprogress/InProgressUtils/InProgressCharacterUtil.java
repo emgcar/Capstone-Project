@@ -648,6 +648,7 @@ public class InProgressCharacterUtil {
         }
     }
 
+    //TODO check number of feats and skills
     private static boolean isAtLeastPartiallyFilled(Context context, ContentValues values) {
         boolean isPartiallyFilled = areDetailsPartiallyFilled(values);
         isPartiallyFilled |= areAbilitiesPartiallyFilled(values);
@@ -683,6 +684,7 @@ public class InProgressCharacterUtil {
         return isPartiallyFilled;
     }
 
+    //TODO check that skill points are spent and feats are selected
     private static boolean isCompletelyFilled(Context context, ContentValues values) {
         boolean isCompletelyFilled = areDetailsFilled(values);
         isCompletelyFilled &= areAbilitiesFilled(values);

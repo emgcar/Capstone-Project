@@ -20,6 +20,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.addFeatSelection;
@@ -65,7 +66,7 @@ public class FeatActivityFragment extends Fragment {
             String query = "SELECT * FROM " + RulesContract.FeatEntry.TABLE_NAME;
             Cursor cursor = db.rawQuery(query, null);
 
-            int numberFeats = getNumberFeats();
+            int numberFeats = InProgressFeatsUtil.getNumberFeatsAllowed(mValues);
 
             final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor, 0,
                     DnDListAdapter.LIST_TYPE_FEAT, rowIndex, numberFeats);
@@ -107,15 +108,11 @@ public class FeatActivityFragment extends Fragment {
         }
     }
 
-    public int getNumberFeats() {
-        //TODO find number feats
-        return 1;
-    }
-
     public void updateNumberSelected(DnDListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_feats);
         int numberSelected = adapter.getNumberSelected();
-        textView.setText(getString(R.string.selected_feats, numberSelected, getNumberFeats()));
+        textView.setText(getString(R.string.selected_feats, numberSelected,
+                InProgressFeatsUtil.getNumberFeatsAllowed(mValues)));
     }
 
     /* START http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */

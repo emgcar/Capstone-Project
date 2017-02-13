@@ -9,6 +9,7 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
 
 /**
  * Handles all of the selected feats for in-progress characters.
@@ -49,6 +50,15 @@ public class InProgressFeatsUtil {
     }
 
     /* DATABASE FUNCTIONS */
+
+    public static int getNumberFeatsAllowed(ContentValues values) {
+        int race = InProgressCharacterUtil.getCharacterRace(values);
+        if (race == RACE_HUMAN) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
 
     public static void removeAllInProgressFeats(Context context, long rowIndex) {
         String query = characterIdLabel() + " = ?";

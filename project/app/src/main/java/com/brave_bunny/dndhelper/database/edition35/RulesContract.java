@@ -84,6 +84,9 @@ public class RulesContract {
         public static final String COLUMN_WIS = "wisdom_mod";
         public static final String COLUMN_CHA = "charisma_mod";
 
+        public static final String COLUMN_SIZE = "size";
+        public static final String COLUMN_SPEED = "speed";
+
         static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RACES;
 

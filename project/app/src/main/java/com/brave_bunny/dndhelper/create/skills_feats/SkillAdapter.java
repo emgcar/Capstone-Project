@@ -18,6 +18,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesItemsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesWeaponsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil;
@@ -61,10 +62,11 @@ public class SkillAdapter extends CursorAdapter {
         skillRanksSpent = numberSkillPointsSpent(context, rowIndex);
 
         //TODO find maximum skill ranks to spend
-        maximumSkillPoints = 13;
+        ContentValues values = InProgressCharacterUtil.getInProgressRow(mContext, mRowIndex);
+        maximumSkillPoints = InProgressSkillsUtil.getTotalSkillPointsToSpend(values);
 
         //TODO change for cross-class
-        maxRanks = 4;
+        maxRanks = RulesSkillsUtils.maxRanksPerLevel(1);
 
         mType = type;
     }

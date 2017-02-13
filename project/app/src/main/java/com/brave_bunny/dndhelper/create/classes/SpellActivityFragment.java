@@ -117,7 +117,6 @@ public class SpellActivityFragment extends Fragment {
                 numberSpells = 0;
             } else {
                 numberSpells += RulesCharacterUtils.scoreToModifier(mIntScore);
-                numberSpells += RulesSpellsUtils.getBonusSpellsForAbilityModAndLevel(mIntScore, 1);
             }
         }
         return numberSpells;

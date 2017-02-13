@@ -5,10 +5,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_CLERIC;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_FIGHTER;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_ROGUE;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_WIZARD;
 
 /**
  * Handles all of the selected skills for in-progress characters.
@@ -75,6 +82,36 @@ public class InProgressSkillsUtil {
     }
 
     /* DATABASE FUNCTIONS */
+
+    //TODO
+    public static int getTotalSkillPointsToSpend(ContentValues values) {
+        int skillPoints = 0;
+
+        // This rule can be found in Player's Handbook on pg 13.
+        int race = InProgressCharacterUtil.getCharacterRace(values);
+        if (race == RACE_HUMAN) {
+            skillPoints += 4;
+        }
+
+        // These rules in Player's Handbook in Ch 3.
+        int intScore = InProgressCharacterUtil.getCharacterInt(values);
+        int intMod = RulesCharacterUtils.scoreToModifier(intScore);
+        int classId = InProgressCharacterUtil.getCharacterClass(values);
+        switch (classId) {
+            case CLASS_CLERIC:
+            case CLASS_FIGHTER:
+            case CLASS_WIZARD:
+                skillPoints += (2 + intMod)*4;
+                break;
+            case CLASS_ROGUE:
+                skillPoints += (8 + intMod)*4;
+                break;
+        }
+
+        if (skillPoints <= 0) return 1;
+
+        return skillPoints;
+    }
 
     public static void removeAllInProgressSkills(Context context, long rowIndex) {
         String query = characterIdLabel() + " = ?";
@@ -236,5 +273,23 @@ public class InProgressSkillsUtil {
             inProgressDb.close();
         }
         return allSkills;
+    }
+
+    public static int getSkillAbilityMod(ContentValues skillData, ContentValues inProgressData) {
+        String baseScore = RulesSkillsUtils.getBaseScore(skillData);
+
+        if (baseScore.equals("STR"))
+            return InProgressCharacterUtil.getCharacterStr(inProgressData);
+        if (baseScore.equals("DEX"))
+            return InProgressCharacterUtil.getCharacterDex(inProgressData);
+        if (baseScore.equals("CON"))
+            return InProgressCharacterUtil.getCharacterCon(inProgressData);
+        if (baseScore.equals("INT"))
+            return InProgressCharacterUtil.getCharacterInt(inProgressData);
+        if (baseScore.equals("WIS"))
+            return InProgressCharacterUtil.getCharacterWis(inProgressData);
+        if (baseScore.equals("CHA"))
+            return InProgressCharacterUtil.getCharacterCha(inProgressData);
+        return 0;
     }
 }

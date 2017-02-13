@@ -145,14 +145,16 @@ public class RulesDbHelper extends SQLiteOpenHelper {
                 RulesContract.RaceEntry.COLUMN_CON + " INTEGER NOT NULL," +
                 RulesContract.RaceEntry.COLUMN_INT + " INTEGER NOT NULL," +
                 RulesContract.RaceEntry.COLUMN_WIS + " INTEGER NOT NULL," +
-                RulesContract.RaceEntry.COLUMN_CHA + " INTEGER NOT NULL )";
+                RulesContract.RaceEntry.COLUMN_CHA + " INTEGER NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_SIZE + " STRING NOT NULL," +
+                RulesContract.RaceEntry.COLUMN_SPEED + " INTEGER NOT NULL )";
 
         mDatabase.execSQL(SQL_CREATE_CLASS_TABLE);
 
-        //                             STR DEX CON INT WIS CHA
-        insertInRaceTable("1, 'Human',  0,  0,  0,  0,  0,  0");
-        insertInRaceTable("2, 'Dwarf',  0,  0,  2,  0,  0, -2");
-        insertInRaceTable("3, 'Elf',    0,  2, -2,  0,  0,  0");
+        //                             STR DEX CON INT WIS CHA SZ SPD
+        insertInRaceTable("1, 'Human',  0,  0,  0,  0,  0,  0, 'M', 30");
+        insertInRaceTable("2, 'Dwarf',  0,  0,  2,  0,  0, -2, 'M', 20");
+        insertInRaceTable("3, 'Elf',    0,  2, -2,  0,  0,  0, 'M', 30");
     }
 
     public void insertInRaceTable(String string) {
