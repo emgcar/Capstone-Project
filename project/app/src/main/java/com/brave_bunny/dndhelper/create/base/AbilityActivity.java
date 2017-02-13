@@ -49,7 +49,7 @@ public class AbilityActivity extends AppCompatActivity {
     public void onRerollSelected() {
 
         AbilityFragment abilityFragment = (AbilityFragment)
-                getSupportFragmentManager().findFragmentById(R.id.fragment);
+                getSupportFragmentManager().findFragmentById(R.id.container);
 
         if (abilityFragment != null) {
             abilityFragment.updateTexts();

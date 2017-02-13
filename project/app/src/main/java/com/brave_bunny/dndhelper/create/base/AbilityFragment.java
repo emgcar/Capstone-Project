@@ -8,9 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.ABILITY1;
@@ -25,6 +27,7 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.ABILITYINT;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.ABILITYSTR;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.ABILITYWIS;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.getInProgressRow;
 
 
 public class AbilityFragment extends Fragment {
@@ -82,11 +85,13 @@ public class AbilityFragment extends Fragment {
         updateTexts();
         setUpOptionListeners();
         setUpAbilityListeners();
+        updateRollAbilityButtonState();
 
         return rootView;
     }
 
     public void updateTexts() {
+        mValues = getInProgressRow(getContext(), mIndex);
         int ability1Score = InProgressCharacterUtil.getCharacterAbility1(mValues);
         int ability2Score = InProgressCharacterUtil.getCharacterAbility2(mValues);
         int ability3Score = InProgressCharacterUtil.getCharacterAbility3(mValues);
@@ -102,6 +107,7 @@ public class AbilityFragment extends Fragment {
         mViewHolder.mOption6Text.setText(Integer.toString(ability6Score));
 
         updateAbilityTexts();
+        updateRollAbilityButtonState();
     }
 
     private void updateAbilityTexts() {
@@ -445,6 +451,41 @@ public class AbilityFragment extends Fragment {
         }
     }
 
+
+    private void updateRollAbilityButtonState() {
+        mViewHolder.mReRollButton.setEnabled(false);
+
+        int sumOfModifiers;
+        int highestTotalScore = 0;
+
+        int firstScore = InProgressCharacterUtil.getCharacterAbility1(mValues);
+        int secondScore = InProgressCharacterUtil.getCharacterAbility2(mValues);
+        int thirdScore = InProgressCharacterUtil.getCharacterAbility3(mValues);
+        int fourthScore = InProgressCharacterUtil.getCharacterAbility4(mValues);
+        int fifthScore = InProgressCharacterUtil.getCharacterAbility5(mValues);
+        int sixthScore = InProgressCharacterUtil.getCharacterAbility6(mValues);
+
+        if (firstScore > highestTotalScore) highestTotalScore = firstScore;
+        if (secondScore > highestTotalScore) highestTotalScore = firstScore;
+        if (thirdScore > highestTotalScore) highestTotalScore = thirdScore;
+        if (fourthScore > highestTotalScore) highestTotalScore = fourthScore;
+        if (fifthScore > highestTotalScore) highestTotalScore = fifthScore;
+        if (sixthScore > highestTotalScore) highestTotalScore = sixthScore;
+
+        sumOfModifiers = RulesCharacterUtils.scoreToModifier(firstScore);
+        sumOfModifiers += RulesCharacterUtils.scoreToModifier(secondScore);
+        sumOfModifiers += RulesCharacterUtils.scoreToModifier(thirdScore);
+        sumOfModifiers += RulesCharacterUtils.scoreToModifier(fourthScore);
+        sumOfModifiers += RulesCharacterUtils.scoreToModifier(fifthScore);
+        sumOfModifiers += RulesCharacterUtils.scoreToModifier(sixthScore);
+
+        // Rule in Players Handbook pg 8
+        // allows re-rolling if scores considered too low
+        if ((sumOfModifiers <= 0) || (highestTotalScore <= 13)) {
+            mViewHolder.mReRollButton.setEnabled(true);
+        }
+    }
+
     /*public void setOptionListeners(View rootView, int id) {
         TextView view = (TextView) rootView.findViewById(id);
         view.setOnDragListener(new ChoiceDragListener());
@@ -544,6 +585,8 @@ public class AbilityFragment extends Fragment {
         public TextView mWisText;
         public TextView mChaText;
 
+        public Button mReRollButton;
+
         public AbilityViewHolder(View view) {
             super(view);
 
@@ -560,6 +603,8 @@ public class AbilityFragment extends Fragment {
             mIntText = (TextView) view.findViewById(R.id.ability_intelligence);
             mWisText = (TextView) view.findViewById(R.id.ability_wisdom);
             mChaText = (TextView) view.findViewById(R.id.ability_charisma);
+
+            mReRollButton = (Button) view.findViewById(R.id.reroll_button);
         }
     }
 

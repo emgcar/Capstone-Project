@@ -220,6 +220,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/reroll_button"
             android:text="@string/reroll_ability"
             android:onClick="rerollScores"/>
     </LinearLayout>
