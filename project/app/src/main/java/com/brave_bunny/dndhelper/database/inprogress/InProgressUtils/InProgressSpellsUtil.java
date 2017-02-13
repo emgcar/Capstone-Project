@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
@@ -173,5 +174,20 @@ public class InProgressSpellsUtil {
             inProgressDb.close();
         }
         return allSpells;
+    }
+
+    public static int getTotalSpellsToLearn(ContentValues inProgressCharacter) {
+        int intScore = InProgressCharacterUtil.getCharacterInt(inProgressCharacter);
+
+        int numberSpells = 3;
+
+        if (intScore != -1) {
+            if (intScore <= 9) {
+                numberSpells = 0;
+            } else {
+                numberSpells += RulesCharacterUtils.scoreToModifier(intScore);
+            }
+        }
+        return numberSpells;
     }
 }

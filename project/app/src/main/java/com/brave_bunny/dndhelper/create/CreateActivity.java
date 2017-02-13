@@ -19,6 +19,7 @@ import com.brave_bunny.dndhelper.create.skills_feats.FeatActivity;
 import com.brave_bunny.dndhelper.create.skills_feats.SkillsActivity;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
+import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFinishUtil;
 
 /**
  * Created by Jemma on 8/7/2016.
@@ -68,11 +69,11 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void createCharacter(View view) {
-        int characterState = InProgressCharacterUtil.checkStateOfCharacterChoices(this, index);
+        int characterState = InProgressFinishUtil.checkStateOfCharacterChoices(this, index);
 
-        if (characterState == InProgressCharacterUtil.STATE_COMPLETE) {
+        if (characterState == InProgressFinishUtil.STATE_COMPLETE) {
             CharacterUtil.createNewCharacter(this, index);
-            InProgressCharacterUtil.removeAllCharacterData(this, index);
+            InProgressFinishUtil.removeAllCharacterData(this, index);
 
             this.finish();
         }

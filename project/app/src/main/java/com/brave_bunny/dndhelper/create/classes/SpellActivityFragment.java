@@ -24,6 +24,7 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressC
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.addSpellSelection;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.getTotalSpellsToLearn;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.isSpellSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.removeSpellSelection;
 
@@ -35,6 +36,7 @@ public class SpellActivityFragment extends Fragment {
     private View mRootView;
     private int mIntScore;
     static long rowIndex;
+    private static ContentValues mInProgressCharacter;
     InProgressCharacterUtil mInProgressCharacterUtil;
 
     public SpellActivityFragment() {
@@ -48,8 +50,8 @@ public class SpellActivityFragment extends Fragment {
 
         Bundle extras = getActivity().getIntent().getExtras();
         rowIndex = (long) extras.get(DeityActivity.indexValue);
-        ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);
-        mIntScore = InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), values);
+        mInProgressCharacter = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);
+        mIntScore = InProgressCharacterUtil.getTotalIntelligenceScore(getContext(), mInProgressCharacter);
 
         getSpells(getContext(), mRootView);
 
@@ -67,7 +69,7 @@ public class SpellActivityFragment extends Fragment {
                     + " WHERE " + RulesContract.SpellsEntry.COLUMN_LEVEL + " = ?";
             Cursor cursor = db.rawQuery(query, new String[]{"1"});
 
-            int numberSpells = getNumberSpells();
+            int numberSpells = getTotalSpellsToLearn(mInProgressCharacter);
 
             final DnDListAdapter adapter = new DnDListAdapter(getContext(), cursor, 0,
                     DnDListAdapter.LIST_TYPE_SPELL, rowIndex, numberSpells);
@@ -109,23 +111,11 @@ public class SpellActivityFragment extends Fragment {
         }
     }
 
-    public int getNumberSpells() {
-        int numberSpells = 3;
-
-        if (mIntScore != -1) {
-            if (mIntScore <= 9) {
-                numberSpells = 0;
-            } else {
-                numberSpells += RulesCharacterUtils.scoreToModifier(mIntScore);
-            }
-        }
-        return numberSpells;
-    }
-
     public void updateNumberSelected(DnDListAdapter adapter) {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
         int numberSelected = adapter.getNumberSelected();
-        textView.setText(getString(R.string.selected_spells, numberSelected, getNumberSpells()));
+        textView.setText(getString(R.string.selected_spells, numberSelected,
+                getTotalSpellsToLearn(mInProgressCharacter)));
     }
 
     /* START http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */

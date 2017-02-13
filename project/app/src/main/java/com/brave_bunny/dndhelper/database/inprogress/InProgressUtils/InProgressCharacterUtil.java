@@ -20,13 +20,6 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.Ru
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_ROGUE;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_WIZARD;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.getClassStats;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_CHA;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_CON;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_DEX;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_INT;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_STR;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.COL_RACE_WIS;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_COLUMNS;
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.getRaceStats;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.removeAllInProgressArmor;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.numberDomainsSelected;
@@ -45,10 +38,6 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 
 
 public class InProgressCharacterUtil {
-
-    public static final int STATE_EMPTY = 0;
-    public static final int STATE_PARTIAL = 1;
-    public static final int STATE_COMPLETE = 2;
 
     public static final int ABILITY1 = 1;
     public static final int ABILITY2 = 2;
@@ -73,7 +62,7 @@ public class InProgressCharacterUtil {
     }
 
     private static String characterIdLabel() {
-        return InProgressContract.CharacterEntry.TABLE_NAME + "." + InProgressContract.CharacterEntry._ID;
+        return InProgressContract.CharacterEntry._ID;
     }
 
     private static String characterNameLabel() {
@@ -189,6 +178,10 @@ public class InProgressCharacterUtil {
     }
 
     /* PARSE VALUES*/
+
+    public static long getId(ContentValues values) {
+        return values.getAsLong(characterIdLabel());
+    }
 
     public static String getCharacterName(ContentValues values) {
         return values.getAsString(characterNameLabel());
@@ -491,19 +484,7 @@ public class InProgressCharacterUtil {
      *      CHARACTER util functions
      */
 
-    //TODO for all final tables
-    public static void removeAllCharacterData(Context context, long rowIndex) {
-        removeAllInProgressStats(context, rowIndex);
-        removeAllInProgressDomains(context, rowIndex);
-        removeAllInProgressSpells(context, rowIndex);
-        removeAllInProgressSkills(context, rowIndex);
-        removeAllInProgressFeats(context, rowIndex);
-        removeAllInProgressArmor(context, rowIndex);
-        removeAllInProgressWeapons(context, rowIndex);
-        removeAllInProgressItems(context, rowIndex);
-    }
-
-    private static void removeAllInProgressStats(Context context, long rowIndex) {
+    public static void removeAllInProgressStats(Context context, long rowIndex) {
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -636,95 +617,6 @@ public class InProgressCharacterUtil {
 
     }
 
-    public static int checkStateOfCharacterChoices(Context context, long index) {
-        ContentValues values = getInProgressRow(context, index);
-
-        if (isCompletelyFilled(context, values)) {
-            return STATE_COMPLETE;
-        } else if (isAtLeastPartiallyFilled(context, values)) {
-            return STATE_PARTIAL;
-        } else {
-            return STATE_EMPTY;
-        }
-    }
-
-    //TODO check number of feats and skills
-    private static boolean isAtLeastPartiallyFilled(Context context, ContentValues values) {
-        boolean isPartiallyFilled = areDetailsPartiallyFilled(values);
-        isPartiallyFilled |= areAbilitiesPartiallyFilled(values);
-        isPartiallyFilled |= areClassSpecificsPartiallyFilled(context, values);
-        return isPartiallyFilled;
-    }
-
-    private static boolean areDetailsPartiallyFilled(ContentValues values) {
-        boolean isPartiallyFilled = isStringSet(values, characterNameLabel());
-        isPartiallyFilled |= isOptionSelected(values, characterRaceLabel());
-        return isPartiallyFilled;
-    }
-
-    private static boolean areClassSpecificsPartiallyFilled(Context context, ContentValues values) {
-        int classValue = values.getAsInteger(characterClassLabel());
-        boolean isPartiallyFilled = (classValue > 0);
-
-        switch (classValue) {
-            case CLASS_CLERIC:
-                int numberDomain = numberDomainsSelected(context, values);
-                isPartiallyFilled |= (numberDomain > 0);
-                break;
-            case CLASS_FIGHTER:
-                break;
-            case CLASS_ROGUE:
-                break;
-            case CLASS_WIZARD:
-                isPartiallyFilled |= isFamiliarSelected(values);
-                int numberSpells = numberSpellsSelected(context, values);
-                isPartiallyFilled |= (numberSpells > 0);
-                break;
-        }
-        return isPartiallyFilled;
-    }
-
-    //TODO check that skill points are spent and feats are selected
-    private static boolean isCompletelyFilled(Context context, ContentValues values) {
-        boolean isCompletelyFilled = areDetailsFilled(values);
-        isCompletelyFilled &= areAbilitiesFilled(values);
-        isCompletelyFilled &= areClassSpecificsFilled(context, values);
-        return isCompletelyFilled;
-    }
-
-    private static boolean areDetailsFilled(ContentValues values) {
-        boolean isFilled = isStringSet(values, characterNameLabel());
-        isFilled &= isOptionSelected(values, characterRaceLabel());
-        return isFilled;
-    }
-
-    private static boolean areClassSpecificsFilled(Context context, ContentValues values) {
-        int classValue = values.getAsInteger(characterClassLabel());
-        boolean isFilled = (classValue > 0);
-
-        switch (classValue) {
-            case CLASS_CLERIC:
-                int numberDomain = numberDomainsSelected(context, values);
-                isFilled &= (numberDomain == 2);
-                break;
-            case CLASS_FIGHTER:
-                break;
-            case CLASS_ROGUE:
-                break;
-            case CLASS_WIZARD:
-                isFilled &= isFamiliarSelected(values);
-
-                int numberSpells = numberSpellsSelected(context, values);
-                Object intScore = values.get(characterIntelligenceLabel());
-                if (intScore != null) {
-                    long intMod = RulesCharacterUtils.scoreToModifier((long)intScore);
-                    isFilled &= (numberSpells == (3 + intMod));
-                }
-                break;
-        }
-        return isFilled;
-    }
-
     public static void updateClassValues(Context context, long rowIndex, int classSelection) {
         ContentValues values = getInProgressRow(context, rowIndex);
         long previousClass = getCharacterClass(values);
@@ -768,9 +660,6 @@ public class InProgressCharacterUtil {
         updateInProgressTable(context, values, rowIndex);
     }
 
-    private static boolean isFamiliarSelected(ContentValues values) {
-        return isLongSet(getCharacterFamiliar(values));
-    }
 
     /*
      *      ABILITY util functions
@@ -848,26 +737,6 @@ public class InProgressCharacterUtil {
         if (score == -1) return score;
         score += getAbilityScoreModifier(context, values, ABILITYCHA);
         return score;
-    }
-
-    private static boolean areAbilitiesFilled(ContentValues values) {
-        boolean isFilled = isIntegerSet(getCharacterStr(values));
-        isFilled &= isIntegerSet(getCharacterDex(values));
-        isFilled &= isIntegerSet(getCharacterCon(values));
-        isFilled &= isIntegerSet(getCharacterInt(values));
-        isFilled &= isIntegerSet(getCharacterWis(values));
-        isFilled &= isIntegerSet(getCharacterCha(values));
-        return isFilled;
-    }
-
-    private static boolean areAbilitiesPartiallyFilled(ContentValues values) {
-        boolean isPartiallyFilled = isIntegerSet(getCharacterStr(values));
-        isPartiallyFilled |= isIntegerSet(getCharacterDex(values));
-        isPartiallyFilled |= isIntegerSet(getCharacterCon(values));
-        isPartiallyFilled |= isIntegerSet(getCharacterInt(values));
-        isPartiallyFilled |= isIntegerSet(getCharacterWis(values));
-        isPartiallyFilled |= isIntegerSet(getCharacterCha(values));
-        return isPartiallyFilled;
     }
 
     private static int generateAbilityScore(Random rand) {
