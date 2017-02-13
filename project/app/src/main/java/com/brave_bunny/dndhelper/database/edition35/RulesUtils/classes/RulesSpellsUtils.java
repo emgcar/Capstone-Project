@@ -75,4 +75,12 @@ public class RulesSpellsUtils {
 
         return values;
     }
+
+    /*
+     *  Add bonus spells based on ability mod and level.
+     *  More details found in Player's handbook pg 8.
+     */
+    public static int getBonusSpellsForAbilityModAndLevel(int abilityMod, int level) {
+        return (abilityMod - 2 - 2*level)/8;
+    }
 }
