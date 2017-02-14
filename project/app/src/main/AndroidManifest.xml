@@ -45,7 +45,7 @@
         </activity>
         <activity android:name=".create.base.AbilityActivity" />
         <activity
-            android:name=".create.skills_feats.SkillsActivity"
+            android:name=".create.list_with_ranks.DnDRankActivity"
             android:label="Skills">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -84,7 +84,7 @@
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
         <activity
-            android:name=".create.skills_feats.FeatActivity"
+            android:name=".create.classes.FeatActivity"
             android:label="@string/title_activity_feat"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

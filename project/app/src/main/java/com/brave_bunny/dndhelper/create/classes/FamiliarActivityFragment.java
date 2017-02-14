@@ -14,7 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesFamiliarsUtils;

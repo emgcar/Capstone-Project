@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create;
+package com.brave_bunny.dndhelper.create.classes;
 
 import android.content.ContentValues;
 import android.content.Context;

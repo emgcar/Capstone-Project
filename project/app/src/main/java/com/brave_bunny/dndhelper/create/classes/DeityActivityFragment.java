@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
@@ -32,6 +31,9 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
  * A placeholder fragment containing a simple view.
  */
 public class DeityActivityFragment extends Fragment {
+
+    public static final int TYPE_DOMAIN = 0;
+    public static final int TYPE_WEAPON = 1;
 
     ContentValues mValues;
     static long rowIndex;

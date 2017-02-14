@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create.skills_feats;
+package com.brave_bunny.dndhelper.create.classes;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

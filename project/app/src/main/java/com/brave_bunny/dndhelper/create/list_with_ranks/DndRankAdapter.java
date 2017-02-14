@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create.skills_feats;
+package com.brave_bunny.dndhelper.create.list_with_ranks;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,17 +11,12 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.Utility;
-import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesArmorUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesItemsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesSkillsUtils;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesWeaponsUtils;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
-import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.addOrUpdateArmorSelection;
@@ -33,12 +28,16 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil.numberSkillPointsSpent;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil.addOrUpdateWeaponSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressWeaponsUtil.getWeaponCount;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ARMOR;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_WEAPON;
 
 /**
  * Created by Jemma on 1/30/2017.
  */
 
-public class SkillAdapter extends CursorAdapter {
+public class DndRankAdapter extends CursorAdapter {
 
     private Context mContext;
     private View mRootView;
@@ -48,20 +47,14 @@ public class SkillAdapter extends CursorAdapter {
     private long mRowIndex;
 
     private int mType;
-    public final static int TYPE_SKILLS = 0;
-    public final static int TYPE_ARMOR = 1;
-    public final static int TYPE_WEAPONS = 2;
-    public final static int TYPE_ITEMS = 3;
 
-    public SkillAdapter(Context context, Cursor c, int flags, long rowIndex, int type) {
+    public DndRankAdapter(Context context, Cursor c, int flags, long rowIndex, int type) {
         super(context, c, flags);
         mContext = context;
         mRowIndex = rowIndex;
 
-        //TODO find currently selected skills
         skillRanksSpent = numberSkillPointsSpent(context, rowIndex);
 
-        //TODO find maximum skill ranks to spend
         ContentValues values = InProgressCharacterUtil.getInProgressRow(mContext, mRowIndex);
         maximumSkillPoints = InProgressSkillsUtil.getTotalSkillPointsToSpend(values);
 
@@ -90,7 +83,7 @@ public class SkillAdapter extends CursorAdapter {
         ContentValues itemData;
 
         switch (mType) {
-            case TYPE_SKILLS:
+            case TYPE_SKILL:
                 itemName = RulesSkillsUtils.getSkillName(selectedItem);
                 id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getSkillRanks(context, mRowIndex, id);
@@ -100,12 +93,12 @@ public class SkillAdapter extends CursorAdapter {
                 id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getArmorCount(context, mRowIndex, id);
                 break;
-            case TYPE_WEAPONS:
+            case TYPE_WEAPON:
                 itemName = RulesWeaponsUtils.getWeaponName(selectedItem);
                 id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getWeaponCount(context, mRowIndex, id);
                 break;
-            case TYPE_ITEMS:
+            case TYPE_ITEM:
                 itemName = RulesItemsUtils.getItemName(selectedItem);
                 id = RulesSkillsUtils.getId(selectedItem);
                 ranks = getItemCount(context, mRowIndex, id);
@@ -168,7 +161,7 @@ public class SkillAdapter extends CursorAdapter {
         Button plusButton = (Button) rootView.findViewById(R.id.plus_button);
 
         int ranks = Integer.parseInt((String)rankText.getText());
-        if (mType == TYPE_SKILLS) {
+        if (mType == TYPE_SKILL) {
             if (skillRanksSpent == maximumSkillPoints) return;
             if (ranks == maxRanks) return;
         }
@@ -179,7 +172,7 @@ public class SkillAdapter extends CursorAdapter {
         long skillId = (long)tvBody.getTag(R.string.skills);
         updateTable(skillId, ranks);
 
-        if (mType == TYPE_SKILLS) {
+        if (mType == TYPE_SKILL) {
             if (skillRanksSpent == maximumSkillPoints) {
                 //TODO set all buttons disabled when no more skill points
                 //plusButton.setEnabled(false);
@@ -194,16 +187,16 @@ public class SkillAdapter extends CursorAdapter {
 
     private void updateTable(long skillId, int count) {
         switch(mType) {
-            case TYPE_SKILLS:
+            case TYPE_SKILL:
                 addOrUpdateSkillSelection(mContext, mRowIndex, skillId, count);
                 break;
             case TYPE_ARMOR:
                 addOrUpdateArmorSelection(mContext, mRowIndex, skillId, count);
                 break;
-            case TYPE_WEAPONS:
+            case TYPE_WEAPON:
                 addOrUpdateWeaponSelection(mContext, mRowIndex, skillId, count);
                 break;
-            case TYPE_ITEMS:
+            case TYPE_ITEM:
                 addOrUpdateItemSelection(mContext, mRowIndex, skillId, count);
                 break;
         }

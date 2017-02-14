@@ -4,7 +4,7 @@
     android:name="com.brave_bunny.dndhelper.SkillsActivityFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".create.skills_feats.SkillsActivity"
+    tools:context=".create.list_with_ranks.DnDRankActivity"
     tools:layout="@android:layout/list_content">
 
 </FrameLayout>

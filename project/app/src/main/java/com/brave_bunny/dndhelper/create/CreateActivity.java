@@ -12,14 +12,15 @@ import com.brave_bunny.dndhelper.create.base.AbilityActivity;
 import com.brave_bunny.dndhelper.create.classes.DeityActivity;
 import com.brave_bunny.dndhelper.create.classes.FamiliarActivity;
 import com.brave_bunny.dndhelper.create.classes.SpellActivity;
-import com.brave_bunny.dndhelper.create.inventory.ArmorActivity;
-import com.brave_bunny.dndhelper.create.inventory.ItemActivity;
-import com.brave_bunny.dndhelper.create.inventory.WeaponActivity;
-import com.brave_bunny.dndhelper.create.skills_feats.FeatActivity;
-import com.brave_bunny.dndhelper.create.skills_feats.SkillsActivity;
-import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
+import com.brave_bunny.dndhelper.create.classes.FeatActivity;
+import com.brave_bunny.dndhelper.create.list_with_ranks.DnDRankActivity;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFinishUtil;
+
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ARMOR;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_WEAPON;
 
 /**
  * Created by Jemma on 8/7/2016.
@@ -122,13 +123,14 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void launchSkillSelector(View view) {
-        Intent skillsActivity = new Intent(this, SkillsActivity.class);
+        Intent activity = new Intent(this, DnDRankActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        skillsActivity.putExtra(SkillsActivity.inprogressValues, values);
-        skillsActivity.putExtra(SkillsActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.inprogressValues, values);
+        activity.putExtra(DnDRankActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.listType, TYPE_SKILL);
 
-        startActivity(skillsActivity);
+        startActivity(activity);
     }
 
     public void launchFeatSelector(View view) {
@@ -142,32 +144,35 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void launchArmorSelector(View view) {
-        Intent armorActivity = new Intent(this, ArmorActivity.class);
+        Intent activity = new Intent(this, DnDRankActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        armorActivity.putExtra(ArmorActivity.inprogressValues, values);
-        armorActivity.putExtra(ArmorActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.inprogressValues, values);
+        activity.putExtra(DnDRankActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.listType, TYPE_ARMOR);
 
-        startActivity(armorActivity);
+        startActivity(activity);
     }
 
     public void launchWeaponSelector(View view) {
-        Intent weaponActivity = new Intent(this, WeaponActivity.class);
+        Intent activity = new Intent(this, DnDRankActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        weaponActivity.putExtra(WeaponActivity.inprogressValues, values);
-        weaponActivity.putExtra(WeaponActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.inprogressValues, values);
+        activity.putExtra(DnDRankActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.listType, TYPE_WEAPON);
 
-        startActivity(weaponActivity);
+        startActivity(activity);
     }
 
     public void launchItemSelector(View view) {
-        Intent itemActivity = new Intent(this, ItemActivity.class);
+        Intent activity = new Intent(this, DnDRankActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        itemActivity.putExtra(ItemActivity.inprogressValues, values);
-        itemActivity.putExtra(ItemActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.inprogressValues, values);
+        activity.putExtra(DnDRankActivity.indexValue, index);
+        activity.putExtra(DnDRankActivity.listType, TYPE_ITEM);
 
-        startActivity(itemActivity);
+        startActivity(activity);
     }
 }

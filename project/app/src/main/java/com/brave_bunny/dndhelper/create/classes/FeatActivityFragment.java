@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create.skills_feats;
+package com.brave_bunny.dndhelper.create.classes;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.DnDListAdapter;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesFeatsUtils;
