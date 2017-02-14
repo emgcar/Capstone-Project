@@ -9,6 +9,8 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressContract;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_CLERIC;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesClassesUtils.CLASS_WIZARD;
 
 /**
  * Handles all of the selected domains for in-progress characters.
@@ -172,5 +174,13 @@ public class InProgressDomainsUtil {
             inProgressDb.close();
         }
         return allDomains;
+    }
+
+    public static int getNumberDomainsAllowed(ContentValues inProgressCharacter) {
+        int classId = InProgressCharacterUtil.getCharacterClass(inProgressCharacter);
+        if (classId == CLASS_CLERIC) {
+            return 2;
+        }
+        return 0;
     }
 }

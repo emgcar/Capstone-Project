@@ -1,17 +1,10 @@
 package com.brave_bunny.dndhelper.play.battle;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.FrameLayout;
-import android.widget.ListView;
 
 import com.brave_bunny.dndhelper.R;
 
@@ -40,7 +33,7 @@ public class CastSpellActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_spell, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_dnd_list, container, false);
 
         Bundle extras = getActivity().getIntent().getExtras();
         rowIndex = (long) extras.get(CastSpellActivity.indexValue);

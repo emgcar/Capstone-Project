@@ -10,7 +10,6 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterDomainsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil;
@@ -39,6 +38,7 @@ public class UseAbilityListAdapter extends CursorAdapter {
     public static final int TYPE_WEAPON = 4;
     public static final int TYPE_ARMOR = 5;
     public static final int TYPE_ITEM = 6;
+    public static final int TYPE_FAMILIAR = 7;
 
 
     View mView;
@@ -55,7 +55,7 @@ public class UseAbilityListAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        int layoutId = R.layout.list_item_domain;
+        int layoutId = R.layout.list_item_dnd_list;
         View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
         return view;
     }

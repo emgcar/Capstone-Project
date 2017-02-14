@@ -9,17 +9,18 @@ import android.view.View;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.base.AbilityActivity;
-import com.brave_bunny.dndhelper.create.classes.DeityActivity;
-import com.brave_bunny.dndhelper.create.classes.FamiliarActivity;
-import com.brave_bunny.dndhelper.create.classes.SpellActivity;
-import com.brave_bunny.dndhelper.create.classes.FeatActivity;
+import com.brave_bunny.dndhelper.create.classes.DnDListActivity;
 import com.brave_bunny.dndhelper.create.list_with_ranks.DnDRankActivity;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFinishUtil;
 
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ARMOR;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FAMILIAR;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_WEAPON;
 
 /**
@@ -92,34 +93,36 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void launchDeitySelector(View view) {
-        Intent deityActivity = new Intent(this, DeityActivity.class);
+        Intent spellActivity = new Intent(this, DnDListActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        deityActivity.putExtra(DeityActivity.inprogressValues, values);
-        deityActivity.putExtra(DeityActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.inprogressValues, values);
+        spellActivity.putExtra(DnDListActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.listType, TYPE_DOMAIN);
 
-        startActivity(deityActivity);
+        startActivity(spellActivity);
     }
 
     public void launchSpellSelector(View view) {
-        Intent spellActivity = new Intent(this, SpellActivity.class);
+        Intent spellActivity = new Intent(this, DnDListActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        spellActivity.putExtra(SpellActivity.inprogressValues, values);
-        spellActivity.putExtra(SpellActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.inprogressValues, values);
+        spellActivity.putExtra(DnDListActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.listType, TYPE_SPELL);
 
         startActivity(spellActivity);
-
     }
 
     public void launchFamiliarSelector(View view) {
-        Intent familiarActivity = new Intent(this, FamiliarActivity.class);
+        Intent spellActivity = new Intent(this, DnDListActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        familiarActivity.putExtra(FamiliarActivity.inprogressValues, values);
-        familiarActivity.putExtra(FamiliarActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.inprogressValues, values);
+        spellActivity.putExtra(DnDListActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.listType, TYPE_FAMILIAR);
 
-        startActivity(familiarActivity);
+        startActivity(spellActivity);
     }
 
     public void launchSkillSelector(View view) {
@@ -134,13 +137,14 @@ public class CreateActivity extends AppCompatActivity
     }
 
     public void launchFeatSelector(View view) {
-        Intent featActivity = new Intent(this, FeatActivity.class);
+        Intent spellActivity = new Intent(this, DnDListActivity.class);
 
         ContentValues values = InProgressCharacterUtil.getInProgressRow(this, index);
-        featActivity.putExtra(FeatActivity.inprogressValues, values);
-        featActivity.putExtra(FeatActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.inprogressValues, values);
+        spellActivity.putExtra(DnDListActivity.indexValue, index);
+        spellActivity.putExtra(DnDListActivity.listType, TYPE_FEAT);
 
-        startActivity(featActivity);
+        startActivity(spellActivity);
     }
 
     public void launchArmorSelector(View view) {

@@ -660,6 +660,14 @@ public class InProgressCharacterUtil {
         updateInProgressTable(context, values, rowIndex);
     }
 
+    public static int getTotalFamiliarToSelect(ContentValues inProgressCharacter) {
+        int classId = getCharacterClass(inProgressCharacter);
+        if (classId == CLASS_WIZARD) {
+            return 1;
+        }
+        return 0;
+    }
+
 
     /*
      *      ABILITY util functions

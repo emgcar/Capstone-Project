@@ -67,4 +67,24 @@ public class RulesFeatsUtils {
 
         return values;
     }
+
+    public static Cursor getAllFeats(Context context) {
+        String query = "SELECT * FROM " + getTableName();
+        return getFeatList(context, query, null);
+    }
+
+    public static Cursor getFeatList(Context context, String query, String[] selectionArgs) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            cursor = db.rawQuery(query, selectionArgs);
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+        return cursor;
+    }
 }

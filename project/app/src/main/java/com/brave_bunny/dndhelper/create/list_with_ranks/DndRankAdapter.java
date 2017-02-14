@@ -66,7 +66,7 @@ public class DndRankAdapter extends CursorAdapter {
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        mRootView = LayoutInflater.from(context).inflate(R.layout.list_item_skill, viewGroup, false);
+        mRootView = LayoutInflater.from(context).inflate(R.layout.list_item_dnd_ranks, viewGroup, false);
         return mRootView;
     }
 

@@ -41,7 +41,7 @@ public class DndRankActivityFragment extends Fragment {
         Bundle extras = getActivity().getIntent().getExtras();
         rowIndex = (long) extras.get(DnDRankActivity.indexValue);
         mType = (int) extras.get(DnDRankActivity.listType);
-        View view = inflater.inflate(R.layout.fragment_skills, container, false);
+        View view = inflater.inflate(R.layout.fragment_dnd_ranks, container, false);
 
         //TODO implement options for viewing all and cross-class also
         ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);

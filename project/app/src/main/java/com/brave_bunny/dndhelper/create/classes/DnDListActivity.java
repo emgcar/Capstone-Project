@@ -9,15 +9,16 @@ import android.view.View;
 
 import com.brave_bunny.dndhelper.R;
 
-public class FeatActivity extends AppCompatActivity {
+public class DnDListActivity extends AppCompatActivity {
 
     public static final String indexValue = "ROW_INDEX";
     public static final String inprogressValues = "INPROGRESS_TABLE_VALUES";
+    public static final String listType = "LIST_TYPE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feat);
+        setContentView(R.layout.activity_dnd_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,4 +32,5 @@ public class FeatActivity extends AppCompatActivity {
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 }

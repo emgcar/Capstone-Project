@@ -23,6 +23,10 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.isFeatSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.getNumberSpellSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSpellsUtil.isSpellSelected;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FAMILIAR;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 
 /**
  * Created by Jemma on 1/30/2017.
@@ -30,10 +34,6 @@ import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InPr
 
 //TODO double click causes problems
 public class DnDListAdapter extends CursorAdapter {
-    public static final int LIST_TYPE_DEITY = 0;
-    public static final int LIST_TYPE_FAMILIAR = 1;
-    public static final int LIST_TYPE_SPELL = 2;
-    public static final int LIST_TYPE_FEAT = 3;
 
 
     View mView;
@@ -55,19 +55,19 @@ public class DnDListAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
 
-        int layoutId = R.layout.list_item_domain;
+        int layoutId = R.layout.list_item_dnd_list;
         mView = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
 
         switch (listType) {
-            case LIST_TYPE_DEITY:
+            case TYPE_DOMAIN:
                 numberSelected = getNumberDomainsSelected(context, mRowIndex);
                 break;
-            case LIST_TYPE_FAMILIAR:
+            case TYPE_FAMILIAR:
                 break;
-            case LIST_TYPE_SPELL:
+            case TYPE_SPELL:
                 numberSelected = getNumberSpellSelected(context, mRowIndex);
                 break;
-            case LIST_TYPE_FEAT:
+            case TYPE_FEAT:
                 numberSelected = getNumberFeatsSelected(context, mRowIndex);
                 break;
         }
@@ -83,22 +83,22 @@ public class DnDListAdapter extends CursorAdapter {
         ContentValues itemData = cursorRowToContentValues(cursor);
 
         switch (listType) {
-            case LIST_TYPE_DEITY:
+            case TYPE_DOMAIN:
                 name = RulesDomainsUtils.getDomainName(itemData);
                 id = RulesDomainsUtils.getDomainId(itemData);
                 view.setTag(R.string.select_domains, id);
                 break;
-            case LIST_TYPE_FAMILIAR:
+            case TYPE_FAMILIAR:
                 name = RulesFamiliarsUtils.getFamiliarName(itemData);
                 id = RulesFamiliarsUtils.getFamiliarId(itemData);
                 view.setTag(R.string.select_familiar, id);
                 break;
-            case LIST_TYPE_SPELL:
+            case TYPE_SPELL:
                 name = RulesSpellsUtils.getSpellName(itemData);
                 id = RulesSpellsUtils.getSpellId(itemData);
                 view.setTag(R.string.select_spells, id);
                 break;
-            case LIST_TYPE_FEAT:
+            case TYPE_FEAT:
                 name = RulesFeatsUtils.getFeatName(itemData);
                 id = RulesFeatsUtils.getFeatId(itemData);
                 view.setTag(R.string.select_feats, id);
@@ -116,25 +116,25 @@ public class DnDListAdapter extends CursorAdapter {
 
         long index;
         switch (listType) {
-            case LIST_TYPE_DEITY:
+            case TYPE_DOMAIN:
                 index = (long)view.getTag(R.string.select_domains);
                 if (isDomainSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;
-            case LIST_TYPE_FAMILIAR:
+            case TYPE_FAMILIAR:
                 index = (long)view.getTag(R.string.select_familiar);
                 if (InProgressCharacterUtil.isFamiliarSameAsSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;
-            case LIST_TYPE_SPELL:
+            case TYPE_SPELL:
                 index = (long)view.getTag(R.string.select_spells);
                 if (isSpellSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);
                 }
                 break;
-            case LIST_TYPE_FEAT:
+            case TYPE_FEAT:
                 index = (long)view.getTag(R.string.select_feats);
                 if (isFeatSelected(mContext, mRowIndex, index)) {
                     view.setEnabled(true);

@@ -83,4 +83,26 @@ public class RulesFamiliarsUtils {
 
         return values;
     }
+
+    public static Cursor getAllFamiliars(Context context) {
+        String query = "SELECT * FROM " + getTableName();
+        return getFamiliarList(context, query, null);
+    }
+
+    public static Cursor getFamiliarList(Context context, String query, String[] selectionArgs) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            cursor = db.rawQuery(query, selectionArgs);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
+    }
 }

@@ -68,7 +68,7 @@
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
         <activity
-            android:name=".create.classes.SpellActivity"
+            android:name=".create.classes.DnDListActivity"
             android:label="@string/title_activity_spell"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

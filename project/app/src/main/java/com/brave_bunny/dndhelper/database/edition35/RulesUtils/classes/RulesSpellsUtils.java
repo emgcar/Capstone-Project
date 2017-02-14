@@ -76,6 +76,28 @@ public class RulesSpellsUtils {
         return values;
     }
 
+    public static Cursor getAllSpells(Context context) {
+        String query = "SELECT * FROM " + getTableName();
+        return getSpellList(context, query, null);
+    }
+
+    public static Cursor getSpellList(Context context, String query, String[] selectionArgs) {
+        Cursor cursor;
+
+        RulesDbHelper dbHelper = new RulesDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            cursor = db.rawQuery(query, selectionArgs);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
+    }
+
     /*
      *  Add bonus spells based on ability mod and level.
      *  More details found in Player's handbook pg 8.

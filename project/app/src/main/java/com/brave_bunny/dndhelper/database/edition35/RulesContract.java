@@ -64,7 +64,7 @@ public class RulesContract {
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FEATS;
 
-        public static Uri buildSkillUri(long id) {
+        public static Uri buildFeatUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
