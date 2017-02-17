@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create.classes;
+package com.brave_bunny.dndhelper.create.list_without_ranks;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

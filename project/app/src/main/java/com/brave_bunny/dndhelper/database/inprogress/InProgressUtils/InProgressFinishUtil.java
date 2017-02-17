@@ -436,7 +436,7 @@ public class InProgressFinishUtil {
         int numSkills = allSkills.length;
 
         for (int i = 0; i < numSkills; i++) {
-            long skillId = RulesSkillsUtils.getId(allSkills[i]);
+            long skillId = RulesSkillsUtils.getSkillId(allSkills[i]);
             if (RulesSkillsUtils.canBeUntrained(allSkills[i])) {
                 transferSkill(context, allSkills[i], characterIndex, inProgressIndex, inProgressValues);
             } else if (InProgressSkillsUtil.isSkillListed(context, inProgressIndex, skillId) ) {
@@ -447,7 +447,7 @@ public class InProgressFinishUtil {
 
     public static void transferSkill(Context context, ContentValues skillData, long characterIndex,
                                      long inProgressIndex, ContentValues inProgressValues) {
-        long skillId = RulesSkillsUtils.getId(skillData);
+        long skillId = RulesSkillsUtils.getSkillId(skillData);
 
         ContentValues newEntry = new ContentValues();
         CharacterSkillsUtil.setCharacterId(newEntry, characterIndex);

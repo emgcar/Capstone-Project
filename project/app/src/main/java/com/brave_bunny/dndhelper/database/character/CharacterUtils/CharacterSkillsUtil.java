@@ -232,7 +232,7 @@ public class CharacterSkillsUtil {
                     if (cursor != null) {
                         ContentValues skillData = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
-                        long skillId = RulesSkillsUtils.getId(skillData);
+                        long skillId = RulesSkillsUtils.getSkillId(skillData);
 
                         // TODO: cast spell
                     }

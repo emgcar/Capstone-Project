@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.brave_bunny.dndhelper.create.classes.DnDListActivity">
+    tools:context="com.brave_bunny.dndhelper.create.list_without_ranks.DnDListActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

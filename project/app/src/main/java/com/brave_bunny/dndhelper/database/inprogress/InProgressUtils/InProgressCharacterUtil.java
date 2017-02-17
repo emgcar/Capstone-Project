@@ -403,6 +403,11 @@ public class InProgressCharacterUtil {
         return values.getAsFloat(characterMoneyLabel());
     }
 
+    public static float getCharacterMoney(Context context, long rowIndex) {
+        ContentValues values = getInProgressRow(context, rowIndex);
+        return getCharacterMoney(values);
+    }
+
     public static void setCharacterMoney(ContentValues values, float money) {
         values.put(characterMoneyLabel(), money);
     }

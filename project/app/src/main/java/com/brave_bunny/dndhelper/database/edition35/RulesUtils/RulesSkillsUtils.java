@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.edition35.RulesContract;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 
@@ -24,54 +23,50 @@ public class RulesSkillsUtils {
     public static final int TRUE = 1;
     public static final int FALSE = 0;
 
-    private static final String tableName = RulesContract.SkillsEntry.TABLE_NAME;
+    /* LABELS */
 
-    public static final String[] SKILL_COLUMNS = {
-            RulesContract.SkillsEntry.TABLE_NAME + "." + RulesContract.SkillsEntry._ID,
-            RulesContract.SkillsEntry.COLUMN_NAME,
-            RulesContract.SkillsEntry.COLUMN_BASE_SCORE,
-            RulesContract.SkillsEntry.COLUMN_UNTRAINED,
-            RulesContract.SkillsEntry.COLUMN_CLERIC,
-            RulesContract.SkillsEntry.COLUMN_FIGHTER,
-            RulesContract.SkillsEntry.COLUMN_ROGUE,
-            RulesContract.SkillsEntry.COLUMN_WIZARD,
-            RulesContract.SkillsEntry.COLUMN_ARMOR_PENALTY,
-            RulesContract.SkillsEntry.COLUMN_DOUBLE_ARMOR_PENALTY
-    };
+    private static String getTableName() {
+        return RulesContract.SkillsEntry.TABLE_NAME;
+    }
 
-    public static final int COL_SKILL_ID = 0;
-    public static final int COL_SKILL_NAME = 1;
-    public static final int COL_SKILL_BASE_SCORE = 2;
-    public static final int COL_SKILL_UNTRAINED = 3;
-    public static final int COL_SKILL_CLERIC = 4;
-    public static final int COL_SKILL_FIGHTER = 5;
-    public static final int COL_SKILL_ROGUE = 6;
-    public static final int COL_SKILL_WIZARD = 7;
-    public static final int COL_SKILL_ARMOR_PENALTY = 8;
-    public static final int COL_SKILL_DOUBLE_ARMOR_PENALTY = 9;
-
-    private static String idLabel() {
+    private static String skillIdLabel() {
         return RulesContract.SkillsEntry._ID;
     }
 
-    public static long getId(ContentValues values) {
-        return values.getAsLong(idLabel());
+    private static String skillNameLabel() {
+        return RulesContract.SkillsEntry.COLUMN_NAME;
     }
 
-    public static String getSkillName(ContentValues value) {
-        return value.getAsString(SKILL_COLUMNS[COL_SKILL_NAME]);
+    private static String skillBaseScoreLabel() {
+        return RulesContract.SkillsEntry.COLUMN_BASE_SCORE;
+    }
+
+    private static String skillUntrainedLabel() {
+        return RulesContract.SkillsEntry.COLUMN_UNTRAINED;
+    }
+
+    /* PARSE VALUES*/
+
+    public static long getSkillId(ContentValues values) {
+        return values.getAsLong(skillIdLabel());
+    }
+
+    public static String getSkillName(ContentValues values) {
+        return values.getAsString(skillNameLabel());
+    }
+
+    public static String getSkillBaseScore(ContentValues skillData) {
+        return skillData.getAsString(skillBaseScoreLabel());
     }
 
     public static boolean canBeUntrained(ContentValues value) {
-        return (value.getAsInteger(SKILL_COLUMNS[COL_SKILL_UNTRAINED])==TRUE);
+        return (value.getAsInteger(skillUntrainedLabel())==TRUE);
     }
 
-    public static String getBaseScore(ContentValues skillData) {
-        return skillData.getAsString(SKILL_COLUMNS[COL_SKILL_BASE_SCORE]);
-    }
+    /* DATABASE FUNCTIONS */
 
     public static ContentValues getSkill(Context context, long skillId) {
-        String query = "SELECT * FROM " + tableName + " WHERE " + SKILL_COLUMNS[COL_SKILL_ID] + " = ?";
+        String query = "SELECT * FROM " + getTableName() + " WHERE " + skillIdLabel() + " = ?";
         return getStats(context, query, skillId);
     }
 

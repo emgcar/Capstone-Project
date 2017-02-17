@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.brave_bunny.dndhelper.R;
-import com.brave_bunny.dndhelper.create.base.AbilityActivity;
-import com.brave_bunny.dndhelper.create.classes.DnDListActivity;
+import com.brave_bunny.dndhelper.create.abilities.AbilityActivity;
+import com.brave_bunny.dndhelper.create.list_without_ranks.DnDListActivity;
 import com.brave_bunny.dndhelper.create.list_with_ranks.DnDRankActivity;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFinishUtil;

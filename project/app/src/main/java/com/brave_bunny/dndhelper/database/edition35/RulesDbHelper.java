@@ -151,7 +151,7 @@ public class RulesDbHelper extends SQLiteOpenHelper {
 
         mDatabase.execSQL(SQL_CREATE_CLASS_TABLE);
 
-        //                             STR DEX CON INT WIS CHA SZ SPD
+        //                             STR DEX CON INT WIS CHA SZ   SPD
         insertInRaceTable("1, 'Human',  0,  0,  0,  0,  0,  0, 'M', 30");
         insertInRaceTable("2, 'Dwarf',  0,  0,  2,  0,  0, -2, 'M', 20");
         insertInRaceTable("3, 'Elf',    0,  2, -2,  0,  0,  0, 'M', 30");

@@ -276,7 +276,7 @@ public class InProgressSkillsUtil {
     }
 
     public static int getSkillAbilityMod(ContentValues skillData, ContentValues inProgressData) {
-        String baseScore = RulesSkillsUtils.getBaseScore(skillData);
+        String baseScore = RulesSkillsUtils.getSkillBaseScore(skillData);
 
         if (baseScore.equals("STR"))
             return InProgressCharacterUtil.getCharacterStr(inProgressData);

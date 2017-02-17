@@ -48,6 +48,8 @@ public class DndRankAdapter extends CursorAdapter {
 
     private int mType;
 
+    private static float moneyAvailable;
+
     public DndRankAdapter(Context context, Cursor c, int flags, long rowIndex, int type) {
         super(context, c, flags);
         mContext = context;
@@ -62,6 +64,8 @@ public class DndRankAdapter extends CursorAdapter {
         maxRanks = RulesSkillsUtils.maxRanksPerLevel(1);
 
         mType = type;
+
+        moneyAvailable = InProgressCharacterUtil.getCharacterMoney(mContext, mRowIndex);
     }
 
     @Override
@@ -85,22 +89,22 @@ public class DndRankAdapter extends CursorAdapter {
         switch (mType) {
             case TYPE_SKILL:
                 itemName = RulesSkillsUtils.getSkillName(selectedItem);
-                id = RulesSkillsUtils.getId(selectedItem);
+                id = RulesSkillsUtils.getSkillId(selectedItem);
                 ranks = getSkillRanks(context, mRowIndex, id);
                 break;
             case TYPE_ARMOR:
                 itemName = RulesArmorUtils.getArmorName(selectedItem);
-                id = RulesSkillsUtils.getId(selectedItem);
+                id = RulesSkillsUtils.getSkillId(selectedItem);
                 ranks = getArmorCount(context, mRowIndex, id);
                 break;
             case TYPE_WEAPON:
                 itemName = RulesWeaponsUtils.getWeaponName(selectedItem);
-                id = RulesSkillsUtils.getId(selectedItem);
+                id = RulesSkillsUtils.getSkillId(selectedItem);
                 ranks = getWeaponCount(context, mRowIndex, id);
                 break;
             case TYPE_ITEM:
                 itemName = RulesItemsUtils.getItemName(selectedItem);
-                id = RulesSkillsUtils.getId(selectedItem);
+                id = RulesSkillsUtils.getSkillId(selectedItem);
                 ranks = getItemCount(context, mRowIndex, id);
                 break;
             default:

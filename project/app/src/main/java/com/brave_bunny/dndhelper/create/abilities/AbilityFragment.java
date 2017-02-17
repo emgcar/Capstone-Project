@@ -1,4 +1,4 @@
-package com.brave_bunny.dndhelper.create.base;
+package com.brave_bunny.dndhelper.create.abilities;
 
 import android.content.ContentValues;
 import android.graphics.Color;
