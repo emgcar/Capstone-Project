@@ -55,6 +55,11 @@ public class RulesItemsUtils {
         return values.getAsFloat(itemCostLabel());
     }
 
+    public static float getItemCost(Context context, long itemId) {
+        ContentValues values = getItem(context, itemId);
+        return getItemCost(values);
+    }
+
     /* DATABASE FUNCTIONS */
 
     public static ContentValues getItem(Context context, long itemId) {

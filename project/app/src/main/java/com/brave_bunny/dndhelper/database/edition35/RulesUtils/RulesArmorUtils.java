@@ -55,6 +55,11 @@ public class RulesArmorUtils {
         return values.getAsFloat(armorCostLabel());
     }
 
+    public static float getArmorCost(Context context, long armorId) {
+        ContentValues values = getArmor(context, armorId);
+        return getArmorCost(values);
+    }
+
     /* DATABASE FUNCTIONS */
 
     public static ContentValues getArmor(Context context, long armorId) {

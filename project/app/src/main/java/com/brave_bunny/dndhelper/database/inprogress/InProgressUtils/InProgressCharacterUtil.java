@@ -412,6 +412,12 @@ public class InProgressCharacterUtil {
         values.put(characterMoneyLabel(), money);
     }
 
+    public static void setCharacterMoneyAndUpdateTable(Context context, long charId, float money) {
+        ContentValues values = getInProgressRow(context, charId);
+        values.put(characterMoneyLabel(), money);
+        updateInProgressTable(context, values, charId);
+    }
+
     public static float getCharacterLightLoad(ContentValues values) {
         return values.getAsFloat(characterLightLoadLabel());
     }

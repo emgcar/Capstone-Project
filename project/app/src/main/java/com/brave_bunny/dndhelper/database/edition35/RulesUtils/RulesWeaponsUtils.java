@@ -55,6 +55,11 @@ public class RulesWeaponsUtils {
         return values.getAsFloat(weaponCostLabel());
     }
 
+    public static float getWeaponCost(Context context, long weaponId) {
+        ContentValues values = getWeapon(context, weaponId);
+        return getWeaponCost(values);
+    }
+
     /* DATABASE FUNCTIONS */
 
     public static ContentValues getWeapon(Context context, long weaponId) {

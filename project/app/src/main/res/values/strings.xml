@@ -97,6 +97,7 @@
     <string name="will_save" translatable="true">Will: </string>
 
     <string name="money" translatable="true">Money: </string>
+    <string name="money_left" translatable="true">Money Remaining: <xliff:g id="money">%1$.2f</xliff:g></string>
     <!-- carrying capacity -->
     <string name="light_load" translatable="true">Light Load: </string>
     <string name="medium_load" translatable="true">Medium Load: </string>
@@ -111,6 +112,7 @@
     <!-- skills activity strings -->
     <string name="title_activity_skills">SkillsActivity</string>
     <string name="skills" translatable="true">Skills: </string>
+    <string name="skill_points_left" translatable="true">Skill Points Left: <xliff:g id="points">%1$d</xliff:g></string>
     <string name="select_skills" translatable="true">Select Skills</string>
     <string name="appraise" translatable="true">Appraise</string>
     <string name="balance" translatable="true">Balance</string>

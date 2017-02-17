@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
@@ -62,8 +63,9 @@ public class DndRankActivityFragment extends Fragment {
                 break;
         }
         ListView listView = (ListView) view.findViewById(R.id.listview_skills);
+        TextView pointsText = (TextView) view.findViewById(R.id.points_left);
 
-        DndRankAdapter adapter = new DndRankAdapter(getContext(), mCursor, 0, rowIndex, mType);
+        DndRankAdapter adapter = new DndRankAdapter(getContext(), mCursor, 0, rowIndex, mType, pointsText);
         listView.setAdapter(adapter);
 
         return view;

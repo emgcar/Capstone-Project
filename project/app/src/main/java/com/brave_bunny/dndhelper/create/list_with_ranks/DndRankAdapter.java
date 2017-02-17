@@ -19,8 +19,12 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressC
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesArmorUtils.getArmorCost;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesItemsUtils.getItemCost;
+import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesWeaponsUtils.getWeaponCost;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.addOrUpdateArmorSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressArmorUtil.getArmorCount;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.setCharacterMoneyAndUpdateTable;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil.addOrUpdateItemSelection;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressItemsUtil.getItemCount;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressSkillsUtil.addOrUpdateSkillSelection;
@@ -41,6 +45,7 @@ public class DndRankAdapter extends CursorAdapter {
 
     private Context mContext;
     private View mRootView;
+    private TextView mSummaryText;
     private static int maximumSkillPoints;
     private static int skillRanksSpent;
     private static int maxRanks;
@@ -50,7 +55,7 @@ public class DndRankAdapter extends CursorAdapter {
 
     private static float moneyAvailable;
 
-    public DndRankAdapter(Context context, Cursor c, int flags, long rowIndex, int type) {
+    public DndRankAdapter(Context context, Cursor c, int flags, long rowIndex, int type, TextView pointsText) {
         super(context, c, flags);
         mContext = context;
         mRowIndex = rowIndex;
@@ -66,6 +71,9 @@ public class DndRankAdapter extends CursorAdapter {
         mType = type;
 
         moneyAvailable = InProgressCharacterUtil.getCharacterMoney(mContext, mRowIndex);
+
+        mSummaryText = pointsText;
+        updateSummaryText();
     }
 
     @Override
@@ -116,16 +124,12 @@ public class DndRankAdapter extends CursorAdapter {
         tvBody.setTag(R.string.skills, id);
 
         Button minusButton = (Button) view.findViewById(R.id.minus_button);
-        minusButton.setEnabled(false);
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 decrementRanks(rootView);
             }
         });
-
-        TextView rankText = (TextView) view.findViewById(R.id.skill_ranks);
-        rankText.setText(Integer.toString(ranks));
 
         Button plusButton = (Button) view.findViewById(R.id.plus_button);
         plusButton.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +138,29 @@ public class DndRankAdapter extends CursorAdapter {
                 incrementRanks(rootView);
             }
         });
+
+        TextView rankText = (TextView) view.findViewById(R.id.skill_ranks);
+        rankText.setText(Integer.toString(ranks));
+        if (ranks == 0) {
+            minusButton.setEnabled(false);
+        } else {
+            minusButton.setEnabled(true);
+        }
+        switch (mType) {
+            case TYPE_SKILL:
+                if ((skillRanksSpent == maximumSkillPoints) || (ranks == maxRanks)) {
+                    plusButton.setEnabled(false);
+                } else {
+                    plusButton.setEnabled(true);
+                }
+                break;
+            default:
+                if (getCost(id) > moneyAvailable) {
+                    plusButton.setEnabled(false);
+                } else {
+                    plusButton.setEnabled(true);
+                }
+        }
     }
 
     private void decrementRanks(View rootView) {
@@ -149,6 +176,9 @@ public class DndRankAdapter extends CursorAdapter {
         skillRanksSpent--;
 
         long skillId = (long)tvBody.getTag(R.string.skills);
+        if (mType != TYPE_SKILL) {
+            unbuyItem(skillId);
+        }
         updateTable(skillId, ranks);
 
         if (ranks == 0) {
@@ -163,17 +193,22 @@ public class DndRankAdapter extends CursorAdapter {
         TextView rankText = (TextView) rootView.findViewById(R.id.skill_ranks);
         Button minusButton = (Button) rootView.findViewById(R.id.minus_button);
         Button plusButton = (Button) rootView.findViewById(R.id.plus_button);
+        long skillId = (long)tvBody.getTag(R.string.skills);
 
         int ranks = Integer.parseInt((String)rankText.getText());
         if (mType == TYPE_SKILL) {
             if (skillRanksSpent == maximumSkillPoints) return;
             if (ranks == maxRanks) return;
+        } else {
+            if (getCost(skillId) > moneyAvailable) return;
         }
 
         ranks++;
         skillRanksSpent++;
 
-        long skillId = (long)tvBody.getTag(R.string.skills);
+        if (mType != TYPE_SKILL) {
+            buyItem(skillId);
+        }
         updateTable(skillId, ranks);
 
         if (mType == TYPE_SKILL) {
@@ -204,9 +239,37 @@ public class DndRankAdapter extends CursorAdapter {
                 addOrUpdateItemSelection(mContext, mRowIndex, skillId, count);
                 break;
         }
+        updateSummaryText();
+    }
+
+    private void buyItem(long itemId) {
+        moneyAvailable -= getCost(itemId);
+        setCharacterMoneyAndUpdateTable(mContext, mRowIndex, moneyAvailable);
+    }
+
+    private void unbuyItem(long itemId) {
+        moneyAvailable += getCost(itemId);
+        setCharacterMoneyAndUpdateTable(mContext, mRowIndex, moneyAvailable);
+    }
+
+    private float getCost(long itemId) {
+        switch(mType) {
+            case TYPE_ARMOR:
+                return getArmorCost(mContext, itemId);
+            case TYPE_WEAPON:
+                return getWeaponCost(mContext, itemId);
+            case TYPE_ITEM:
+                return getItemCost(mContext, itemId);
+        }
+        return 0;
     }
 
     //TODO
-    private void updateSkillPointText() {
+    private void updateSummaryText() {
+        if (mType == TYPE_SKILL) {
+            mSummaryText.setText(mContext.getString(R.string.skill_points_left, maximumSkillPoints-skillRanksSpent));
+        } else {
+            mSummaryText.setText(mContext.getString(R.string.money_left, moneyAvailable));
+        }
     }
 }
