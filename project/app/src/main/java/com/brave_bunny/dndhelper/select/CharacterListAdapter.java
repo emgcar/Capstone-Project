@@ -3,6 +3,7 @@ package com.brave_bunny.dndhelper.select;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +25,8 @@ import static com.brave_bunny.dndhelper.database.character.CharacterUtils.Charac
 
 class CharacterListAdapter extends CursorAdapter {
 
-    private final static int VIEW_TYPE_CHARACTER = 0;
-    private final static int VIEW_TYPE_INPROGRESS = 1;
-
-    private Context mContext;
-    private Cursor mCursor;
-    private CharacterListViewHolder mViewHolder;
-
     CharacterListAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        mContext = context;
-        mCursor = c;
     }
 
     @Override
@@ -43,31 +35,28 @@ class CharacterListAdapter extends CursorAdapter {
         int layoutId = R.layout.list_item_character;
 
         View view = LayoutInflater.from(context).inflate(layoutId, viewGroup, false);
-        mViewHolder = new CharacterListViewHolder(view);
 
         return view;
     }
 
-    // TODO some names take over the list for some reason
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        CharacterListViewHolder viewHolder = new CharacterListViewHolder(view);
+
         ContentValues value = cursorRowToContentValues(cursor);
 
-        String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
-        if (!isCompleted(context, name)) {
-            mViewHolder.levelView.setText(R.string.in_progress);
+        String name = CharacterUtil.getCharacterName(value);
+        if (name.equals("")) {
+            viewHolder.levelView.setText(R.string.in_progress);
             name = InProgressCharacterUtil.getCharacterName(value);
         } else {
             // TODO implement level display
-            mViewHolder.levelView.setText("Level 3");
+            viewHolder.levelView.setText("Level 3");
         }
 
-        mViewHolder.nameView.setText(name);
+        viewHolder.nameView.setText(name);
     }
 
-    /**
-     * Cache of the children views for a forecast list item.
-     */
     private static class CharacterListViewHolder {
         private final TextView nameView;
         private final TextView levelView;

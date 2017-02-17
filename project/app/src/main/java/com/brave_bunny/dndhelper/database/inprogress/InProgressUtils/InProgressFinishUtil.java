@@ -55,6 +55,8 @@ public class InProgressFinishUtil {
     public static final int STATE_PARTIAL = 1;
     public static final int STATE_COMPLETE = 2;
 
+    //TODO transfer class
+
     //TODO for all final tables
     public static void removeAllInProgressCharacterData(Context context, long rowIndex) {
         removeAllInProgressStats(context, rowIndex);
@@ -261,7 +263,7 @@ public class InProgressFinishUtil {
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_RELIGION_ID, 0);
 
         // adding character alignment
-        int alignChoice = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_ALIGN);
+        int alignChoice = InProgressCharacterUtil.getCharacterAlign(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
 
         // adding character strength

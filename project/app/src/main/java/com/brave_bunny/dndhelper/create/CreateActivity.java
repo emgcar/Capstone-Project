@@ -1,7 +1,9 @@
 package com.brave_bunny.dndhelper.create;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -74,9 +76,7 @@ public class CreateActivity extends AppCompatActivity
         int characterState = InProgressFinishUtil.checkStateOfCharacterChoices(this, index);
 
         if (characterState == InProgressFinishUtil.STATE_COMPLETE) {
-            InProgressFinishUtil.createNewCharacter(this, index);
-            InProgressFinishUtil.removeAllInProgressCharacterData(this, index);
-
+            new createCharacter().execute(this);
             this.finish();
         }
     }
@@ -178,5 +178,15 @@ public class CreateActivity extends AppCompatActivity
         activity.putExtra(DnDRankActivity.listType, TYPE_ITEM);
 
         startActivity(activity);
+    }
+
+    private class createCharacter extends AsyncTask<Context, Void, Void> {
+
+        protected Void doInBackground(Context...contexts) {
+            Context context = contexts[0];
+            InProgressFinishUtil.createNewCharacter(context, index);
+            InProgressFinishUtil.removeAllInProgressCharacterData(context, index);
+            return null;
+        }
     }
 }

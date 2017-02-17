@@ -10,15 +10,15 @@ import com.brave_bunny.dndhelper.R;
 
 public class RulesCharacterUtils {
 
-    public static final int LawfulGood = 0;
-    public static final int LawfulNeutral = 1;
-    public static final int LawfulEvil = 2;
-    public static final int NeutralGood = 3;
-    public static final int Neutral = 4;
-    public static final int NeutralEvil = 5;
-    public static final int ChaoticGood = 6;
-    public static final int ChaoticNeutral = 7;
-    public static final int ChaoticEvil = 8;
+    public static final int LawfulGood = 1;
+    public static final int LawfulNeutral = 2;
+    public static final int LawfulEvil = 3;
+    public static final int NeutralGood = 4;
+    public static final int Neutral = 5;
+    public static final int NeutralEvil = 6;
+    public static final int ChaoticGood = 7;
+    public static final int ChaoticNeutral = 8;
+    public static final int ChaoticEvil = 9;
 
     public static int scoreToModifier(int score) {
         return (score - 10)/2;

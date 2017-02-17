@@ -85,13 +85,44 @@ public class CharacterUtil {
     public static final int COL_CHARACTER_HP_CURR = 25;
     public static final int COL_CHARACTER_IN_BATTLE = 26;
 
+    private static String getTableName() {
+        return CharacterContract.CharacterEntry.TABLE_NAME;
+    }
+
 
     private static String characterIdLabel() {
-        return InProgressContract.CharacterEntry._ID;
+        return CharacterContract.CharacterEntry._ID;
+    }
+
+    private static String characterNameLabel() {
+        return CharacterContract.CharacterEntry.COLUMN_NAME;
+    }
+
+    public static String getCharacterName(ContentValues values) {
+        if (values.get(characterNameLabel()) == null) return "";
+        return values.getAsString(characterNameLabel());
     }
 
     public static long getId(ContentValues values) {
         return values.getAsLong(characterIdLabel());
+    }
+
+    public static Cursor getFinishedCharacterList(Context context) {
+        Cursor cursor;
+
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName();
+            cursor = db.rawQuery(query, null);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
     }
 
     public static ContentValues getCharacterRow(Context context, long rowIndex) {

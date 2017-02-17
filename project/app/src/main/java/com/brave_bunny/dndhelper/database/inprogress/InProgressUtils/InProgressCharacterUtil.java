@@ -495,6 +495,24 @@ public class InProgressCharacterUtil {
      *      CHARACTER util functions
      */
 
+    public static Cursor getInProgressCharacterList(Context context) {
+        Cursor cursor;
+
+        InProgressDbHelper dbHelper = new InProgressDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + getTableName();
+            cursor = db.rawQuery(query, null);
+
+            cursor.moveToFirst();
+        } finally {
+            db.close();
+        }
+
+        return cursor;
+    }
+
     public static void removeAllInProgressStats(Context context, long rowIndex) {
 
         InProgressDbHelper dbHelper = new InProgressDbHelper(context);

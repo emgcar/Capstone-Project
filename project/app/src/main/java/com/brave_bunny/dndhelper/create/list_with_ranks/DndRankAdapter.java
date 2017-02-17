@@ -264,7 +264,6 @@ public class DndRankAdapter extends CursorAdapter {
         return 0;
     }
 
-    //TODO
     private void updateSummaryText() {
         if (mType == TYPE_SKILL) {
             mSummaryText.setText(mContext.getString(R.string.skill_points_left, maximumSkillPoints-skillRanksSpent));
