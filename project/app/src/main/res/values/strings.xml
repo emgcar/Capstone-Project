@@ -187,7 +187,7 @@
     <string name="domain_trickery" translatable="true">Trickery</string>
     <string name="domain_war" translatable="true">War</string>
     <string name="domain_water" translatable="true">Water</string>
-    <string name="title_activity_battle">BattleActivity</string>
+    <string name="title_activity_battle">Battle Activity</string>
     <string name="title_activity_deity">DeityActivity</string>
     <string name="title_activity_spell">SpellActivity</string>
     <string name="title_activity_familiar">FamiliarActivity</string>

@@ -45,8 +45,7 @@
         </activity>
         <activity android:name=".create.abilities.AbilityActivity" />
         <activity
-            android:name=".create.list_with_ranks.DnDRankActivity"
-            android:label="Skills">
+            android:name=".create.list_with_ranks.DnDRankActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
@@ -60,73 +59,14 @@
                 android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
         </activity>
         <activity
-            android:name=".create.list_without_ranks.DeityActivity"
-            android:label="@string/title_activity_deity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
-        </activity>
-        <activity
             android:name=".create.list_without_ranks.DnDListActivity"
-            android:label="@string/title_activity_spell"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
-        </activity>
-        <activity
-            android:name=".create.list_without_ranks.FamiliarActivity"
-            android:label="@string/title_activity_familiar"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
-        </activity>
-        <activity
-            android:name=".create.list_without_ranks.FeatActivity"
-            android:label="@string/title_activity_feat"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
-        </activity>
-        <activity
-            android:name=".create.inventory.WeaponActivity"
-            android:label="@string/title_activity_weapon"
-            android:parentActivityName=".create.CreateActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
-        </activity>
-        <activity
-            android:name=".create.inventory.ArmorActivity"
-            android:label="@string/title_activity_armor"
-            android:parentActivityName=".create.CreateActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
-        </activity>
-        <activity
-            android:name=".create.inventory.ItemActivity"
-            android:label="@string/title_activity_item"
-            android:parentActivityName=".create.CreateActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.create.CreateActivity" />
         </activity>
         <activity
             android:name=".play.battle.CastSpellActivity"
-            android:label="@string/title_activity_spell"
-            android:parentActivityName=".play.DetailActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
-        </activity>
-        <activity
-            android:name=".play.battle.SkillCheckActivity"
-            android:label="@string/title_activity_skill_check"
             android:parentActivityName=".play.DetailActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
