@@ -78,6 +78,7 @@
     </string-array>
 
     <string name="total_level" translatable="true">Level: <xliff:g id="level">%1$d</xliff:g></string>
+    <string name="experience" translatable="true">Experience: <xliff:g id="experience">%1$d</xliff:g></string>
 
     <!-- base ability scores -->
     <string name="ability_scores" translatable="true">Ability Scores: </string>
@@ -98,7 +99,7 @@
     <string name="ref_save" translatable="true">Reflex: </string>
     <string name="will_save" translatable="true">Will: </string>
 
-    <string name="money" translatable="true">Money: </string>
+    <string name="money" translatable="true">Money: <xliff:g id="money">%1$.2f</xliff:g></string>
     <string name="money_left" translatable="true">Money Remaining: <xliff:g id="money">%1$.2f</xliff:g></string>
     <!-- carrying capacity -->
     <string name="light_load" translatable="true">Light Load: </string>

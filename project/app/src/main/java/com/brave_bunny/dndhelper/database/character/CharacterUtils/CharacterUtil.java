@@ -32,6 +32,14 @@ public class CharacterUtil {
         return CharacterContract.CharacterEntry.COLUMN_TOTAL_LEVEL;
     }
 
+    private static String characterExperienceLabel() {
+        return CharacterContract.CharacterEntry.COLUMN_EXPERIENCE;
+    }
+
+    private static String characterMoneyLabel() {
+        return CharacterContract.CharacterEntry.COLUMN_MONEY;
+    }
+
     private static String characterInBattleLabel() {
         return CharacterContract.CharacterEntry.COLUMN_IN_BATTLE;
     }
@@ -61,6 +69,14 @@ public class CharacterUtil {
 
     public static int getCharacterLevel(ContentValues values) {
         return values.getAsInteger(characterLevelLabel());
+    }
+
+    public static int getCharacterExperience(ContentValues values) {
+        return values.getAsInteger(characterExperienceLabel());
+    }
+
+    public static float getCharacterMoney(ContentValues values) {
+        return values.getAsFloat(characterMoneyLabel());
     }
 
 

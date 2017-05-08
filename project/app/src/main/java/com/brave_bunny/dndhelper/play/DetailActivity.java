@@ -1,5 +1,7 @@
 package com.brave_bunny.dndhelper.play;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,11 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
 import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
 
@@ -55,13 +59,6 @@ public class DetailActivity extends AppCompatActivity {
         startActivity(spellActivity);
     }
 
-    public void showDomains(View view) {
-        Intent activity = new Intent(this, CastSpellActivity.class);
-        activity.putExtra(CastSpellActivity.indexValue, index);
-        activity.putExtra(CastSpellActivity.listType, TYPE_DOMAIN);
-        startActivity(activity);
-    }
-
     public void showSkills(View view) {
         Intent activity = new Intent(this, CastSpellActivity.class);
         activity.putExtra(CastSpellActivity.indexValue, index);
@@ -69,15 +66,40 @@ public class DetailActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
-    public void showFeats(View view) {
-        Intent activity = new Intent(this, CastSpellActivity.class);
-        activity.putExtra(CastSpellActivity.indexValue, index);
-        activity.putExtra(CastSpellActivity.listType, TYPE_FEAT);
-        startActivity(activity);
+    public void showItems(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Show Items";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
-    public void showFamiliar(View view) {
+    public void makeSavingThrow(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Make saving throw";
+        int duration = Toast.LENGTH_SHORT;
 
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    public void seeFamiliar(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Show familiar";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+    }
+
+    public void goToSleep(View view) {
+        Context context = getApplicationContext();
+        CharSequence text = "Going to sleep...";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 
 
@@ -88,36 +110,7 @@ public class DetailActivity extends AppCompatActivity {
         View mRootView;
 
         private long index;
-
-        private String name;
-        private int gender;
-        private int race;
-        private String age;
-        private String weight;
-        private String height;
-        private String religion;
-        private int alignment;
-
-        private String strength;
-        private String dexterity;
-        private String constitution;
-        private String intelligence;
-        private String wisdom;
-        private String charisma;
-
-        private String base_attack;
-        private String fortitude;
-        private String reflex;
-        private String will;
-
-        private String money;
-        private String light_load;
-        private String medium_load;
-        private String heavy_load;
-
-        private String ac;
-        private String hp_max;
-        private String hp_curr;
+        private ContentValues values;
 
         public DetailActivityFragment() {
             super();
@@ -132,215 +125,43 @@ public class DetailActivity extends AppCompatActivity {
             mRootView = inflater.inflate(R.layout.fragment_detail, container, false);
             mViewHolder = new ViewHolder(mRootView);
 
-            getInformationFromDatabase();
+            values = CharacterUtil.getCharacterRow(getContext(), index);
             setInformation();
 
             return mRootView;
         }
 
-        private void getInformationFromDatabase() {
-            CharacterDbHelper dbHelper = new CharacterDbHelper(getContext());
-            SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-            try {
-                String query = "SELECT * FROM " + CharacterContract.CharacterEntry.TABLE_NAME
-                        + " WHERE " + CharacterContract.CharacterEntry._ID + " = ?";
-                Cursor cursor = db.rawQuery(query, new String[]{Long.toString(index)});
-                try {
-                    int nameIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_NAME);
-                    int genderIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_GENDER);
-                    int raceIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_RACE);
-                    int ageIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_AGE);
-                    int weightIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_WEIGHT);
-                    int heightIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_HEIGHT);
-                    int religionIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_RELIGION_ID);
-                    int alignIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_ALIGN);
-
-                    int strIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_STR);
-                    int dexIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_DEX);
-                    int conIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_CON);
-                    int intIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_INT);
-                    int wisIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_WIS);
-                    int chaIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_CHA);
-
-                    int attackIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_BASE_ATTACK);
-                    int fortIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_FORT);
-                    int refIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_REF);
-                    int willIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_WILL);
-
-                    int moneyIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_MONEY);
-                    int lightLoadIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_LIGHT_LOAD);
-                    int medLoadIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_MED_LOAD);
-                    int heavyLoadIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_HEAVY_LOAD);
-
-                    int acIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_AC);
-                    int hpMaxIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_HP_MAX);
-                    int hpCurrIndex = cursor.getColumnIndex(CharacterContract.CharacterEntry.COLUMN_HP_CURR);
-
-                    cursor.moveToFirst();
-
-                    name = cursor.getString(nameIndex);
-                    gender = cursor.getInt(genderIndex);
-                    race = cursor.getInt(raceIndex);
-                    age = Integer.toString(cursor.getInt(ageIndex));
-                    weight = Integer.toString(cursor.getInt(weightIndex));
-                    height = Float.toString(cursor.getFloat(heightIndex));
-                    religion = Integer.toString(cursor.getInt(religionIndex));
-                    alignment = cursor.getInt(alignIndex);
-
-                    strength = Integer.toString(cursor.getInt(strIndex));
-                    dexterity = Integer.toString(cursor.getInt(dexIndex));
-                    constitution = Integer.toString(cursor.getInt(conIndex));
-                    intelligence = Integer.toString(cursor.getInt(intIndex));
-                    wisdom = Integer.toString(cursor.getInt(wisIndex));
-                    charisma = Integer.toString(cursor.getInt(chaIndex));
-
-                    base_attack = Integer.toString(cursor.getInt(attackIndex));
-                    fortitude = Integer.toString(cursor.getInt(fortIndex));
-                    reflex = Integer.toString(cursor.getInt(refIndex));
-                    will = Integer.toString(cursor.getInt(willIndex));
-
-                    money = Integer.toString(cursor.getInt(moneyIndex));
-                    light_load = Integer.toString(cursor.getInt(lightLoadIndex));
-                    medium_load = Integer.toString(cursor.getInt(medLoadIndex));
-                    heavy_load = Integer.toString(cursor.getInt(heavyLoadIndex));
-
-                    ac = Integer.toString(cursor.getInt(acIndex));
-                    hp_max = Integer.toString(cursor.getInt(hpMaxIndex));
-                    hp_curr = Integer.toString(cursor.getInt(hpCurrIndex));
-                } finally {
-                    cursor.close();
-                }
-            } finally {
-                db.close();
-            }
-        }
-
-        private void setGender() {
-            if (gender == CharacterContract.GENDER_MALE) {
-                mViewHolder.mGenderView.setText(R.string.male);
-            } else {
-                mViewHolder.mGenderView.setText(R.string.female);
-            }
-        }
-
-        private void setRace() {
-            switch (race) {
-                case RACE_HUMAN:
-                    mViewHolder.mRaceView.setText(R.string.human);
-                    break;
-                case RACE_DWARF:
-                    mViewHolder.mRaceView.setText(R.string.elf);
-                    break;
-                case RACE_ELF:
-                    mViewHolder.mRaceView.setText(R.string.dwarf);
-                    break;
-            }
-        }
-
-        private void setAlignment() {
-            String alignmentText = RulesCharacterUtils.getAligmentText(getContext(), alignment);
-            mViewHolder.mAlignmentView.setText(alignmentText);
-        }
-
         private void setInformation() {
-            mViewHolder.mNameView.setText(name);
-            mViewHolder.mAgeView.setText(age);
-            mViewHolder.mWeightView.setText(weight);
-            mViewHolder.mHeightView.setText(height);
-            mViewHolder.mReligionView.setText(religion);
+            mViewHolder.mNameView.setText(CharacterUtil.getCharacterName(values));
 
-            setGender();
-            setRace();
-            setAlignment();
+            int level = CharacterUtil.getCharacterLevel(values);
+            String levelText = getContext().getString(R.string.total_level, level);
+            mViewHolder.mLevelView.setText(levelText);
 
-            mViewHolder.mStrengthView.setText(strength);
-            mViewHolder.mDexterityView.setText(dexterity);
-            mViewHolder.mConstitutionView.setText(constitution);
-            mViewHolder.mIntelligenceView.setText(intelligence);
-            mViewHolder.mWisdomView.setText(wisdom);
-            mViewHolder.mCharismaView.setText(charisma);
+            int exp = CharacterUtil.getCharacterExperience(values);
+            String expText = getContext().getString(R.string.experience, exp);
+            mViewHolder.mExperienceView.setText(expText);
 
-            mViewHolder.mBaseAttackView.setText(base_attack);
-            mViewHolder.mFortitudeView.setText(fortitude);
-            mViewHolder.mReflexView.setText(reflex);
-            mViewHolder.mWillView.setText(will);
-
-            mViewHolder.mMoneyView.setText(money);
-            mViewHolder.mLightLoadView.setText(light_load);
-            mViewHolder.mMediumLoadView.setText(medium_load);
-            mViewHolder.mHeavyLoadView.setText(heavy_load);
-
-            mViewHolder.mACView.setText(ac);
-            mViewHolder.mHPMaxView.setText(hp_max);
-            mViewHolder.mHPCurrentView.setText(hp_curr);
+            float money = CharacterUtil.getCharacterMoney(values);
+            String moneyText = getContext().getString(R.string.money, money);
+            mViewHolder.mMoneyView.setText(moneyText);
         }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mNameView;
-        public TextView mGenderView;
-        public TextView mRaceView;
-        public TextView mAgeView;
-        public TextView mWeightView;
-        public TextView mHeightView;
-        public TextView mReligionView;
-        public TextView mAlignmentView;
-
-        public TextView mStrengthView;
-        public TextView mDexterityView;
-        public TextView mConstitutionView;
-        public TextView mIntelligenceView;
-        public TextView mWisdomView;
-        public TextView mCharismaView;
-
-        public TextView mBaseAttackView;
-        public TextView mFortitudeView;
-        public TextView mReflexView;
-        public TextView mWillView;
-
+        public TextView mLevelView;
+        public TextView mExperienceView;
         public TextView mMoneyView;
-        public TextView mLightLoadView;
-        public TextView mMediumLoadView;
-        public TextView mHeavyLoadView;
-
-        public TextView mACView;
-        public TextView mHPMaxView;
-        public TextView mHPCurrentView;
 
 
         public ViewHolder(View view) {
             super(view);
 
-            mNameView = (TextView) view.findViewById(R.id.character_name);
-            mGenderView = (TextView) view.findViewById(R.id.character_gender);
-            mRaceView = (TextView) view.findViewById(R.id.character_race);
-            mAgeView = (TextView) view.findViewById(R.id.character_age);
-            mWeightView = (TextView) view.findViewById(R.id.character_weight);
-            mHeightView = (TextView) view.findViewById(R.id.character_height);
-            mReligionView = (TextView) view.findViewById(R.id.character_religion);
-            mAlignmentView = (TextView) view.findViewById(R.id.character_alignment);
-
-            mStrengthView = (TextView) view.findViewById(R.id.ability_strength);
-            mDexterityView = (TextView) view.findViewById(R.id.ability_dexterity);
-            mConstitutionView = (TextView) view.findViewById(R.id.ability_constitution);
-            mIntelligenceView = (TextView) view.findViewById(R.id.ability_intelligence);
-            mWisdomView = (TextView) view.findViewById(R.id.ability_wisdom);
-            mCharismaView = (TextView) view.findViewById(R.id.ability_charisma);
-
-            mBaseAttackView = (TextView) view.findViewById(R.id.character_attack_bonus);
-            mFortitudeView = (TextView) view.findViewById(R.id.character_fort);
-            mReflexView = (TextView) view.findViewById(R.id.character_ref);
-            mWillView = (TextView) view.findViewById(R.id.character_will);
-
-            mMoneyView = (TextView) view.findViewById(R.id.character_money);
-            mLightLoadView = (TextView) view.findViewById(R.id.character_light_load);
-            mMediumLoadView = (TextView) view.findViewById(R.id.character_medium_load);
-            mHeavyLoadView = (TextView) view.findViewById(R.id.character_heavy_load);
-
-            mACView = (TextView) view.findViewById(R.id.character_ac);
-            mHPMaxView = (TextView) view.findViewById(R.id.character_hp_max);
-            mHPCurrentView = (TextView) view.findViewById(R.id.character_hp_current);
+            mNameView = (TextView) view.findViewById(R.id.name_text);
+            mLevelView = (TextView) view.findViewById(R.id.level_text);
+            mExperienceView = (TextView) view.findViewById(R.id.experience_text);
+            mMoneyView = (TextView) view.findViewById(R.id.money_text);
         }
     }
 }
