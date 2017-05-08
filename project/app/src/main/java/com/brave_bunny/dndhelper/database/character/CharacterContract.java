@@ -44,6 +44,9 @@ public class CharacterContract {
         public static final String COLUMN_RELIGION_ID = "religion";
         public static final String COLUMN_ALIGN = "alignment";
 
+        public static final String COLUMN_TOTAL_LEVEL = "total_character_level";
+        public static final String COLUMN_EXPERIENCE = "total_experience";
+
         public static final String COLUMN_STR = "ability_strength";
         public static final String COLUMN_DEX = "ability_dexterity";
         public static final String COLUMN_CON = "ability_constitution";

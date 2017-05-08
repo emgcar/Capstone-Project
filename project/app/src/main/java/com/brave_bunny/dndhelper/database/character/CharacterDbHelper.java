@@ -45,6 +45,9 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.COLUMN_RELIGION_ID + " INTEGER," +
                 CharacterContract.CharacterEntry.COLUMN_ALIGN + " INTEGER NOT NULL," +
 
+                CharacterContract.CharacterEntry.COLUMN_TOTAL_LEVEL + " INTEGER NOT NULL," +
+                CharacterContract.CharacterEntry.COLUMN_EXPERIENCE + " INTEGER NOT NULL," +
+
                 CharacterContract.CharacterEntry.COLUMN_STR + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_DEX + " INTEGER NOT NULL," +
                 CharacterContract.CharacterEntry.COLUMN_CON + " INTEGER NOT NULL," +
@@ -183,6 +186,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.TABLE_NAME +
                 " VALUES (" +
                 "1, 'Alice', 1, 0, 21, 155, 5.3, 1, 5," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 2, 0," + //total level, experience
                 " 10, 11, 12, 13, 14, 15," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 " 134, 32, 56, 89," + //money, light load, med load, heavy load
@@ -197,6 +201,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.TABLE_NAME +
                 " VALUES (" +
                 "2, 'Bob', 0, 2, 145, 121, 6.2, 0, 0," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 5, 0," + //total level, experience
                 " 10, 11, 12, 13, 14, 15," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 " 134, 32, 56, 89," + //money, light load, med load, heavy load
@@ -247,6 +252,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.TABLE_NAME +
                 " VALUES (" +
                 "3, 'Charlie', 0, 1, 238, 532, 3.7, 3, 7," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 7, 0," + //total level, experience
                 " 12, 13, 14, 15, 16, 17," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 "134, 32, 56, 89," + //money, light load, med load, heavy load
@@ -262,6 +268,7 @@ public class CharacterDbHelper extends SQLiteOpenHelper {
                 CharacterContract.CharacterEntry.TABLE_NAME +
                 " VALUES (" +
                 "4, 'David', 0, 0, 24, 172, 5.11, 2, 5," + // id, name, gender, raceID, age, weight, height, religionID, alignment
+                " 10, 0," + //total level, experience
                 " 13, 14, 15, 16, 17, 18," + //ability scores x6
                 " 0, 0, 2, 0," + //base attack, fort, ref, will
                 "134, 32, 56, 89," + //money, light load, med load, heavy load

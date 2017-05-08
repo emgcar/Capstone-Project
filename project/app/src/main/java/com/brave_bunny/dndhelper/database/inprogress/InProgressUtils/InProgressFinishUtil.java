@@ -266,6 +266,10 @@ public class InProgressFinishUtil {
         int alignChoice = InProgressCharacterUtil.getCharacterAlign(inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_ALIGN, alignChoice);
 
+        // adding character level and experience
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_TOTAL_LEVEL, 1);
+        characterValues.put(CharacterContract.CharacterEntry.COLUMN_EXPERIENCE, 0);
+
         // adding character strength
         int strTotal = InProgressCharacterUtil.getTotalStrengthScore(context, inProgressValues);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_STR, strTotal);

@@ -1,5 +1,6 @@
 package com.brave_bunny.dndhelper.select;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
@@ -25,6 +26,7 @@ import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressC
 import com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment;
 import com.brave_bunny.dndhelper.play.DetailActivity;
 
+import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
 
 /**
@@ -58,8 +60,9 @@ public class SelectActivityFragment extends Fragment {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
                 // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                String name = cursor.getString(CharacterUtil.COL_CHARACTER_NAME);
-                long index = cursor.getLong(CharacterUtil.COL_CHARACTER_ID);
+                ContentValues value = cursorRowToContentValues(cursor);
+                String name = CharacterUtil.getCharacterName(value);
+                long index = CharacterUtil.getId(value);
                 Intent selectActivity;
 
                 if (isCompleted(getContext(), name)) {
