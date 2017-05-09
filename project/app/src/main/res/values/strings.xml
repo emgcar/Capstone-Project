@@ -2,6 +2,7 @@
     <string name="app_name" translatable="true">Scrolls of Adventure</string>
     <string name="select_character" translatable="true">Select Character</string>
     <string name="create_character" translatable="true">Create Character</string>
+    <string name="customize" translatable="true">Customize</string>
 
     <string name="in_progress" translatable="true">In Progress</string>
 
@@ -227,5 +228,5 @@
     <string name="title_activity_item">ItemActivity</string>
     <string name="title_activity_skill_check">SkillCheckActivity</string>
 
-
+    <string name="preference_background_color" translatable="false">background_color</string>
 </resources>

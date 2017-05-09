@@ -37,12 +37,12 @@
             android:text="@string/select_character"
             android:onClick="launchSelectCharacter"/>
 
-        <!--<Button
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/select_skills_button"
-            android:text="Skills"
-            android:onClick="launchSkills"/>-->
+            android:id="@+id/achievements_button"
+            android:text="@string/customize"
+            android:onClick="launchCustomize"/>
 
     </LinearLayout>
 

@@ -95,21 +95,14 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:onClick="showSpells"
-                android:text="Use Spell"/>
+                android:text="Spells"/>
 
             <Button
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:onClick="showSkills"
-                android:text="Use Skill"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:onClick="showItems"
-                android:text="Use Item"/>
+                android:text="Skills"/>
 
         </LinearLayout>
 
@@ -123,13 +116,6 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:onClick="makeSavingThrow"
-                android:text="Make Saving Throw"/>
-
-            <Button
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
                 android:onClick="seeFamiliar"
                 android:text="Familiar"/>
 
@@ -137,8 +123,8 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:onClick="goToSleep"
-                android:text="Go To Sleep"/>
+                android:onClick="showItems"
+                android:text="Items"/>
 
         </LinearLayout>
 

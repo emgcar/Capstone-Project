@@ -3,11 +3,13 @@ package com.brave_bunny.dndhelper.create;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.abilities.AbilityActivity;

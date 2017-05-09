@@ -29,6 +29,8 @@ import com.brave_bunny.dndhelper.play.DetailActivity;
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil.isCompleted;
 
+
+
 /**
  * A placeholder fragment containing a simple view.
  */
