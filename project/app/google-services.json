@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "961100407747",
+    "firebase_url": "https://capstoneproject-b0cfb.firebaseio.com",
+    "project_id": "capstoneproject-b0cfb",
+    "storage_bucket": "capstoneproject-b0cfb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961100407747:android:866a7657951effe0",
+        "android_client_info": {
+          "package_name": "com.brave_bunny.dndhelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961100407747-paq80pkclos57kg22adcfhvua6at4auh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUiOBbeIFBkGnEwOdY_S8o8DvUTmVJt9M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
