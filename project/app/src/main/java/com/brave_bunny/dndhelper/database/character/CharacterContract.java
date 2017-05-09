@@ -73,8 +73,8 @@ public class CharacterContract {
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_CHARACTERS;
 
-        public static Uri buildCharacterUri(long id) {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+        public static Uri buildCharacterUri() {
+            return CONTENT_URI;
         }
     }
 

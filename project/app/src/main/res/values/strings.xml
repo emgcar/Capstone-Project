@@ -229,4 +229,7 @@
     <string name="title_activity_skill_check">SkillCheckActivity</string>
 
     <string name="preference_background_color" translatable="false">background_color</string>
+    <string name="banner_ad_unit_id">ca-app-pub-3853684716235342/7592488913</string>
+    <string name="character_widget">Character Display</string>
+    <string name="empty_database">No Warriors Available</string>
 </resources>

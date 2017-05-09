@@ -14,12 +14,18 @@ import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.edition35.RulesDbHelper;
 import com.brave_bunny.dndhelper.database.inprogress.InProgressDbHelper;
 import com.brave_bunny.dndhelper.select.SelectActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String ACTION_DATA_UPDATED =
+            "com.brave_bunny.dndhelper.ACTION_DATA_UPDATED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +37,23 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout mainContainer = (LinearLayout) findViewById(R.id.activty_main_container);
         mainContainer.setBackgroundColor(color);
 
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        updateWidgets();
+
         setupCharacterDb();
         setupInProgressDb();
         setup35Library();
+    }
+
+    private void updateWidgets() {
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(getPackageName());
+        sendBroadcast(dataUpdatedIntent);
     }
 
     public void launchSelectCharacter(View view) {

@@ -115,7 +115,7 @@ public class CharacterProvider extends ContentProvider {
             case CHARACTER: {
                 long _id = db.insert(CharacterContract.CharacterEntry.TABLE_NAME, null, values);
                 if ( _id > 0 )
-                    returnUri = CharacterContract.CharacterEntry.buildCharacterUri(_id);
+                    returnUri = CharacterContract.CharacterEntry.buildCharacterUri();
                 else
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 break;
