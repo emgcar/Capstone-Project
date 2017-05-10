@@ -48,6 +48,20 @@
                 android:id="@+id/achievements_button"
                 android:text="@string/customize"
                 android:onClick="launchCustomize"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/login_button"
+                android:text="@string/login_text"
+                android:onClick="signIn"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/logout_button"
+                android:text="@string/logout_text"
+                android:onClick="signOut"/>
         </LinearLayout>
     </LinearLayout>
 

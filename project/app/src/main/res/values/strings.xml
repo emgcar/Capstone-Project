@@ -234,4 +234,8 @@
     <string name="empty_database">No Warriors Available</string>
 
     <string name="content_authority">com.brave_bunny.dndhelper.database.character</string>
+
+    <string name="auth_failed" translatable="true">Authentication failed</string>
+    <string name="login_text" translatable="true">Log In</string>
+    <string name="logout_text" translatable="true">Log Out</string>
 </resources>
