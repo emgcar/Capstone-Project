@@ -91,5 +91,11 @@
             android:enabled="@bool/widget_detail_enabled"
             android:exported="false"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <provider
+            android:authorities="@string/content_authority"
+            android:name=".database.character.CharacterProvider"
+            android:exported="false"
+            android:syncable="true" />
     </application>
 </manifest>

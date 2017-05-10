@@ -20,13 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorAccent">
+        android:background="@color/colorPrimary">
         <ListView
             android:id="@+id/widget_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"
             android:dividerHeight="0dp"
+            android:textColor="@color/colorPrimaryDark"
             tools:listitem="@layout/list_item_character"/>
         <TextView
             android:id="@+id/widget_empty"
@@ -34,6 +35,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/colorAccent"
             android:textAppearance="?android:textAppearanceLarge"
             android:text="@string/empty_database"/>
     </FrameLayout>

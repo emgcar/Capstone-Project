@@ -34,6 +34,7 @@ import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.Utility;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
+import com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment;
 
 import java.util.concurrent.ExecutionException;
 
@@ -45,7 +46,7 @@ public class CharacterWidgetIntentService extends RemoteViewsService {
     public final String LOG_TAG = CharacterWidgetIntentService.class.getSimpleName();
 
     private static final String[] CHARACTER_COLUMNS = {
-            CharacterContract.CharacterEntry.TABLE_NAME + CharacterContract.CharacterEntry._ID,
+            CharacterContract.CharacterEntry.TABLE_NAME + "." + CharacterContract.CharacterEntry._ID,
             CharacterContract.CharacterEntry.COLUMN_NAME,
             CharacterContract.CharacterEntry.COLUMN_TOTAL_LEVEL
     };
@@ -66,6 +67,7 @@ public class CharacterWidgetIntentService extends RemoteViewsService {
 
             @Override
             public void onDataSetChanged() {
+                Log.d(LOG_TAG, "query method called");
                 if (data != null) {
                     data.close();
                 }
@@ -80,6 +82,13 @@ public class CharacterWidgetIntentService extends RemoteViewsService {
                         null,
                         null,
                         CharacterContract.CharacterEntry.COLUMN_NAME + " ASC");
+                if (data == null) {
+                    Log.d(LOG_TAG, "query called, returned null");
+                } else if (data.getCount() == 0) {
+                    Log.d(LOG_TAG, "query called, returned with no entries");
+                } else {
+                    Log.d(LOG_TAG, "query called, returned with entries");
+                }
                 Binder.restoreCallingIdentity(identityToken);
             }
 
@@ -109,16 +118,17 @@ public class CharacterWidgetIntentService extends RemoteViewsService {
 
                 Context context = CharacterWidgetIntentService.this;
 
-                ContentValues values = Utility.cursorRowToContentValues(data);
-                String name = CharacterUtil.getCharacterName(values);
-                int charLevel = CharacterUtil.getCharacterLevel(values);
+                String name = data.getString(INDEX_NAME);
+                int charLevel = data.getInt(INDEX_LEVEL);
                 String level = context.getString(R.string.total_level, charLevel);
-                views.setTextViewText(R.id.name_text, name);
-                views.setTextViewText(R.id.level_text, level);
+                views.setTextViewText(R.id.name_details, name);
+                views.setTextViewText(R.id.level_details, level);
 
                 final Intent fillInIntent = new Intent();
                 Uri characterUri = CharacterContract.CharacterEntry.buildCharacterUri();
                 fillInIntent.setData(characterUri);
+                long index = data.getLong(INDEX_CHARACTER_ID);
+                fillInIntent.putExtra(CastSpellActivityFragment.ROW_INDEX, index);
                 views.setOnClickFillInIntent(R.id.character_layout, fillInIntent);
                 return views;
             }

@@ -29,12 +29,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/name_details"
+            android:textColor="@color/colorPrimary"
             android:gravity="center"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/level_details"
+            android:textColor="@color/colorPrimary"
             android:gravity="center"/>
 
     </LinearLayout>

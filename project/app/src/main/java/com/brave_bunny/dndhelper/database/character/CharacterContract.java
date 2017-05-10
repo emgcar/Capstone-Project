@@ -10,7 +10,7 @@ import android.provider.BaseColumns;
  */
 public class CharacterContract {
 
-    public static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper.character";
+    public static final String CONTENT_AUTHORITY = "com.brave_bunny.dndhelper.database.character";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
     public static final String PATH_CHARACTERS = "stats";
     public static final String PATH_CHARACTER_CLASS = "character_class";

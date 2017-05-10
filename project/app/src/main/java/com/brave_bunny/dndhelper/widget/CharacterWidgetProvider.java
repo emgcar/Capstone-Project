@@ -31,6 +31,7 @@ import android.widget.RemoteViews;
 import com.brave_bunny.dndhelper.MainActivity;
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.play.DetailActivity;
+import com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment;
 
 /**
  * Provider for a scrollable weather detail widget
@@ -56,7 +57,7 @@ public class CharacterWidgetProvider extends AppWidgetProvider {
             boolean useDetailActivity = context.getResources()
                     .getBoolean(R.bool.use_detail_activity);
             Intent clickIntentTemplate = useDetailActivity
-                    ? new Intent(context, DetailActivity.class)
+                    ? (new Intent(context, DetailActivity.class))
                     : new Intent(context, MainActivity.class);
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)

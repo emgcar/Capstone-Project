@@ -232,4 +232,6 @@
     <string name="banner_ad_unit_id">ca-app-pub-3853684716235342/7592488913</string>
     <string name="character_widget">Character Display</string>
     <string name="empty_database">No Warriors Available</string>
+
+    <string name="content_authority">com.brave_bunny.dndhelper.database.character</string>
 </resources>
