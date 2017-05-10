@@ -62,13 +62,15 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:src="@drawable/wax_seal" />
+                android:src="@drawable/wax_seal"
+                android:contentDescription="@string/wax_seal"/>
         </LinearLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:src="@drawable/shield" />
+            android:src="@drawable/shield"
+            android:contentDescription="@string/shield_and_sword"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -90,7 +92,8 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:onClick="showSpells"
-            android:text="@string/spell_button"/>
+            android:text="@string/spell_button"
+            android:contentDescription="@string/spell_button"/>
 
         <Button
             android:layout_width="match_parent"
@@ -98,7 +101,8 @@
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"
             android:onClick="showSkills"
-            android:text="@string/skill_button"/>
+            android:text="@string/skill_button"
+            android:contentDescription="@string/skill_button"/>
 
     </LinearLayout>
 

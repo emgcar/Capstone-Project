@@ -74,7 +74,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/finish_create"
             android:onClick="createCharacter"
-            android:text="Finish" />
+            android:text="@string/finish"
+            android:contentDescription="@string/finish" />
     </LinearLayout>
 
 </FrameLayout>

@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(LOG_TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.google_services_error), Toast.LENGTH_SHORT).show();
     }
 
     private void authenticationStuff() {
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(LOG_TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, getString(R.string.authentication_failed),
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }

@@ -13,22 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.CreateActivityFragment;
-import com.brave_bunny.dndhelper.database.character.CharacterContract;
-import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
 import com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterUtil;
-import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesCharacterUtils;
 import com.brave_bunny.dndhelper.play.battle.CastSpellActivity;
-
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_DWARF;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_ELF;
-import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
-import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
-import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
-import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 import static com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment.ROW_INDEX;

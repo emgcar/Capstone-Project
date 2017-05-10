@@ -52,6 +52,7 @@
                 android:layout_height="wrap_content"
                 android:textOn="@string/female"
                 android:textOff="@string/male"
+                android:contentDescription="@string/gender"
                 android:id="@+id/gender_toggle"/>
 
         </LinearLayout>
@@ -201,6 +202,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/ability_scores_prompt"
+            android:contentDescription="@string/ability_scores_prompt"
             android:onClick="launchAbilityScoreSelector"/>
 
         <LinearLayout

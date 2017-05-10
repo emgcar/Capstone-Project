@@ -19,25 +19,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/armor_class"
-            android:text="AC = 26"/>
+            android:text="@string/mock_ac"/>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="launchArmorSelector"
-            android:text="Armor" />
+            android:text="@string/armor"
+            android:contentDescription="@string/armor" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="launchWeaponSelector"
-            android:text="Weapons" />
+            android:text="@string/weapon"
+            android:contentDescription="@string/weapon" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="launchItemSelector"
-            android:text="Items" />
+            android:text="@string/item"
+            android:contentDescription="@string/item" />
 
     </LinearLayout>
 

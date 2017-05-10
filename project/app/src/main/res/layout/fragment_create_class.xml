@@ -54,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_deity"
+            android:contentDescription="@string/select_deity"
             android:onClick="launchDeitySelector"
             android:id="@+id/select_deity"
             android:visibility="gone" />
@@ -62,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_spells"
+            android:contentDescription="@string/select_spells"
             android:onClick="launchSpellSelector"
             android:id="@+id/select_spells"
             android:visibility="gone" />
@@ -70,6 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_familiar"
+            android:contentDescription="@string/select_familiar"
             android:onClick="launchFamiliarSelector"
             android:id="@+id/select_familiar"
             android:visibility="gone" />

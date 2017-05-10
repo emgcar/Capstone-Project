@@ -243,4 +243,23 @@
 
     <string name="spell_button" translatable="true">Spells</string>
     <string name="skill_button" translatable="true">Skills</string>
+
+    <string name="wax_seal" translatable="true">Wax Seal</string>
+    <string name="shield_and_sword" translatable="true">Shield and Sword</string>
+
+    <string name="option" translatable="true">Option</string>
+    <string name="in_battle" translatable="true">In Battle!</string>
+    <string name="finish" translatable="true">Finish</string>
+
+    <string name="mock_ac" translatable="true">AC = 26</string>
+    <string name="armor" translatable="true">Armor</string>
+    <string name="weapon" translatable="true">Weapons</string>
+    <string name="item" translatable="true">Items</string>
+
+    <string name="minus" translatable="false">-</string>
+    <string name="plus" translatable="false">+</string>
+
+    <string name="google_services_error" translatable="true">Google Play Services Error</string>
+    <string name="authentication_failed" translatable="true">Authentication Failed</string>
+
 </resources>

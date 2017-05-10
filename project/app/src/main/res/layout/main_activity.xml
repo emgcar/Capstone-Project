@@ -21,6 +21,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:src="@drawable/swords"
+            android:contentDescription="@string/shield_and_sword"
             android:layout_gravity="center"/>
 
         <LinearLayout
@@ -33,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/create_character_button"
                 android:text="@string/create_character"
+                android:contentDescription="@string/create_character"
                 android:onClick="launchCreateCharacter"/>
 
             <Button
@@ -40,6 +42,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/select_character_button"
                 android:text="@string/select_character"
+                android:contentDescription="@string/select_character"
                 android:onClick="launchSelectCharacter"/>
 
             <Button
@@ -47,6 +50,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/achievements_button"
                 android:text="@string/customize"
+                android:contentDescription="@string/customize"
                 android:onClick="launchCustomize"/>
 
             <Button
@@ -54,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/login_button"
                 android:text="@string/login_text"
+                android:contentDescription="@string/login_text"
                 android:onClick="signIn"/>
 
             <Button
@@ -61,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/logout_button"
                 android:text="@string/logout_text"
+                android:contentDescription="@string/logout_text"
                 android:onClick="signOut"/>
         </LinearLayout>
     </LinearLayout>
