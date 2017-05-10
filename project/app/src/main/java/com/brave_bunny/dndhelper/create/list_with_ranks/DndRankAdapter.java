@@ -65,7 +65,6 @@ public class DndRankAdapter extends CursorAdapter {
         ContentValues values = InProgressCharacterUtil.getInProgressRow(mContext, mRowIndex);
         maximumSkillPoints = InProgressSkillsUtil.getTotalSkillPointsToSpend(values);
 
-        //TODO change for cross-class
         maxRanks = RulesSkillsUtils.maxRanksPerLevel(1);
 
         mType = type;
@@ -211,14 +210,8 @@ public class DndRankAdapter extends CursorAdapter {
         }
         updateTable(skillId, ranks);
 
-        if (mType == TYPE_SKILL) {
-            if (skillRanksSpent == maximumSkillPoints) {
-                //TODO set all buttons disabled when no more skill points
-                //plusButton.setEnabled(false);
-            }
-            if (ranks == maxRanks) {
+        if ((mType == TYPE_SKILL) && (ranks == maxRanks)) {
                 plusButton.setEnabled(false);
-            }
         }
         minusButton.setEnabled(true);
         rankText.setText(Integer.toString(ranks));
@@ -267,8 +260,10 @@ public class DndRankAdapter extends CursorAdapter {
     private void updateSummaryText() {
         if (mType == TYPE_SKILL) {
             mSummaryText.setText(mContext.getString(R.string.skill_points_left, maximumSkillPoints-skillRanksSpent));
+            mSummaryText.setContentDescription(mContext.getString(R.string.skill_points_left, maximumSkillPoints-skillRanksSpent));
         } else {
             mSummaryText.setText(mContext.getString(R.string.money_left, moneyAvailable));
+            mSummaryText.setContentDescription(mContext.getString(R.string.money_left, moneyAvailable));
         }
     }
 }

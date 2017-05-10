@@ -113,8 +113,6 @@ public class CharacterFeatsUtil {
                         ContentValues spellItem = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         long spellId = RulesFeatsUtils.getFeatId(spellItem);
-
-                        // TODO: cast spell
                     }
                 }
             });

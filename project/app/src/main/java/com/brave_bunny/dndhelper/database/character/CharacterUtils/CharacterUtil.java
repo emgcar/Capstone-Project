@@ -68,6 +68,7 @@ public class CharacterUtil {
     }
 
     public static int getCharacterLevel(ContentValues values) {
+        if (values.get(characterLevelLabel()) == null) return -1;
         return values.getAsInteger(characterLevelLabel());
     }
 

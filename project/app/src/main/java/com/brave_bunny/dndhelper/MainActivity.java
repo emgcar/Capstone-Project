@@ -1,6 +1,5 @@
 package com.brave_bunny.dndhelper;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.brave_bunny.dndhelper.create.CreateActivity;
@@ -39,8 +37,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -65,19 +61,18 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
-        //TODO: Make sure this works properly and can be guest
-        //authenticationStuff();
+        authenticationStuff();
 
-        //setUpAds();
+        setUpAds();
         updateWidgets();
 
-        /*Button selectButton = (Button) findViewById(R.id.select_character_button);
+        Button selectButton = (Button) findViewById(R.id.select_character_button);
         selectButton.setEnabled(false);
         Button createButton = (Button) findViewById(R.id.create_character_button);
-        createButton.setEnabled(false);*/
+        createButton.setEnabled(false);
 
         checkForBackgroundColorPref();
-        //new SetUpDatabasesTask().execute();
+        new SetUpDatabasesTask().execute();
     }
 
     // [START on_start_check_user]
@@ -219,7 +214,7 @@ public class MainActivity extends AppCompatActivity
                         SharedPreferences sharedPref = getSharedPreferences("PREF_COLOR", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.putInt(getString(R.string.preference_background_color), color);
-                        editor.commit();
+                        editor.apply();
 
                         LinearLayout mainContainer = (LinearLayout) findViewById(R.id.activty_main_container);
                         mainContainer.setBackgroundColor(color);
@@ -247,26 +242,25 @@ public class MainActivity extends AppCompatActivity
         sendBroadcast(dataUpdatedIntent);
     }
 
-    private void setupCharacterDb() {
-        new CharacterDbHelper(this);
-    }
-
-    private void setupInProgressDb() {
-        new InProgressDbHelper(this);
-    }
-
-    private void setup35Library() {
-        new RulesDbHelper(this);
-    }
-
-    private void setProgressPercent(int progress) {
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.loader_progress);
-        progressBar.setProgress(progress);
-    }
-
     private void enableButtons() {
         findViewById(R.id.loader_progress).setVisibility(View.INVISIBLE);
         findViewById(R.id.create_character_button).setEnabled(true);
         findViewById(R.id.select_character_button).setEnabled(true);
+    }
+
+    private class SetUpDatabasesTask extends AsyncTask<Void, Void, Void> {
+
+        protected Void doInBackground(Void...voids) {
+
+            new CharacterDbHelper(MainActivity.this);
+            new InProgressDbHelper(MainActivity.this);
+            new RulesDbHelper(MainActivity.this);
+
+            return null;
+        }
+
+        protected void onPostExecute(Void voids) {
+            enableButtons();
+        }
     }
 }

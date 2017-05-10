@@ -208,8 +208,6 @@ public class CharacterDomainsUtil {
                         ContentValues domainData = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         long domainId = RulesDomainsUtils.getDomainId(domainData);
-
-                        // TODO: cast spell
                     }
                 }
             });

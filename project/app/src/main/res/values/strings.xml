@@ -238,4 +238,9 @@
     <string name="auth_failed" translatable="true">Authentication failed</string>
     <string name="login_text" translatable="true">Log In</string>
     <string name="logout_text" translatable="true">Log Out</string>
+
+    <string name="char_unfinished" translatable="true">Character is not completed</string>
+
+    <string name="spell_button" translatable="true">Spells</string>
+    <string name="skill_button" translatable="true">Skills</string>
 </resources>

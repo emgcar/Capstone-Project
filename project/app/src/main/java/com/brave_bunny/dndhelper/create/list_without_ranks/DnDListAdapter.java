@@ -17,6 +17,7 @@ import com.brave_bunny.dndhelper.database.edition35.RulesUtils.classes.RulesSpel
 import com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressCharacterUtil.getNumberFamiliarsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.getNumberDomainsSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressDomainsUtil.isDomainSelected;
 import static com.brave_bunny.dndhelper.database.inprogress.InProgressUtils.InProgressFeatsUtil.getNumberFeatsSelected;
@@ -32,7 +33,6 @@ import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
  * Created by Jemma on 1/30/2017.
  */
 
-//TODO double click causes problems
 public class DnDListAdapter extends CursorAdapter {
 
 
@@ -51,7 +51,6 @@ public class DnDListAdapter extends CursorAdapter {
         maxSelected = maxAllowed;
     }
 
-    //TODO: edge case with domains selected that aren't allowed in current alignment
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
 
@@ -63,6 +62,7 @@ public class DnDListAdapter extends CursorAdapter {
                 numberSelected = getNumberDomainsSelected(context, mRowIndex);
                 break;
             case TYPE_FAMILIAR:
+                numberSelected = getNumberFamiliarsSelected(context, mRowIndex);
                 break;
             case TYPE_SPELL:
                 numberSelected = getNumberSpellSelected(context, mRowIndex);

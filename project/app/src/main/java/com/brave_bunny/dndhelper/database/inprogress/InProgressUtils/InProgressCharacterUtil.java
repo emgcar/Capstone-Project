@@ -697,6 +697,13 @@ public class InProgressCharacterUtil {
         return 0;
     }
 
+    public static int getNumberFamiliarsSelected(Context context, long rowIndex) {
+        ContentValues values = getInProgressRow(context, rowIndex);
+        long familiarId = InProgressCharacterUtil.getCharacterFamiliar(values);
+        if (familiarId != -1) return 1;
+        return 0;
+    }
+
 
     /*
      *      ABILITY util functions

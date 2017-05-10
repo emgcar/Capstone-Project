@@ -34,7 +34,6 @@ public class DndRankActivityFragment extends Fragment {
     public DndRankActivityFragment() {
     }
 
-    //TODO: populate previous choices
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,7 +43,6 @@ public class DndRankActivityFragment extends Fragment {
         mType = (int) extras.get(DnDRankActivity.listType);
         View view = inflater.inflate(R.layout.fragment_dnd_ranks, container, false);
 
-        //TODO implement options for viewing all and cross-class also
         ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), rowIndex);
         int classId = InProgressCharacterUtil.getCharacterClass(values);
 

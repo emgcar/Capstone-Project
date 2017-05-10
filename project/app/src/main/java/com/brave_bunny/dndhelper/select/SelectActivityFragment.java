@@ -1,6 +1,7 @@
 package com.brave_bunny.dndhelper.select;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.MergeCursor;
@@ -8,6 +9,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,16 +40,15 @@ import static com.brave_bunny.dndhelper.database.character.CharacterUtils.Charac
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SelectActivityFragment extends Fragment {
+public class SelectActivityFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public final String LOG_TAG = SelectActivityFragment.class.getSimpleName();
 
-    private static final int TRUE = 1;
-    private static final int FALSE = 0;
-
-    //TODO allow for swipe for delete action, but with confirmation menu
+    ListView mListView;
 
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getLoaderManager().initLoader(0, null, this);
     }
 
     @Override
@@ -52,15 +57,12 @@ public class SelectActivityFragment extends Fragment {
         super.onCreate(savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_select, container, false);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_inprogress);
-        new getCharacters().execute(listView);
+        mListView = (ListView) rootView.findViewById(R.id.listview_inprogress);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                // CursorAdapter returns a cursor at the correct position for getItem(), or null
-                // if it cannot seek to that position.
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
                 ContentValues value = cursorRowToContentValues(cursor);
                 String name = CharacterUtil.getCharacterName(value);
@@ -68,13 +70,8 @@ public class SelectActivityFragment extends Fragment {
                 Intent selectActivity;
 
                 if (isCompleted(getContext(), name)) {
-                    //TODO: go to battle screen when in battle
-                    //if (isInBattle(getContext(), index)) {
-                    //    selectActivity = new Intent(getContext(), BattleActivity.class);
-                    //} else {
-                        selectActivity = new Intent(getContext(), DetailActivity.class);
-                        selectActivity.putExtra(CastSpellActivityFragment.ROW_INDEX, index);
-                    //}
+                    selectActivity = new Intent(getContext(), DetailActivity.class);
+                    selectActivity.putExtra(CastSpellActivityFragment.ROW_INDEX, index);
                 } else {
                     selectActivity = new Intent(getContext(), CreateActivity.class);
                     selectActivity.putExtra(CreateActivityFragment.ROW_INDEX, index);
@@ -86,24 +83,38 @@ public class SelectActivityFragment extends Fragment {
         return rootView;
     }
 
-    private class getCharacters extends AsyncTask<ListView, Void, CharacterListAdapter> {
-        ListView mListView;
+    @Override
+    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new CharacterLoader(getContext());
+    }
 
-        protected CharacterListAdapter doInBackground(ListView...listViews) {
-            mListView = listViews[0];
-            CharacterListAdapter inProgress;
+    @Override
+    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
+        // mAdapter is a CursorAdapter
+        CharacterListAdapter inProgress = new CharacterListAdapter(getContext(), cursor, 0);
+        mListView.setAdapter(inProgress);
+    }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    }
+
+    private static class CharacterLoader extends CursorLoader {
+        private static final String LOG_TAG = "Character Loader";
+
+        public CharacterLoader(Context context) {
+            super(context);
+        }
+
+        @Override
+        public Cursor loadInBackground() {
+            // this is just a simple query, could be anything that gets a cursor
             Cursor[] cursors = new Cursor[2];
             cursors[0] = CharacterUtil.getFinishedCharacterList(getContext());
             cursors[1] = InProgressCharacterUtil.getInProgressCharacterList(getContext());
 
             MergeCursor joiner = new MergeCursor(cursors);
-            inProgress = new CharacterListAdapter(getContext(), joiner, 0);
-            return inProgress;
-        }
-
-        protected void onPostExecute(CharacterListAdapter inProgress) {
-            mListView.setAdapter(inProgress);
+            return joiner;
         }
     }
 }

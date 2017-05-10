@@ -233,8 +233,6 @@ public class CharacterSkillsUtil {
                         ContentValues skillData = cursorRowToContentValues(cursor);
                         FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
                         long skillId = RulesSkillsUtils.getSkillId(skillData);
-
-                        // TODO: cast spell
                     }
                 }
             });

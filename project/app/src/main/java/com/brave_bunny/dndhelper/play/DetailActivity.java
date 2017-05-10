@@ -28,6 +28,7 @@ import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRaces
 import static com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesRacesUtils.RACE_HUMAN;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 import static com.brave_bunny.dndhelper.play.battle.CastSpellActivityFragment.ROW_INDEX;
@@ -66,43 +67,6 @@ public class DetailActivity extends AppCompatActivity {
         startActivity(activity);
     }
 
-    public void showItems(View view) {
-        Context context = getApplicationContext();
-        CharSequence text = "Show Items";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    public void makeSavingThrow(View view) {
-        Context context = getApplicationContext();
-        CharSequence text = "Make saving throw";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    public void seeFamiliar(View view) {
-        Context context = getApplicationContext();
-        CharSequence text = "Show familiar";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-    public void goToSleep(View view) {
-        Context context = getApplicationContext();
-        CharSequence text = "Going to sleep...";
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-    }
-
-
 
     public static class DetailActivityFragment extends Fragment {
 
@@ -137,14 +101,17 @@ public class DetailActivity extends AppCompatActivity {
             int level = CharacterUtil.getCharacterLevel(values);
             String levelText = getContext().getString(R.string.total_level, level);
             mViewHolder.mLevelView.setText(levelText);
+            mViewHolder.mLevelView.setContentDescription(levelText);
 
             int exp = CharacterUtil.getCharacterExperience(values);
             String expText = getContext().getString(R.string.experience, exp);
             mViewHolder.mExperienceView.setText(expText);
+            mViewHolder.mExperienceView.setContentDescription(expText);
 
             float money = CharacterUtil.getCharacterMoney(values);
             String moneyText = getContext().getString(R.string.money, money);
             mViewHolder.mMoneyView.setText(moneyText);
+            mViewHolder.mMoneyView.setContentDescription(moneyText);
         }
     }
 

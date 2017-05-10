@@ -120,7 +120,9 @@ public class CreateActivityFragment extends Fragment {
     }
 
     private void create_base() {
-        baseViewHolder.mNameText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_NAME));
+        String name = getCharacterString(InProgressContract.CharacterEntry.COLUMN_NAME);
+        baseViewHolder.mNameText.setText(name);
+        baseViewHolder.mNameText.setContentDescription(name);
         baseViewHolder.mNameText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -200,8 +202,6 @@ public class CreateActivityFragment extends Fragment {
         });
     }
 
-    //TODO don't allow saving of same name characters
-    //TODO update UI to notify users of this
     private void inputName(Editable editable) {
         ContentValues values = new ContentValues();
 
@@ -231,8 +231,6 @@ public class CreateActivityFragment extends Fragment {
         return values.getAsInteger(column);
     }
 
-    //TODO find way to change HP on class page when CON stat changes
-    //TODO: find way to change max spells when INT stat changes
     public void updateAbilityScores() {
         ContentValues values = InProgressCharacterUtil.getInProgressRow(getContext(), index);
         if (baseViewHolder != null) {
@@ -251,7 +249,6 @@ public class CreateActivityFragment extends Fragment {
         }
     }
 
-    //TODO set content description
     public void setAbilityScore(TextView view, int score) {
         String scoreString = "";
         if (score != -1) {
@@ -269,9 +266,6 @@ public class CreateActivityFragment extends Fragment {
         update_class(classSelection);
     }
 
-    //TODO: add stat buffs to ref, fort, will
-    //TODO: enable skill button on class selection
-    //TODO: enable inventory buttons on class selection
     public void update_class(int classSelection) {
         Bundle args = getArguments();
         int pageNumber = args.getInt(PAGE_NUMBER);
@@ -299,6 +293,7 @@ public class CreateActivityFragment extends Fragment {
             switch (classSelection) {
                 case RulesClassesUtils.CLASS_CLERIC:
                     classViewHolder.mClassText.setText(getString(R.string.cleric));
+                    classViewHolder.mClassText.setContentDescription(getString(R.string.cleric));
                     classViewHolder.mDeityButton.setVisibility(View.VISIBLE);
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.ClericEntry.COLUMN_BASE_ATTACK_1);
@@ -312,6 +307,7 @@ public class CreateActivityFragment extends Fragment {
                     break;
                 case RulesClassesUtils.CLASS_FIGHTER:
                     classViewHolder.mClassText.setText(getString(R.string.fighter));
+                    classViewHolder.mClassText.setContentDescription(getString(R.string.fighter));
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.FighterEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
@@ -324,6 +320,7 @@ public class CreateActivityFragment extends Fragment {
                     break;
                 case RulesClassesUtils.CLASS_ROGUE:
                     classViewHolder.mClassText.setText(getString(R.string.rogue));
+                    classViewHolder.mClassText.setContentDescription(getString(R.string.rogue));
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.RogueEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
@@ -336,6 +333,7 @@ public class CreateActivityFragment extends Fragment {
                     break;
                 case RulesClassesUtils.CLASS_WIZARD:
                     classViewHolder.mClassText.setText(getString(R.string.wizard));
+                    classViewHolder.mClassText.setContentDescription(getString(R.string.wizard));
                     setHPText(classSelection);
                     baseAttack = values.getAsInteger(RulesContract.WizardEntry.COLUMN_BASE_ATTACK_1);
                     baseAttackString = Integer.toString(baseAttack);
@@ -356,14 +354,17 @@ public class CreateActivityFragment extends Fragment {
             }
 
             classViewHolder.mBaseAttackText.setText(baseAttackString);
+            classViewHolder.mBaseAttackText.setContentDescription(baseAttackString);
             classViewHolder.mFortText.setText(fortSaveString);
+            classViewHolder.mFortText.setContentDescription(fortSaveString);
             classViewHolder.mRefText.setText(refSaveString);
+            classViewHolder.mRefText.setContentDescription(refSaveString);
             classViewHolder.mWillText.setText(willSaveString);
+            classViewHolder.mWillText.setContentDescription(willSaveString);
 
         }
     }
 
-    // TODO: update on ability score change
     public void setHPText(int classSelection) {
         ContentValues classValues = getClassStats(getContext(), classSelection);
         int hitPoints = RulesClassesUtils.getClassHitDie(classValues);
@@ -376,9 +377,9 @@ public class CreateActivityFragment extends Fragment {
 
         String hitPointsString = Integer.toString(hitPoints);
         classViewHolder.mHPText.setText(hitPointsString);
+        classViewHolder.mHPText.setContentDescription(hitPointsString);
     }
 
-    //TODO: change chosen domain columns
     public void update_align(int classSelection) {
         if (classSelection == 0) {
             classViewHolder.mDeityButton.setEnabled(false);
@@ -388,8 +389,8 @@ public class CreateActivityFragment extends Fragment {
     }
 
     public void create_detail() {
-        //TODO set max string length
         detailViewHolder.mAgeText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_AGE));
+        detailViewHolder.mAgeText.setContentDescription(getCharacterString(InProgressContract.CharacterEntry.COLUMN_AGE));
         detailViewHolder.mAgeText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -407,8 +408,8 @@ public class CreateActivityFragment extends Fragment {
             }
         });
 
-        //TODO set max string length
         detailViewHolder.mWeightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_WEIGHT));
+        detailViewHolder.mWeightText.setContentDescription(getCharacterString(InProgressContract.CharacterEntry.COLUMN_WEIGHT));
         detailViewHolder.mWeightText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -426,8 +427,8 @@ public class CreateActivityFragment extends Fragment {
             }
         });
 
-        //TODO set max string length
         detailViewHolder.mHeightText.setText(getCharacterString(InProgressContract.CharacterEntry.COLUMN_HEIGHT));
+        detailViewHolder.mHeightText.setContentDescription(getCharacterString(InProgressContract.CharacterEntry.COLUMN_HEIGHT));
         detailViewHolder.mHeightText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

@@ -3,13 +3,12 @@ package com.brave_bunny.dndhelper.create;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.create.abilities.AbilityActivity;
@@ -80,6 +79,13 @@ public class CreateActivity extends AppCompatActivity
         if (characterState == InProgressFinishUtil.STATE_COMPLETE) {
             new createCharacter().execute(this);
             this.finish();
+        } else {
+            Context context = getApplicationContext();
+            CharSequence text = getString(R.string.char_unfinished);
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
     }
 

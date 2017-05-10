@@ -96,6 +96,7 @@ public class UseAbilityListAdapter extends CursorAdapter {
                 return;
         }
         nameText.setText(name);
+        nameText.setContentDescription(name);
         view.setTag(R.string.select_spells, itemId);
     }
 }

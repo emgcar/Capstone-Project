@@ -10,10 +10,12 @@ import com.brave_bunny.dndhelper.R;
 
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterDomainsUtil.setDomainList;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterFeatsUtil.setFeatList;
+import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterItemsUtil.setItemList;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSkillsUtil.setSkillList;
 import static com.brave_bunny.dndhelper.database.character.CharacterUtils.CharacterSpellsUtil.setSpellList;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_DOMAIN;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_FEAT;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SKILL;
 import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_SPELL;
 
@@ -51,6 +53,9 @@ public class CastSpellActivityFragment extends Fragment {
                 break;
             case TYPE_SPELL:
                 setSpellList(getContext(), mRootView, rowIndex);
+                break;
+            case TYPE_ITEM:
+                setItemList(getContext(), mRootView, rowIndex);
                 break;
             default:
                 break;

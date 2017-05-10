@@ -83,7 +83,6 @@ public class InProgressSkillsUtil {
 
     /* DATABASE FUNCTIONS */
 
-    //TODO
     public static int getTotalSkillPointsToSpend(ContentValues values) {
         int skillPoints = 0;
 
@@ -201,7 +200,6 @@ public class InProgressSkillsUtil {
         }
     }
 
-    //TODO need to update for cross class
     public static int numberSkillPointsSpent(Context context, long rowIndex) {
         int skillPointsSpent = 0;
 

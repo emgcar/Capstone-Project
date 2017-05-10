@@ -206,6 +206,7 @@ public class DnDListActivityFragment extends Fragment {
         TextView textView = (TextView) mRootView.findViewById(R.id.remaining_spells);
         int numberSelected = adapter.getNumberSelected();
         textView.setText(getString(R.string.selected_spells, numberSelected, numberToSelect));
+        textView.setContentDescription(getString(R.string.selected_spells, numberSelected, numberToSelect));
     }
 
     /* START http://stackoverflow.com/questions/24811536/android-listview-get-item-view-by-position */

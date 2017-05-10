@@ -100,11 +100,17 @@ public class AbilityFragment extends Fragment {
         int ability6Score = InProgressCharacterUtil.getCharacterAbility6(mValues);
 
         mViewHolder.mOption1Text.setText(Integer.toString(ability1Score));
+        mViewHolder.mOption1Text.setContentDescription(Integer.toString(ability1Score));
         mViewHolder.mOption2Text.setText(Integer.toString(ability2Score));
+        mViewHolder.mOption2Text.setContentDescription(Integer.toString(ability2Score));
         mViewHolder.mOption3Text.setText(Integer.toString(ability3Score));
+        mViewHolder.mOption3Text.setContentDescription(Integer.toString(ability3Score));
         mViewHolder.mOption4Text.setText(Integer.toString(ability4Score));
+        mViewHolder.mOption4Text.setContentDescription(Integer.toString(ability4Score));
         mViewHolder.mOption5Text.setText(Integer.toString(ability5Score));
+        mViewHolder.mOption5Text.setContentDescription(Integer.toString(ability5Score));
         mViewHolder.mOption6Text.setText(Integer.toString(ability6Score));
+        mViewHolder.mOption6Text.setContentDescription(Integer.toString(ability6Score));
 
         updateAbilityTexts();
         updateRollAbilityButtonState();
@@ -121,49 +127,61 @@ public class AbilityFragment extends Fragment {
         if (strConnect != -1) {
             int strScore = InProgressCharacterUtil.getCharacterStr(mValues);
             mViewHolder.mStrText.setText(Integer.toString(strScore));
+            mViewHolder.mStrText.setContentDescription(Integer.toString(strScore));
             blankText(strConnect);
         } else {
             mViewHolder.mStrText.setText("Option");
+            mViewHolder.mStrText.setContentDescription("Option");
         }
 
         if (dexConnect != -1) {
             int dexScore = InProgressCharacterUtil.getCharacterDex(mValues);
             mViewHolder.mDexText.setText(Integer.toString(dexScore));
+            mViewHolder.mDexText.setContentDescription(Integer.toString(dexScore));
             blankText(dexConnect);
         } else {
             mViewHolder.mDexText.setText("Option");
+            mViewHolder.mDexText.setContentDescription("Option");
         }
 
         if (conConnect != -1) {
             int conScore = InProgressCharacterUtil.getCharacterCon(mValues);
             mViewHolder.mConText.setText(Integer.toString(conScore));
+            mViewHolder.mConText.setContentDescription(Integer.toString(conScore));
             blankText(conConnect);
         } else {
             mViewHolder.mConText.setText("Option");
+            mViewHolder.mConText.setContentDescription("Option");
         }
 
         if (intConnect != -1) {
             int intScore = InProgressCharacterUtil.getCharacterInt(mValues);
             mViewHolder.mIntText.setText(Integer.toString(intScore));
+            mViewHolder.mIntText.setContentDescription(Integer.toString(intScore));
             blankText(intConnect);
         } else {
             mViewHolder.mIntText.setText("Option");
+            mViewHolder.mIntText.setContentDescription("Option");
         }
 
         if (wisConnect != -1) {
             int wisScore = InProgressCharacterUtil.getCharacterWis(mValues);
             mViewHolder.mWisText.setText(Integer.toString(wisScore));
+            mViewHolder.mWisText.setContentDescription(Integer.toString(wisScore));
             blankText(wisConnect);
         } else {
             mViewHolder.mWisText.setText("Option");
+            mViewHolder.mWisText.setContentDescription("Option");
         }
 
         if (chaConnect != -1) {
             int chaScore = InProgressCharacterUtil.getCharacterCha(mValues);
             mViewHolder.mChaText.setText(Integer.toString(chaScore));
+            mViewHolder.mChaText.setContentDescription(Integer.toString(chaScore));
             blankText(chaConnect);
         } else {
             mViewHolder.mChaText.setText("Option");
+            mViewHolder.mChaText.setContentDescription("Option");
         }
     }
 
@@ -260,26 +278,32 @@ public class AbilityFragment extends Fragment {
             case ABILITY1:
                 score = InProgressCharacterUtil.getCharacterAbility1(mValues);
                 mViewHolder.mOption1Text.setText(Integer.toString(score));
+                mViewHolder.mOption1Text.setContentDescription(Integer.toString(score));
                 break;
             case ABILITY2:
                 score = InProgressCharacterUtil.getCharacterAbility2(mValues);
                 mViewHolder.mOption2Text.setText(Integer.toString(score));
+                mViewHolder.mOption2Text.setContentDescription(Integer.toString(score));
                 break;
             case ABILITY3:
                 score = InProgressCharacterUtil.getCharacterAbility3(mValues);
                 mViewHolder.mOption3Text.setText(Integer.toString(score));
+                mViewHolder.mOption3Text.setContentDescription(Integer.toString(score));
                 break;
             case ABILITY4:
                 score = InProgressCharacterUtil.getCharacterAbility4(mValues);
                 mViewHolder.mOption4Text.setText(Integer.toString(score));
+                mViewHolder.mOption4Text.setContentDescription(Integer.toString(score));
                 break;
             case ABILITY5:
                 score = InProgressCharacterUtil.getCharacterAbility5(mValues);
                 mViewHolder.mOption5Text.setText(Integer.toString(score));
+                mViewHolder.mOption5Text.setContentDescription(Integer.toString(score));
                 break;
             case ABILITY6:
                 score = InProgressCharacterUtil.getCharacterAbility6(mValues);
                 mViewHolder.mOption6Text.setText(Integer.toString(score));
+                mViewHolder.mOption6Text.setContentDescription(Integer.toString(score));
                 break;
             default:
         }
@@ -316,26 +340,32 @@ public class AbilityFragment extends Fragment {
             case ABILITYSTR:
                 InProgressCharacterUtil.setCharacterStr(mValues, connection);
                 mViewHolder.mStrText.setText(score);
+                mViewHolder.mStrText.setContentDescription(score);
                 break;
             case ABILITYDEX:
                 InProgressCharacterUtil.setCharacterDex(mValues, connection);
                 mViewHolder.mDexText.setText(score);
+                mViewHolder.mDexText.setContentDescription(score);
                 break;
             case ABILITYCON:
                 InProgressCharacterUtil.setCharacterCon(mValues, connection);
                 mViewHolder.mConText.setText(score);
+                mViewHolder.mConText.setContentDescription(score);
                 break;
             case ABILITYINT:
                 InProgressCharacterUtil.setCharacterInt(mValues, connection);
                 mViewHolder.mIntText.setText(score);
+                mViewHolder.mIntText.setContentDescription(score);
                 break;
             case ABILITYWIS:
                 InProgressCharacterUtil.setCharacterWis(mValues, connection);
                 mViewHolder.mWisText.setText(score);
+                mViewHolder.mWisText.setContentDescription(score);
                 break;
             case ABILITYCHA:
                 InProgressCharacterUtil.setCharacterCha(mValues, connection);
                 mViewHolder.mChaText.setText(score);
+                mViewHolder.mChaText.setContentDescription(score);
                 break;
         }
         blankText(connection);
@@ -432,21 +462,27 @@ public class AbilityFragment extends Fragment {
         switch (view) {
             case ABILITY1:
                 mViewHolder.mOption1Text.setText("");
+                mViewHolder.mOption1Text.setContentDescription("");
                 break;
             case ABILITY2:
                 mViewHolder.mOption2Text.setText("");
+                mViewHolder.mOption2Text.setContentDescription("");
                 break;
             case ABILITY3:
                 mViewHolder.mOption3Text.setText("");
+                mViewHolder.mOption3Text.setContentDescription("");
                 break;
             case ABILITY4:
                 mViewHolder.mOption4Text.setText("");
+                mViewHolder.mOption4Text.setContentDescription("");
                 break;
             case ABILITY5:
                 mViewHolder.mOption5Text.setText("");
+                mViewHolder.mOption5Text.setContentDescription("");
                 break;
             case ABILITY6:
                 mViewHolder.mOption6Text.setText("");
+                mViewHolder.mOption6Text.setContentDescription("");
                 break;
         }
     }
@@ -485,90 +521,6 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mReRollButton.setEnabled(true);
         }
     }
-
-    /*public void setOptionListeners(View rootView, int id) {
-        TextView view = (TextView) rootView.findViewById(id);
-        view.setOnDragListener(new ChoiceDragListener());
-        view.setOnTouchListener(new ChoiceTouchListener());
-        view.setTag("");
-    }
-
-    private void setChoiceListeners(View rootView, int id, int score) {
-        TextView view = (TextView) rootView.findViewById(id);
-        view.setOnDragListener(new ChoiceDragListener());
-        view.setOnTouchListener(new ChoiceTouchListener());
-        view.setTag(id);
-        view.setText(Integer.toString(score));
-    }
-
-    private final class ChoiceTouchListener implements View.OnTouchListener {
-
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN
-                    && !view.getTag().equals("")) {
-                ClipData data = ClipData.newPlainText("", "");
-                View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-                view.startDrag(data, shadowBuilder, view, 0);
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    private class ChoiceDragListener implements View.OnDragListener {
-
-        @Override
-        public boolean onDrag(View v, DragEvent dragEvent) {
-            View view;
-            TextView dropTarget;
-            Object tag;
-            int existingID;
-            switch (dragEvent.getAction()) {
-                case DragEvent.ACTION_DROP:
-                    view = (View) dragEvent.getLocalState();
-                    dropTarget = (TextView) v;
-                    TextView dropped = (TextView) view;
-                    tag = dropTarget.getTag();
-                    if (tag != null && !tag.equals("")) {
-                        existingID = (Integer)tag;
-                        getActivity().findViewById(existingID).setVisibility(View.VISIBLE);
-                    }
-                    dropTarget.setText(dropped.getText());
-                    dropTarget.setTypeface(Typeface.DEFAULT_BOLD);
-                    dropTarget.setTag(dropped.getTag());
-                    if (dropped.getTypeface() == Typeface.DEFAULT_BOLD) {
-                        dropped.setTag("");
-                        dropped.setText("option");
-                        dropped.setTypeface(Typeface.DEFAULT);
-                    } else {
-                        view.setVisibility(View.INVISIBLE);
-                    }
-                    break;
-                case DragEvent.ACTION_DRAG_ENDED:
-                    if (!dragEvent.getResult()) {
-                        final TextView droppedView = (TextView) dragEvent.getLocalState();
-                        droppedView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Object tag = droppedView.getTag();
-                                if (tag != null && !tag.equals("") && droppedView.getTypeface() == Typeface.DEFAULT_BOLD) {
-                                    int existingID = (Integer)tag;
-                                    droppedView.setTag("");
-                                    droppedView.setText("option");
-                                    droppedView.setTypeface(Typeface.DEFAULT);
-                                    getActivity().findViewById(existingID).setVisibility(View.VISIBLE);
-                                }
-                            }
-                        });
-
-                    }
-                    break;
-            }
-            return true;
-        }
-    }*/
 
     public static class AbilityViewHolder extends RecyclerView.ViewHolder {
         public TextView mOption1Text;

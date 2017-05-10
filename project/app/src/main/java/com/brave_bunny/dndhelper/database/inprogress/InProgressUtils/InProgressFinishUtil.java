@@ -55,9 +55,6 @@ public class InProgressFinishUtil {
     public static final int STATE_PARTIAL = 1;
     public static final int STATE_COMPLETE = 2;
 
-    //TODO transfer class
-
-    //TODO for all final tables
     public static void removeAllInProgressCharacterData(Context context, long rowIndex) {
         removeAllInProgressStats(context, rowIndex);
         removeAllInProgressDomains(context, rowIndex);
@@ -229,7 +226,6 @@ public class InProgressFinishUtil {
         return false;
     }
 
-    //TODO add all chosen content to all tables (deity, spells, familiar, skills, feats, ...)
     public static long createNewCharacter(Context context, long inProgressIndex) {
         ContentValues inProgressValues = InProgressCharacterUtil.getInProgressRow(context, inProgressIndex);
         ContentValues characterValues = new ContentValues();
@@ -258,7 +254,6 @@ public class InProgressFinishUtil {
         String heightString = inProgressValues.getAsString(InProgressContract.CharacterEntry.COLUMN_HEIGHT);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEIGHT, heightString);
 
-        //TODO save religion?
         // adding character religion
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_RELIGION_ID, 0);
 
@@ -345,7 +340,6 @@ public class InProgressFinishUtil {
         int money = inProgressValues.getAsInteger(InProgressContract.CharacterEntry.COLUMN_MONEY);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_MONEY, money);
 
-        //TODO get  load levels
         // adding character light load
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_LIGHT_LOAD, 0);
 
@@ -355,7 +349,6 @@ public class InProgressFinishUtil {
         // adding character heavy load
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HEAVY_LOAD, 0);
 
-        //TODO: add armor bonus, shield bonus, and size modifier
         // adding character AC
         int armor_class = 10 + RulesCharacterUtils.scoreToModifier(dexTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_AC, armor_class);
@@ -367,7 +360,6 @@ public class InProgressFinishUtil {
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_CURR, hpDie);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_HP_MAX, hpDie);
 
-        //TODO: check for Improved Initiative feat
         // adding character initiative
         int initiative = RulesCharacterUtils.scoreToModifier(dexTotal);
         characterValues.put(CharacterContract.CharacterEntry.COLUMN_INITIATIVE, initiative);
@@ -459,7 +451,6 @@ public class InProgressFinishUtil {
         CharacterSkillsUtil.setCharacterId(newEntry, characterIndex);
         CharacterSkillsUtil.setSkillId(newEntry, skillId);
 
-        //TODO
         CharacterSkillsUtil.setSkillInClass(newEntry, false);
 
         int ranks = InProgressSkillsUtil.getSkillRanks(context, inProgressIndex, skillId);
@@ -468,7 +459,6 @@ public class InProgressFinishUtil {
         int abilMod = InProgressSkillsUtil.getSkillAbilityMod(skillData, inProgressValues);
         CharacterSkillsUtil.setSkillAbilMod(newEntry, abilMod);
 
-        //TODO
         int miscMod = 0;
         CharacterSkillsUtil.setSkillMiscMod(newEntry, miscMod);
 

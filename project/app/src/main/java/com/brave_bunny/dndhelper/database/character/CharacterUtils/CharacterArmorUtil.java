@@ -165,7 +165,6 @@ public class CharacterArmorUtil {
         }
     }
 
-    //TODO implement in level up menu
     public static void addOrUpdateArmorSelection(Context context, long rowIndex, long armorId, int count) {
         if (isArmorListed(context, rowIndex, armorId)) {
             updateArmorSelection(context, rowIndex, armorId, count);
@@ -174,7 +173,6 @@ public class CharacterArmorUtil {
         }
     }
 
-    //TODO implement in delete character option
     public static void removeAllCharacterArmor(Context context, long rowIndex) {
 
         CharacterDbHelper dbHelper = new CharacterDbHelper(context);

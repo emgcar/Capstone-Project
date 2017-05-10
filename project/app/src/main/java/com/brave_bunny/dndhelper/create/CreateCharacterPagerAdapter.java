@@ -48,7 +48,6 @@ public class CreateCharacterPagerAdapter extends FragmentPagerAdapter {
         if (classFragment != null) {
             classFragment.create_class(position);
         }
-        //TODO don't let skills button be enabled when class is not chosen
         if( skillFragment != null) {
             skillFragment.updateSkillPage(position);
         }

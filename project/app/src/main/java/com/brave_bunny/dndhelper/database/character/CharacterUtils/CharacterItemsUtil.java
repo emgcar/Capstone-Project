@@ -4,11 +4,20 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 
+import com.brave_bunny.dndhelper.R;
 import com.brave_bunny.dndhelper.database.character.CharacterContract;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
+import com.brave_bunny.dndhelper.database.edition35.RulesUtils.RulesItemsUtils;
+import com.brave_bunny.dndhelper.play.UseAbilityListAdapter;
 
 import static com.brave_bunny.dndhelper.Utility.cursorRowToContentValues;
+import static com.brave_bunny.dndhelper.Utility.getViewByPosition;
+import static com.brave_bunny.dndhelper.play.UseAbilityListAdapter.TYPE_ITEM;
 
 /**
  * Handles all of the selected items for created characters.
@@ -77,7 +86,6 @@ public class CharacterItemsUtil {
 
     /* DATABASE FUNCTIONS */
 
-    //TODO implement on delete character option
     public static void removeAllCharacterItems(Context context, long rowIndex) {
         String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(rowIndex)};
@@ -158,7 +166,6 @@ public class CharacterItemsUtil {
         }
     }
 
-    //TODO implement buying screen
     public static void addOrUpdateItemSelection(Context context, long rowIndex, long itemId, int count) {
         if (isItemListed(context, rowIndex, itemId)) {
             updateItemSelection(context, rowIndex, itemId, count);
@@ -204,5 +211,39 @@ public class CharacterItemsUtil {
         String query = characterIdLabel() + " = ?";
         String[] selectionArgs = new String[]{Long.toString(characterId)};
         deleteFromTable(context, query, selectionArgs);
+    }
+
+    public static void setItemList(Context context, View view, long rowIndex) {
+        CharacterDbHelper dbHelper = new CharacterDbHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        try {
+            String query = "SELECT * FROM " + CharacterContract.CharacterItems.TABLE_NAME
+                    + " WHERE " + CharacterContract.CharacterItems.COLUMN_CHARACTER_ID + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{Long.toString(rowIndex)});
+
+            final UseAbilityListAdapter adapter = new UseAbilityListAdapter(context, cursor,
+                    0, TYPE_ITEM, rowIndex);
+            final ListView listView = (ListView) view.findViewById(R.id.listview_spells);
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    // CursorAdapter returns a cursor at the correct position for getItem(), or null
+                    // if it cannot seek to that position.
+                    Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+
+                    if (cursor != null) {
+                        ContentValues spellItem = cursorRowToContentValues(cursor);
+                        FrameLayout itemView = (FrameLayout)getViewByPosition(position, listView);
+                        long itemId = RulesItemsUtils.getItemId(spellItem);
+                    }
+                }
+            });
+        } finally {
+            db.close();
+        }
     }
 }

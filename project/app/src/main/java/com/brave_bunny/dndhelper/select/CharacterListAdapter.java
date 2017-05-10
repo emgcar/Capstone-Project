@@ -47,16 +47,18 @@ class CharacterListAdapter extends CursorAdapter {
 
         String name = CharacterUtil.getCharacterName(value);
         String level;
-        if (name.equals("")) {
+        int charLevel = CharacterUtil.getCharacterLevel(value);
+        if (charLevel == -1) {
             level = context.getString(R.string.in_progress);
             name = InProgressCharacterUtil.getCharacterName(value);
         } else {
-            int charLevel = CharacterUtil.getCharacterLevel(value);
             level = context.getString(R.string.total_level, charLevel);
         }
 
         viewHolder.levelView.setText(level);
+        viewHolder.levelView.setContentDescription(level);
         viewHolder.nameView.setText(name);
+        viewHolder.nameView.setContentDescription(name);
     }
 
     private static class CharacterListViewHolder {
