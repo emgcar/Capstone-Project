@@ -1,13 +1,16 @@
 package com.brave_bunny.dndhelper;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.brave_bunny.dndhelper.create.CreateActivity;
 import com.brave_bunny.dndhelper.database.character.CharacterDbHelper;
@@ -17,8 +20,6 @@ import com.brave_bunny.dndhelper.select.SelectActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-
-import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
@@ -32,28 +33,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        //setUpAds();
+        updateWidgets();
+
+        /*Button selectButton = (Button) findViewById(R.id.select_character_button);
+        selectButton.setEnabled(false);
+        Button createButton = (Button) findViewById(R.id.create_character_button);
+        createButton.setEnabled(false);*/
+
+        checkForBackgroundColorPref();
+        //new SetUpDatabasesTask().execute();
+    }
+
+    private void checkForBackgroundColorPref() {
         SharedPreferences sharedPref = getSharedPreferences("PREF_COLOR", Context.MODE_PRIVATE);
         int color = sharedPref.getInt(getString(R.string.preference_background_color), R.color.colorPrimary);
         LinearLayout mainContainer = (LinearLayout) findViewById(R.id.activty_main_container);
         mainContainer.setBackgroundColor(color);
-
-        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
-        AdView mAdView = (AdView) findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        updateWidgets();
-
-        setupCharacterDb();
-        setupInProgressDb();
-        setup35Library();
-    }
-
-    private void updateWidgets() {
-        // Setting the package ensures that only components in our app will receive the broadcast
-        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
-                .setPackage(getPackageName());
-        sendBroadcast(dataUpdatedIntent);
     }
 
     public void launchSelectCharacter(View view) {
@@ -89,6 +85,20 @@ public class MainActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private void setUpAds() {
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-3940256099942544~3347511713");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+    }
+
+    private void updateWidgets() {
+        // Setting the package ensures that only components in our app will receive the broadcast
+        Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED)
+                .setPackage(getPackageName());
+        sendBroadcast(dataUpdatedIntent);
+    }
+
     private void setupCharacterDb() {
         new CharacterDbHelper(this);
     }
@@ -99,5 +109,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void setup35Library() {
         new RulesDbHelper(this);
+    }
+
+    private void setProgressPercent(int progress) {
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.loader_progress);
+        progressBar.setProgress(progress);
+    }
+
+    private void enableButtons() {
+        findViewById(R.id.loader_progress).setVisibility(View.INVISIBLE);
+        findViewById(R.id.create_character_button).setEnabled(true);
+        findViewById(R.id.select_character_button).setEnabled(true);
     }
 }

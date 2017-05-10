@@ -73,22 +73,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.brave_bunny.dndhelper.play.DetailActivity" />
         </activity>
-    </application>
 
-    <receiver
-        android:name=".widget.CharacterWidgetProvider"
-        android:label="@string/character_widget"
-        android:enabled="@bool/widget_detail_enabled" >
-        <intent-filter>
-            <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            <action android:name="com.brave_bunny.dndhelper.app.ACTION_DATA_UPDATED" />
-        </intent-filter>
-        <meta-data android:name="android.appwidget.provider"
-            android:resource="@xml/character_appwidget_info" />
-    </receiver>
-    <service
-        android:name=".widget.CharacterWidgetIntentService"
-        android:enabled="@bool/widget_detail_enabled"
-        android:exported="false"
-        android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <receiver
+            android:name=".widget.CharacterWidgetProvider"
+            android:label="@string/character_widget"
+            android:enabled="@bool/widget_detail_enabled"
+            android:icon="@drawable/scroll">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.brave_bunny.dndhelper.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/character_appwidget_info" />
+        </receiver>
+        <service
+            android:name=".widget.CharacterWidgetIntentService"
+            android:enabled="@bool/widget_detail_enabled"
+            android:exported="false"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+    </application>
 </manifest>

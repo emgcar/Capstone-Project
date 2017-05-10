@@ -44,6 +44,16 @@ import java.util.concurrent.ExecutionException;
 public class CharacterWidgetIntentService extends RemoteViewsService {
     public final String LOG_TAG = CharacterWidgetIntentService.class.getSimpleName();
 
+    private static final String[] CHARACTER_COLUMNS = {
+            CharacterContract.CharacterEntry.TABLE_NAME + CharacterContract.CharacterEntry._ID,
+            CharacterContract.CharacterEntry.COLUMN_NAME,
+            CharacterContract.CharacterEntry.COLUMN_TOTAL_LEVEL
+    };
+    // these indices must match the projection
+    private static final int INDEX_CHARACTER_ID = 0;
+    private static final int INDEX_NAME = 1;
+    private static final int INDEX_LEVEL = 2;
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new RemoteViewsFactory() {
@@ -64,9 +74,9 @@ public class CharacterWidgetIntentService extends RemoteViewsService {
                 // data. Therefore we need to clear (and finally restore) the calling identity so
                 // that calls use our process and permission
                 final long identityToken = Binder.clearCallingIdentity();
-                Uri weatherForLocationUri = CharacterContract.CharacterEntry.buildCharacterUri();
-                data = getContentResolver().query(weatherForLocationUri,
-                        null,
+                Uri characterUri = CharacterContract.CharacterEntry.buildCharacterUri();
+                data = getContentResolver().query(characterUri,
+                        CHARACTER_COLUMNS,
                         null,
                         null,
                         CharacterContract.CharacterEntry.COLUMN_NAME + " ASC");
@@ -83,11 +93,13 @@ public class CharacterWidgetIntentService extends RemoteViewsService {
 
             @Override
             public int getCount() {
+                Log.d(LOG_TAG, "getCount called");
                 return data == null ? 0 : data.getCount();
             }
 
             @Override
             public RemoteViews getViewAt(int position) {
+                Log.d(LOG_TAG, "getViewAt called");
                 if (position == AdapterView.INVALID_POSITION ||
                         data == null || !data.moveToPosition(position)) {
                     return null;
