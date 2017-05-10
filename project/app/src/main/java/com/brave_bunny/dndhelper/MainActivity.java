@@ -243,7 +243,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void enableButtons() {
-        findViewById(R.id.loader_progress).setVisibility(View.INVISIBLE);
         findViewById(R.id.create_character_button).setEnabled(true);
         findViewById(R.id.select_character_button).setEnabled(true);
     }
