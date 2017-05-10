@@ -130,8 +130,8 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mStrText.setContentDescription(Integer.toString(strScore));
             blankText(strConnect);
         } else {
-            mViewHolder.mStrText.setText("Option");
-            mViewHolder.mStrText.setContentDescription("Option");
+            mViewHolder.mStrText.setText(R.string.option);
+            mViewHolder.mStrText.setContentDescription(getString(R.string.option));
         }
 
         if (dexConnect != -1) {
@@ -140,8 +140,8 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mDexText.setContentDescription(Integer.toString(dexScore));
             blankText(dexConnect);
         } else {
-            mViewHolder.mDexText.setText("Option");
-            mViewHolder.mDexText.setContentDescription("Option");
+            mViewHolder.mDexText.setText(R.string.option);
+            mViewHolder.mDexText.setContentDescription(getString(R.string.option));
         }
 
         if (conConnect != -1) {
@@ -160,8 +160,8 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mIntText.setContentDescription(Integer.toString(intScore));
             blankText(intConnect);
         } else {
-            mViewHolder.mIntText.setText("Option");
-            mViewHolder.mIntText.setContentDescription("Option");
+            mViewHolder.mIntText.setText(R.string.option);
+            mViewHolder.mIntText.setContentDescription(getString(R.string.option));
         }
 
         if (wisConnect != -1) {
@@ -170,8 +170,8 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mWisText.setContentDescription(Integer.toString(wisScore));
             blankText(wisConnect);
         } else {
-            mViewHolder.mWisText.setText("Option");
-            mViewHolder.mWisText.setContentDescription("Option");
+            mViewHolder.mWisText.setText(R.string.option);
+            mViewHolder.mWisText.setContentDescription(getString(R.string.option));
         }
 
         if (chaConnect != -1) {
@@ -180,8 +180,8 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mChaText.setContentDescription(Integer.toString(chaScore));
             blankText(chaConnect);
         } else {
-            mViewHolder.mChaText.setText("Option");
-            mViewHolder.mChaText.setContentDescription("Option");
+            mViewHolder.mChaText.setText(R.string.option);
+            mViewHolder.mChaText.setContentDescription(getString(R.string.option));
         }
     }
 
