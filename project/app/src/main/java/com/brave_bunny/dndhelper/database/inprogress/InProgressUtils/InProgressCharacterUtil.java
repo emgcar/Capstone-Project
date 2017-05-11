@@ -400,6 +400,7 @@ public class InProgressCharacterUtil {
     }
 
     public static float getCharacterMoney(ContentValues values) {
+        if (values.get(characterMoneyLabel()) == null) return -1;
         return values.getAsFloat(characterMoneyLabel());
     }
 

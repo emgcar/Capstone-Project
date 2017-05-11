@@ -150,8 +150,8 @@ public class AbilityFragment extends Fragment {
             mViewHolder.mConText.setContentDescription(Integer.toString(conScore));
             blankText(conConnect);
         } else {
-            mViewHolder.mConText.setText("Option");
-            mViewHolder.mConText.setContentDescription("Option");
+            mViewHolder.mConText.setText(R.string.option);
+            mViewHolder.mConText.setContentDescription(getString(R.string.option));
         }
 
         if (intConnect != -1) {
@@ -331,7 +331,7 @@ public class AbilityFragment extends Fragment {
     private void setConnection(int selection, int connection) {
         String score;
         if (connection == -1) {
-            score = "Option";
+            score = getString(R.string.option);
         } else {
             score = Integer.toString(getConnectionValue(connection));
         }

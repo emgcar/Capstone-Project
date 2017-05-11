@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             findViewById(R.id.login_button).setVisibility(View.GONE);
-            findViewById(R.id.login_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.logout_button).setVisibility(View.VISIBLE);
         } else {
             findViewById(R.id.login_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.login_button).setVisibility(View.GONE);
+            findViewById(R.id.logout_button).setVisibility(View.GONE);
         }
     }
 
